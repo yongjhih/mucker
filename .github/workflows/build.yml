@@ -38,5 +38,5 @@ jobs:
       - name: Test CLI
         run: |
           cd cli
-          node bin/mucker.js --help
-          node bin/mucker.js --version
+          node bin/mucker.mjs --help
+          node bin/mucker.mjs --version

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { c } from '../lib/colors.js';
-import { findAdbPath, listDevices, forwardPort } from '../lib/adb.js';
-import { MuckerClient } from '../lib/api.js';
-import { listenLive } from '../lib/cdp.js';
+import { c } from '../lib/colors.mjs';
+import { findAdbPath, listDevices, forwardPort } from '../lib/adb.mjs';
+import { MuckerClient } from '../lib/api.mjs';
+import { listenLive } from '../lib/cdp.mjs';
 import { exec } from 'node:child_process';
 
 const VERSION = '1.0.0';

@@ -1,8 +1,8 @@
 title: Mucker
 tagline: Muck with your network, zero certs required.
 description: CDP-compatible In-App Mock Engine and Inspector for OkHttp on Android.
-url: "https://mucker.github.io"
-baseurl: ""
+url: "https://yongjhih.github.io"
+baseurl: "/mucker"
 
 markdown: kramdown
 kramdown:

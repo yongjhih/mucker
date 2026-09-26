@@ -2,14 +2,18 @@
   "name": "mucker",
   "version": "1.0.0",
   "description": "CLI tool for Mucker — Zero-cert OkHttp network mocking and CDP inspection",
-  "main": "bin/mucker.js",
+  "main": "bin/mucker.mjs",
   "bin": {
-    "mucker": "bin/mucker.js"
+    "mucker": "bin/mucker.mjs"
   },
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yongjhih/mucker.git"
+  },
   "scripts": {
-    "test": "node bin/mucker.js --version",
-    "mucker": "node bin/mucker.js"
+    "test": "node bin/mucker.mjs --version",
+    "mucker": "node bin/mucker.mjs"
   },
   "keywords": [
     "mucker",

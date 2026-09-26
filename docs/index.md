@@ -29,7 +29,7 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
     <a href="{{ '/cdp-history' | relative_url }}" class="btn btn-secondary">
       <span>CDP Evolution & History</span>
     </a>
-    <a href="https://github.com/mucker/mucker" class="btn btn-github" target="_blank" rel="noopener">
+    <a href="https://github.com/yongjhih/mucker" class="btn btn-github" target="_blank" rel="noopener">
       <span>View on GitHub</span>
     </a>
   </div>

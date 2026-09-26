@@ -201,7 +201,7 @@ ws.on('message', (raw) => {
 | **CDP Fetch Protocol** | ✅ **Yes** | ❌ No | ❌ Network only | ❌ Proprietary | ❌ No |
 | **Release Safety** | ✅ `mucker-noop` | ✅ `chucker-no-op` | ⚠️ Manual | ⚠️ Complex | ✅ Clean |
 
-For a deep dive into the history of CDP mock responses (from 2017 `Network.continueInterceptedRequest` to 2019 `Fetch.fulfillRequest` and 2023 DevTools UI "Override Content") and why Stetho/Flipper were abandoned, read the [Evolution of CDP Mock Response](https://mucker.github.io/cdp-history).
+For a deep dive into the history of CDP mock responses (from 2017 `Network.continueInterceptedRequest` to 2019 `Fetch.fulfillRequest` and 2023 DevTools UI "Override Content") and why Stetho/Flipper were abandoned, read the [Evolution of CDP Mock Response](https://yongjhih.github.io/mucker/cdp-history).
 
 ---
 
