@@ -114,6 +114,14 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
       <h3>Mucker CLI & AI Skills</h3>
       <p>Drive mocking directly from terminal or AI coding agents. One command to forward ports, add latency rules, stream live traffic, and mock payment failures.</p>
     </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      </div>
+      <h3>Modular Dashboard & BYOF</h3>
+      <p>Decoupled and open. Plug in custom panels (GraphQL, Chaos) or rewrite the frontend with React, Vue, or Svelte and bundle it into your APK.</p>
+    </div>
   </div>
 </section>
 

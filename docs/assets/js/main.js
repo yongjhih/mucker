@@ -37,38 +37,109 @@
     });
   }
 
-  // Copy code blocks (skip mermaid blocks)
+  // Impeccable Code Blocks with Header, Language Badge, and Copy
   document.querySelectorAll('.markdown-body pre').forEach((pre) => {
-    if (pre.querySelector('code.language-mermaid') || pre.classList.contains('mermaid')) {
+    if (pre.querySelector('code.language-mermaid') || pre.classList.contains('mermaid') || pre.closest('.mermaid-chart')) {
+      return;
+    }
+    if (pre.parentElement.classList.contains('code-block-wrapper')) {
       return;
     }
 
-    const container = document.createElement('div');
-    container.style.position = 'relative';
-    pre.parentNode.insertBefore(container, pre);
-    container.appendChild(pre);
+    // Determine language
+    const code = pre.querySelector('code');
+    let lang = 'CODE';
+    const classes = (code?.className || '') + ' ' + (pre.className || '') + ' ' + (pre.closest('[class*="language-"]')?.className || '');
+    const langMatch = classes.match(/language-([a-zA-Z0-9_\-]+)/);
+    if (langMatch && langMatch[1] && langMatch[1] !== 'plaintext') {
+      lang = langMatch[1].toUpperCase();
+    } else if (classes.includes('highlighter-rouge')) {
+      const rougeMatch = classes.match(/language-([a-zA-Z0-9_\-]+)/);
+      if (rougeMatch) lang = rougeMatch[1].toUpperCase();
+    }
 
-    const btn = document.createElement('button');
-    btn.innerText = 'Copy';
-    btn.className = 'btn btn-secondary';
-    btn.style.position = 'absolute';
-    btn.style.top = '8px';
-    btn.style.right = '8px';
-    btn.style.padding = '3px 8px';
-    btn.style.fontSize = '0.72rem';
-    btn.style.opacity = '0.7';
-    btn.setAttribute('aria-label', 'Copy code snippet');
+    // Wrapper container
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
 
-    btn.addEventListener('click', () => {
-      const code = pre.querySelector('code')?.innerText || pre.innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        btn.innerText = 'Copied!';
-        setTimeout(() => (btn.innerText = 'Copy'), 2000);
-      });
+    // Header bar
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+
+    const langSpan = document.createElement('span');
+    langSpan.className = 'code-block-lang';
+    langSpan.innerText = lang;
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'code-copy-btn';
+    copyBtn.setAttribute('aria-label', `Copy ${lang} code`);
+    copyBtn.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>Copy</span>
+    `;
+
+    copyBtn.addEventListener('click', async () => {
+      const text = code?.innerText || pre.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Copied!</span>
+        `;
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy</span>
+          `;
+        }, 2000);
+      } catch (err) {
+        console.warn('Clipboard write failed:', err);
+      }
     });
 
-    container.appendChild(btn);
+    header.appendChild(langSpan);
+    header.appendChild(copyBtn);
+
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
   });
+
+  // Dynamic Syntax Highlighting
+  async function applySyntaxHighlighting() {
+    const codeBlocks = document.querySelectorAll('.markdown-body pre code');
+    if (codeBlocks.length === 0) return;
+
+    const needsHighlight = Array.from(codeBlocks).some(c => !c.querySelector('span') && !c.classList.contains('language-mermaid'));
+    if (!needsHighlight && window.hljs) return;
+
+    if (!window.hljs) {
+      try {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      } catch (e) {
+        console.warn('Highlight.js failed to load, fallback to built-in tokens:', e);
+      }
+    }
+
+    if (window.hljs) {
+      codeBlocks.forEach((code) => {
+        if (code.classList.contains('language-mermaid') || code.closest('.mermaid') || code.closest('.mermaid-chart')) {
+          return;
+        }
+        if (!code.classList.contains('hljs') && !code.querySelector('span.k, span.s, span.c')) {
+          window.hljs.highlightElement(code);
+        }
+      });
+    }
+  }
 
   // Dynamic Mermaid rendering
   let mermaidModule = null;
@@ -137,9 +208,14 @@
   }
 
   // Initial render
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
-  } else {
+  function initPage() {
     renderMermaidDiagrams();
+    applySyntaxHighlighting();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPage);
+  } else {
+    initPage();
   }
 })();

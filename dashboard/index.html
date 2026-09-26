@@ -1199,6 +1199,16 @@ ws.on('message', (raw) => {
       if (state.selectedRequestId === rec.id || (!state.selectedRequestId && rec.isPaused)) {
         selectRequest(rec.id);
       }
+
+      // Notify registered modular plugins
+      registeredPlugins.forEach(p => {
+        try {
+          if (!rec.statusCode) p.onRequest?.(rec);
+          else p.onResponse?.(rec);
+        } catch (err) {
+          console.error(`Plugin [${p.id}] event handler error:`, err);
+        }
+      });
     }
 
     async function fetchInitialData() {
@@ -1225,6 +1235,50 @@ ws.on('message', (raw) => {
         console.error('Fetch data error:', e);
       }
     }
+
+    // Mucker Modular Plugin & Extensibility System
+    const registeredPlugins = [];
+    window.MuckerDashboard = {
+      state,
+      showToast,
+      host,
+      registerPlugin(plugin) {
+        if (!plugin || !plugin.id) return;
+        if (registeredPlugins.some(p => p.id === plugin.id)) return;
+        registeredPlugins.push(plugin);
+
+        const paneTabs = document.querySelector('.pane-tabs');
+        const tabBtn = document.createElement('button');
+        tabBtn.className = 'tab-btn';
+        tabBtn.dataset.tab = plugin.id;
+        tabBtn.innerHTML = `<span>${plugin.icon ? plugin.icon + ' ' : ''}${escapeHtml(plugin.name || plugin.id)}</span>`;
+        
+        const contentPane = document.querySelector('.content-pane');
+        const tabContent = document.createElement('div');
+        tabContent.className = 'tab-content';
+        tabContent.id = `tab-${plugin.id}`;
+        contentPane.appendChild(tabContent);
+
+        tabBtn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tabBtn.classList.add('active');
+          tabContent.classList.add('active');
+        });
+        paneTabs.appendChild(tabBtn);
+
+        try {
+          if (typeof plugin.init === 'function') {
+            plugin.init(tabContent, state);
+          }
+        } catch (err) {
+          console.error(`Error initializing plugin "${plugin.id}":`, err);
+        }
+      },
+      getPlugins() {
+        return [...registeredPlugins];
+      }
+    };
 
     // Tab Navigation
     document.querySelectorAll('.tab-btn').forEach(btn => {
