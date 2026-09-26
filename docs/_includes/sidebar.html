@@ -1,0 +1,26 @@
+<aside class="doc-sidebar">
+  <div class="sidebar-section">
+    <h3>Getting Started</h3>
+    <ul>
+      <li><a href="{{ '/getting-started' | relative_url }}" class="{% if page.url contains 'getting-started' %}active{% endif %}">Quickstart Guide</a></li>
+      <li><a href="{{ '/architecture' | relative_url }}" class="{% if page.url contains 'architecture' %}active{% endif %}">Core Architecture</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-section">
+    <h3>Deep Dives</h3>
+    <ul>
+      <li><a href="{{ '/cdp-history' | relative_url }}" class="{% if page.url contains 'cdp-history' %}active{% endif %}">CDP Mocking Evolution</a></li>
+      <li><a href="{{ '/comparison' | relative_url }}" class="{% if page.url contains 'comparison' %}active{% endif %}">Comparison Matrix</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-section">
+    <h3>Tools & Integrations</h3>
+    <ul>
+      <li><a href="{{ '/cli' | relative_url }}" class="{% if page.url contains 'cli' %}active{% endif %}">CLI Reference</a></li>
+      <li><a href="{{ '/automation' | relative_url }}" class="{% if page.url contains 'automation' %}active{% endif %}">CDP & E2E Automation</a></li>
+      <li><a href="{{ '/api-reference' | relative_url }}" class="{% if page.url contains 'api-reference' %}active{% endif %}">Android SDK API</a></li>
+    </ul>
+  </div>
+</aside>

@@ -1,0 +1,49 @@
+{
+  "name": "Mucker Development Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [
+    8080,
+    8081,
+    4000,
+    5173
+  ],
+  "portsAttributes": {
+    "8080": {
+      "label": "Mucker In-App Web Dashboard",
+      "onAutoForward": "notify"
+    },
+    "4000": {
+      "label": "Documentation & Website",
+      "onAutoForward": "silent"
+    },
+    "5173": {
+      "label": "Vite Dashboard Dev Server",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mathiasfrohlich.Kotlin",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-gradle",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-17",
+            "path": "/usr/lib/jvm/java-17-openjdk-amd64",
+            "default": true
+          }
+        ]
+      }
+    }
+  },
+  "postCreateCommand": "npm install && cd cli && npm install && npm run build && cd ../dashboard && npm install",
+  "remoteUser": "root"
+}

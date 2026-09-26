@@ -1,0 +1,28 @@
+{
+  "name": "mucker",
+  "version": "1.0.0",
+  "description": "CLI tool for Mucker — Zero-cert OkHttp network mocking and CDP inspection",
+  "main": "bin/mucker.js",
+  "bin": {
+    "mucker": "bin/mucker.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "node bin/mucker.js --version",
+    "mucker": "node bin/mucker.js"
+  },
+  "keywords": [
+    "mucker",
+    "okhttp",
+    "cdp",
+    "mock",
+    "android",
+    "devtools",
+    "adb"
+  ],
+  "author": "Mucker Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

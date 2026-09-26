@@ -1,0 +1,31 @@
+{
+  "name": "mucker-monorepo",
+  "version": "1.0.0",
+  "description": "Mucker — Muck with your network, zero certs required. CDP-compatible Mock Engine for OkHttp.",
+  "private": true,
+  "workspaces": [
+    "cli",
+    "dashboard"
+  ],
+  "scripts": {
+    "build:dashboard": "npm run build --workspace=dashboard && npm run copy:dashboard",
+    "copy:dashboard": "node -e \"const fs = require('fs'); const path = require('path'); const src = path.join('dashboard', 'dist', 'index.html'); const destDir = path.join('mucker', 'src', 'main', 'assets', 'mucker-web'); fs.mkdirSync(destDir, { recursive: true }); fs.copyFileSync(src, path.join(destDir, 'index.html')); console.log('Copied dashboard single-bundle to Android assets!');\"",
+    "build:cli": "npm run build --workspace=cli",
+    "build:all": "npm run build:dashboard && npm run build:cli",
+    "dev:dashboard": "npm run dev --workspace=dashboard",
+    "mucker": "node cli/bin/mucker.js",
+    "docs:serve": "python3 -m http.server 4000 --directory docs"
+  },
+  "keywords": [
+    "android",
+    "okhttp",
+    "cdp",
+    "chrome-devtools-protocol",
+    "mock",
+    "mocking",
+    "interceptor",
+    "network-inspector"
+  ],
+  "author": "Mucker Team",
+  "license": "MIT"
+}

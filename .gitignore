@@ -1,0 +1,39 @@
+# Android & Gradle
+.gradle/
+build/
+*/build/
+*.iml
+.idea/
+local.properties
+.cxx/
+captures/
+*.hprof
+*.apk
+*.aab
+
+# Node & Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Jekyll & Docs
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
