@@ -37,18 +37,27 @@ object NetworkUtils {
 
     fun decodeBase64(str: String): String {
         return try {
-            val bytes = android.util.Base64.decode(str, android.util.Base64.DEFAULT)
+            val bytes = java.util.Base64.getDecoder().decode(str)
             String(bytes, StandardCharsets.UTF_8)
-        } catch (_: Exception) {
-            str
+        } catch (_: Throwable) {
+            try {
+                val bytes = android.util.Base64.decode(str, android.util.Base64.DEFAULT)
+                String(bytes, StandardCharsets.UTF_8)
+            } catch (_: Throwable) {
+                str
+            }
         }
     }
 
     fun encodeBase64(str: String): String {
         return try {
-            android.util.Base64.encodeToString(str.toByteArray(StandardCharsets.UTF_8), android.util.Base64.NO_WRAP)
-        } catch (_: Exception) {
-            str
+            java.util.Base64.getEncoder().encodeToString(str.toByteArray(StandardCharsets.UTF_8))
+        } catch (_: Throwable) {
+            try {
+                android.util.Base64.encodeToString(str.toByteArray(StandardCharsets.UTF_8), android.util.Base64.NO_WRAP)
+            } catch (_: Throwable) {
+                str
+            }
         }
     }
 }

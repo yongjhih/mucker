@@ -8,42 +8,42 @@ subtitle: Deep dive into Mucker's application-layer interception, thread safety,
 
 Mucker decouples the developer experience into three distinct, interoperable layers:
 
+```mermaid
+flowchart TD
+  subgraph App["Android Application (Debug Build)"]
+    direction TB
+    OkHttp["OkHttp Request Pipeline"] --> Interceptor["MuckerInterceptor"]
+    Interceptor -->|1. Check Match| Rules["MockRuleRegistry"]
+    Interceptor -->|2. Breakpoint Trigger| Engine["MockEngine (CompletableFuture)"]
+    Interceptor -.->|3. Pass Through| RealNet["Real Remote Server"]
+    Interceptor -->|Record Event| Server["MuckerHttpServer (Embedded)"]
+  end
+
+  Server -->|HTTP /: SPA Dashboard| Desktop["Desktop Browser (http://ip:8080)"]
+  Server -->|HTTP /: In-App WebView| InApp["Mobile WebView (MuckerActivity)"]
+  Server -->|WebSocket /devtools/page| CLI["Mucker CLI & Puppeteer/Playwright"]
 ```
-┌────────────────────────────────────────────────────────────┐
-│ Android App (Debug Build)                                  │
-│                                                            │
-│  [OkHttp Request Pipeline]                                 │
-│         │                                                  │
-│         ▼                                                  │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │ MuckerInterceptor                                    │  │
-│  │  1. Check static MockRuleRegistry (instant hit)       │  │
-│  │  2. If Breakpoint Mode: Pause Thread via Future       │  │
-│  │  3. Fallthrough: Pass to real network                │  │
-│  └──────────────────────────┬───────────────────────────┘  │
-│                             │ Internal Event Bus           │
-│                             ▼                              │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │ MuckerHttpServer (Embedded Micro-Server)             │  │
-│  │ • HTTP 1.1: Serves Dashboard SPA & REST API          │  │
-│  │ • WebSocket: CDP JSON-RPC 2.0 (Fetch Domain)         │  │
-│  │ • Discovery: /json/version, /json/list               │  │
-│  └──────────────────────────┬───────────────────────────┘  │
-└─────────────────────────────┼──────────────────────────────┘
-                              │ Standard WebSocket / HTTP
-           ┌──────────────────┴──────────────────┐
-           ▼                                     ▼
-┌────────────────────────┐            ┌────────────────────────┐
-│ Desktop Web Browser    │            │ In-App Android WebView │
-│ (http://phone-ip:8080) │            │ (MuckerActivity)       │
-└────────────────────────┘            └────────────────────────┘
-           ▲                                     ▲
-           └──────────────────┬──────────────────┘
-                              ▼
-            ┌──────────────────────────────────┐
-            │ Mucker CLI & Automated CDP Tools │
-            │ (Puppeteer, Playwright, Python)  │
-            └──────────────────────────────────┘
+
+### Breakpoint Interception Sequence
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Thread as OkHttp I/O Thread
+  participant Interceptor as MuckerInterceptor
+  participant Engine as MockEngine
+  participant WS as MuckerHttpServer (WS)
+  participant UI as Dashboard / CDP Client
+
+  Thread->>Interceptor: chain.proceed(request)
+  Interceptor->>Engine: pauseRequest(record)
+  Engine->>WS: Broadcast Fetch.requestPaused
+  WS->>UI: Push Event via WebSocket
+  Note over Thread,Engine: Thread Suspends on CompletableFuture.get(25s)
+  UI->>WS: Send Fetch.fulfillRequest(200, mockBody)
+  WS->>Engine: fulfill(requestId, decision)
+  Engine->>Interceptor: Complete Future with MockDecision.Fulfill
+  Interceptor-->>Thread: Return Mocked okhttp3.Response
 ```
 
 ---

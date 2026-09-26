@@ -10,6 +10,14 @@ When investigating how to mock network requests on mobile using Chrome technolog
 
 The answer depends on the layer of the Chrome stack you examine: **the underlying CDP wire protocol** versus **the DevTools Graphical User Interface (UI)**.
 
+```mermaid
+flowchart TD
+  P1["<b>2017: Chrome 60~62 (Experimental)</b><br>• Network.setRequestInterception<br>• Network.continueInterceptedRequest(rawResponse)<br><i>Coupled to network process, raw byte strings</i>"]
+  --> P2["<b>2019: Chrome 74~75 (Semantic Standard)</b><br>• Fetch.enable & Fetch.requestPaused<br>• Fetch.fulfillRequest(code, headers, body)<br><i>Extracted Fetch domain, adopted by Puppeteer/Playwright</i>"]
+  --> P3["<b>2023: Chrome 117 (DevTools UI)</b><br>• Network tab: Right-click 'Override content'<br>• Linked to Local Workspaces disk folder<br><i>Visual wrapper for manual human developer workflows</i>"]
+  --> Mucker["<b>2026: Mucker (In-App Mobile)</b><br>• OkHttp Interceptor + Embedded Micro-Server<br>• Direct Fetch.fulfillRequest implementation<br><i>Zero CA certs, browser & phone UI</i>"]
+```
+
 ---
 
 ## 1. Phase 1: The Early Experimental Era (`Network` Domain, ~2017)

@@ -720,6 +720,65 @@
       gap: 12px;
     }
 
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-subtle);
+    }
+
+    *:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .toast-success { border-color: var(--success); }
+    .toast-error { border-color: var(--danger); }
+    .toast-warning { border-color: var(--warning); }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     /* Mobile adjustments */
     @media (max-width: 768px) {
       .app-main {
@@ -738,6 +797,7 @@
   </style>
 </head>
 <body>
+  <div class="toast-container" id="toastContainer"></div>
   <!-- Header -->
   <header>
     <div class="brand">
@@ -1458,6 +1518,21 @@ ws.on('message', (raw) => {
       ruleModal.classList.add('open');
     };
 
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      const icon = type === 'success' ? '✔' : (type === 'error' ? '✖' : (type === 'warning' ? '⚠' : 'ℹ'));
+      toast.innerHTML = `<span style="font-weight:700;">${icon}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 2600);
+    }
+
     window.copyCurl = function(reqId) {
       const req = state.requests.find(r => r.id === reqId);
       if (!req) return;
@@ -1469,7 +1544,7 @@ ws.on('message', (raw) => {
         curl += ` \\\n  -d '${req.postData.replace(/'/g, "\\'")}'`;
       }
       navigator.clipboard.writeText(curl);
-      alert('cURL command copied to clipboard!');
+      showToast('cURL command copied to clipboard!', 'success');
     };
 
     // Mock Rules Management
@@ -1554,7 +1629,7 @@ ws.on('message', (raw) => {
     btnSaveRule.addEventListener('click', async () => {
       const pattern = document.getElementById('rulePattern').value.trim();
       if (!pattern) {
-        alert('Please specify a URL pattern.');
+        showToast('Please specify a URL pattern.', 'warning');
         return;
       }
 
@@ -1636,10 +1711,10 @@ ws.on('message', (raw) => {
             }
             state.rules = imported;
             renderRules();
-            alert(`Imported ${imported.length} rules successfully!`);
+            showToast(`Imported ${imported.length} rules successfully!`, 'success');
           }
         } catch (err) {
-          alert('Failed to parse JSON file.');
+          showToast('Failed to parse JSON file.', 'error');
         }
       };
       reader.readAsText(file);
@@ -1686,6 +1761,31 @@ ws.on('message', (raw) => {
         return str;
       }
     }
+
+    // Keyboard Shortcuts (Impeccable UX)
+    window.addEventListener('keydown', (e) => {
+      // Cmd/Ctrl + K: Focus Search Filter
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      // Cmd/Ctrl + N: Open New Mock Rule Modal
+      else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        openNewRuleModal();
+      }
+      // Escape: Close Modal or Dismiss Selection
+      else if (e.key === 'Escape') {
+        if (ruleModal.classList.contains('open')) {
+          ruleModal.classList.remove('open');
+        } else if (state.selectedRequestId) {
+          state.selectedRequestId = null;
+          renderInspector();
+          renderRequestsTable();
+        }
+      }
+    });
 
     // Start
     connectWs();

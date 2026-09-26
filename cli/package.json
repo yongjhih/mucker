@@ -12,7 +12,7 @@
     "url": "git+ssh://git@github.com/yongjhih/mucker.git"
   },
   "scripts": {
-    "test": "node bin/mucker.mjs --version",
+    "test": "node --test test/*.test.mjs",
     "mucker": "node bin/mucker.mjs"
   },
   "keywords": [

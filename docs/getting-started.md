@@ -127,4 +127,16 @@ open http://localhost:8080
 mucker rules add "/api/v1/user" --status 200 --body '{"name":"Jane Developer"}'
 ```
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Developer
+    participant App as Android App (OkHttp)
+    participant Mucker as Mucker Engine
+    Dev->>Mucker: mucker rules add "/api/v1/user" --status 200
+    App->>Mucker: GET https://api.sample.com/api/v1/user
+    Note over Mucker: Pattern Match Found!
+    Mucker-->>App: Mocked 200 OK (Zero CA Certs)
+```
+
 Every subsequent OkHttp call matching this URL will instantly return the mock JSON with zero network roundtrip and zero certificate issues!
