@@ -26,6 +26,9 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
       <span>Get Started</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
+    <a href="{{ '/dashboard/' | relative_url }}" class="btn btn-secondary" style="border-color: #6366f1; color: #818cf8; font-weight: 600;">
+      <span>⚡ Live Dashboard</span>
+    </a>
     <a href="{{ '/cdp-history' | relative_url }}" class="btn btn-secondary">
       <span>CDP Evolution & History</span>
     </a>

@@ -145,6 +145,56 @@
       border: 1px solid var(--border-subtle);
     }
 
+    .target-host-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 3px 10px;
+      transition: border-color 0.2s ease;
+    }
+
+    .target-host-group:focus-within {
+      border-color: var(--accent);
+    }
+
+    .target-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .target-input {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      width: 145px;
+      outline: none;
+    }
+
+    .btn-connect {
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.15s ease;
+    }
+
+    .btn-connect:hover {
+      background: var(--primary-hover);
+    }
+
     .pulsing-dot {
       width: 8px;
       height: 8px;
@@ -807,6 +857,13 @@
     </div>
 
     <div class="header-actions">
+      <!-- Target Device Host/Socket Selector -->
+      <div class="target-host-group" title="Specify Target Android Device Host:Port or IP:Socket (e.g. 127.0.0.1:8080 or phone-ip:8080)">
+        <span class="target-label">Target:</span>
+        <input type="text" id="targetHostInput" class="target-input" placeholder="127.0.0.1:8080" />
+        <button class="btn-connect" id="btnConnectTarget" title="Connect to target socket">Connect</button>
+      </div>
+
       <div class="status-pill" id="connPill">
         <span class="pulsing-dot" id="pulsingDot"></span>
         <span id="connStatusText">Connecting...</span>
@@ -1049,11 +1106,44 @@ ws.on('message', (raw) => {
       editingRuleId: null,
     };
 
-    const host = window.location.origin.startsWith('http') ? window.location.origin : 'http://localhost:8080';
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${wsProtocol}//${window.location.host || 'localhost:8080'}/devtools/page`;
+    function resolveTarget() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryTarget = urlParams.get('target') || urlParams.get('host');
+      if (queryTarget) return queryTarget.trim();
+
+      const saved = localStorage.getItem('mucker_target_host');
+      if (saved) return saved.trim();
+
+      // If running inside Android app or local dev server
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return window.location.host;
+      }
+
+      // Default for GitHub Pages or remote web clients
+      return '127.0.0.1:8080';
+    }
+
+    let targetHost = resolveTarget();
+
+    function getBaseHttpUrl() {
+      if (targetHost.startsWith('http://') || targetHost.startsWith('https://')) {
+        return targetHost.replace(/\/$/, '');
+      }
+      return `http://${targetHost}`;
+    }
+
+    function getBaseWsUrl() {
+      const clean = targetHost.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      const isWss = targetHost.startsWith('https://') || window.location.protocol === 'https:';
+      return `ws://${clean}/devtools/page`;
+    }
+
+    let host = getBaseHttpUrl();
+    let wsUrl = getBaseWsUrl();
 
     // DOM Elements
+    const targetHostInput = document.getElementById('targetHostInput');
+    const btnConnectTarget = document.getElementById('btnConnectTarget');
     const connPill = document.getElementById('connPill');
     const pulsingDot = document.getElementById('pulsingDot');
     const connStatusText = document.getElementById('connStatusText');
@@ -1076,10 +1166,48 @@ ws.on('message', (raw) => {
     const btnImportRules = document.getElementById('btnImportRules');
     const importFileInput = document.getElementById('importFileInput');
 
+    // Init Target Input
+    targetHostInput.value = targetHost;
+
+    function changeTarget(newTarget) {
+      if (!newTarget) return;
+      targetHost = newTarget.trim();
+      targetHostInput.value = targetHost;
+      localStorage.setItem('mucker_target_host', targetHost);
+
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('target', targetHost);
+        window.history.replaceState({}, '', url.toString());
+      } catch (_) {}
+
+      host = getBaseHttpUrl();
+      wsUrl = getBaseWsUrl();
+
+      updateDiscoveryUrls();
+      showToast(`Target set to ${targetHost}. Reconnecting...`, 'info');
+
+      if (ws) {
+        ws.onclose = null;
+        ws.close();
+      }
+      clearTimeout(reconnectTimer);
+      connectWs();
+    }
+
+    btnConnectTarget.addEventListener('click', () => changeTarget(targetHostInput.value));
+    targetHostInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') changeTarget(targetHostInput.value);
+    });
+
+    function updateDiscoveryUrls() {
+      document.getElementById('cdpVersionUrl').innerText = `${host}/json/version`;
+      document.getElementById('cdpListUrl').innerText = `${host}/json/list`;
+      document.getElementById('cdpWsUrl').innerText = wsUrl;
+    }
+
     // Init Discovery URLs
-    document.getElementById('cdpVersionUrl').innerText = `${host}/json/version`;
-    document.getElementById('cdpListUrl').innerText = `${host}/json/list`;
-    document.getElementById('cdpWsUrl').innerText = wsUrl;
+    updateDiscoveryUrls();
 
     // Theme Toggle
     btnToggleTheme.addEventListener('click', () => {
@@ -1094,12 +1222,16 @@ ws.on('message', (raw) => {
 
     function connectWs() {
       try {
+        pulsingDot.classList.add('disconnected');
+        connStatusText.innerText = 'Connecting...';
+
         ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
           state.connected = true;
           pulsingDot.classList.remove('disconnected');
           connStatusText.innerText = 'Connected';
+          showToast(`Connected to Mucker at ${targetHost}!`, 'success');
           // Enable CDP Fetch Domain
           ws.send(JSON.stringify({
             id: 1,
