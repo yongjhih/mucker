@@ -26,6 +26,10 @@ _site/
 .jekyll-cache/
 .jekyll-metadata
 
+# Dart & Flutter
+.dart_tool/
+.packages
+
 # OS & Editor
 .DS_Store
 Thumbs.db

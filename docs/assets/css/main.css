@@ -687,109 +687,127 @@ a:hover {
 
 /* Dark Mode Tokens */
 .highlight .c, .highlight .c1, .highlight .cm, .highlight .cp, .highlight .cs,
+.markdown-body pre span.c, .markdown-body pre span.c1, .markdown-body pre span.cm,
 .hljs-comment, .token.comment {
-  color: #8b949e;
-  font-style: italic;
+  color: #8b949e !important;
+  font-style: italic !important;
 }
 
 .highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt,
+.markdown-body pre span.k, .markdown-body pre span.kd, .markdown-body pre span.kn,
 .hljs-keyword, .token.keyword {
-  color: #ff7b72;
-  font-weight: 500;
+  color: #ff7b72 !important;
+  font-weight: 600 !important;
 }
 
 .highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd,
 .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .ss,
+.markdown-body pre span.s, .markdown-body pre span.s1, .markdown-body pre span.s2,
 .hljs-string, .token.string {
-  color: #a5d6ff;
+  color: #a5d6ff !important;
 }
 
 .highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .il,
+.markdown-body pre span.m, .markdown-body pre span.mi,
 .hljs-number, .token.number {
-  color: #79c0ff;
+  color: #79c0ff !important;
+  font-weight: 500 !important;
 }
 
 .highlight .nf, .highlight .na, .highlight .nb, .highlight .no, .highlight .nd, .highlight .ni,
+.markdown-body pre span.nf, .markdown-body pre span.na,
 .hljs-title.function_, .hljs-function, .token.function {
-  color: #d2a8ff;
+  color: #d2a8ff !important;
 }
 
 .highlight .nc, .highlight .nn,
+.markdown-body pre span.nc, .markdown-body pre span.nn,
 .hljs-title.class_, .hljs-type, .token.class-name {
-  color: #ffa657;
-  font-weight: 500;
+  color: #ffa657 !important;
+  font-weight: 600 !important;
 }
 
-.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi,
+.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi, .highlight .n,
+.markdown-body pre span.nv, .markdown-body pre span.n,
 .hljs-variable, .hljs-attr, .token.variable, .token.attr-name {
-  color: #7ee787;
+  color: #7ee787 !important;
 }
 
-.highlight .nt, .hljs-tag, .token.tag {
-  color: #7ee787;
+.highlight .nt, .markdown-body pre span.nt, .hljs-tag, .token.tag {
+  color: #7ee787 !important;
 }
 
 .highlight .o, .highlight .ow, .highlight .p,
+.markdown-body pre span.o, .markdown-body pre span.p,
 .hljs-operator, .hljs-punctuation, .token.operator, .token.punctuation {
-  color: #c9d1d9;
+  color: #c9d1d9 !important;
 }
 
 .highlight .gd, .hljs-deletion, .token.deleted {
-  color: #ffa198;
-  background-color: rgba(248, 81, 73, 0.15);
+  color: #ffa198 !important;
+  background-color: rgba(248, 81, 73, 0.15) !important;
 }
 
 .highlight .gi, .hljs-addition, .token.inserted {
-  color: #56d364;
-  background-color: rgba(46, 160, 67, 0.15);
+  color: #56d364 !important;
+  background-color: rgba(46, 160, 67, 0.15) !important;
 }
 
 /* Light Mode Tokens */
 [data-theme="light"] .highlight .c, [data-theme="light"] .highlight .c1, [data-theme="light"] .highlight .cm,
+[data-theme="light"] .markdown-body pre span.c, [data-theme="light"] .markdown-body pre span.c1,
 [data-theme="light"] .hljs-comment, [data-theme="light"] .token.comment {
-  color: #6e7781;
-  font-style: italic;
+  color: #6e7781 !important;
+  font-style: italic !important;
 }
 
 [data-theme="light"] .highlight .k, [data-theme="light"] .highlight .kd, [data-theme="light"] .highlight .kn,
+[data-theme="light"] .markdown-body pre span.k, [data-theme="light"] .markdown-body pre span.kd,
 [data-theme="light"] .hljs-keyword, [data-theme="light"] .token.keyword {
-  color: #cf222e;
-  font-weight: 500;
+  color: #cf222e !important;
+  font-weight: 600 !important;
 }
 
 [data-theme="light"] .highlight .s, [data-theme="light"] .highlight .s1, [data-theme="light"] .highlight .s2,
+[data-theme="light"] .markdown-body pre span.s, [data-theme="light"] .markdown-body pre span.s1,
 [data-theme="light"] .hljs-string, [data-theme="light"] .token.string {
-  color: #0a3069;
+  color: #0a3069 !important;
 }
 
 [data-theme="light"] .highlight .m, [data-theme="light"] .highlight .mi,
+[data-theme="light"] .markdown-body pre span.m, [data-theme="light"] .markdown-body pre span.mi,
 [data-theme="light"] .hljs-number, [data-theme="light"] .token.number {
-  color: #0550ae;
+  color: #0550ae !important;
+  font-weight: 500 !important;
 }
 
 [data-theme="light"] .highlight .nf,
+[data-theme="light"] .markdown-body pre span.nf,
 [data-theme="light"] .hljs-title.function_, [data-theme="light"] .hljs-function, [data-theme="light"] .token.function {
-  color: #8250df;
+  color: #8250df !important;
 }
 
 [data-theme="light"] .highlight .nc, [data-theme="light"] .highlight .nn,
+[data-theme="light"] .markdown-body pre span.nc, [data-theme="light"] .markdown-body pre span.nn,
 [data-theme="light"] .hljs-title.class_, [data-theme="light"] .hljs-type, [data-theme="light"] .token.class-name {
-  color: #953800;
-  font-weight: 500;
+  color: #953800 !important;
+  font-weight: 600 !important;
 }
 
-[data-theme="light"] .highlight .nv, [data-theme="light"] .highlight .na,
+[data-theme="light"] .highlight .nv, [data-theme="light"] .highlight .na, [data-theme="light"] .highlight .n,
+[data-theme="light"] .markdown-body pre span.nv, [data-theme="light"] .markdown-body pre span.n,
 [data-theme="light"] .hljs-variable, [data-theme="light"] .hljs-attr, [data-theme="light"] .token.variable, [data-theme="light"] .token.attr-name {
-  color: #116329;
+  color: #116329 !important;
 }
 
-[data-theme="light"] .highlight .nt, [data-theme="light"] .hljs-tag, [data-theme="light"] .token.tag {
-  color: #116329;
+[data-theme="light"] .highlight .nt, [data-theme="light"] .markdown-body pre span.nt, [data-theme="light"] .hljs-tag, [data-theme="light"] .token.tag {
+  color: #116329 !important;
 }
 
 [data-theme="light"] .highlight .o, [data-theme="light"] .highlight .p,
+[data-theme="light"] .markdown-body pre span.o, [data-theme="light"] .markdown-body pre span.p,
 [data-theme="light"] .hljs-operator, [data-theme="light"] .hljs-punctuation, [data-theme="light"] .token.operator, [data-theme="light"] .token.punctuation {
-  color: #57606a;
+  color: #57606a !important;
 }
 
 .markdown-body blockquote {

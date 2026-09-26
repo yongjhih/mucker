@@ -189,6 +189,33 @@ ws.on('message', (raw) => {
 
 ---
 
+## 🌐 Cross-Platform Client Interceptors
+
+Mucker is not limited to OkHttp. Any platform or HTTP client can connect to Mucker's local mock engine:
+
+### 1. Flutter / Dart (`dio` & `package:http`)
+```dart
+import 'package:dio/dio.dart';
+import 'package:mucker/mucker.dart';
+
+final dio = Dio();
+dio.interceptors.add(MuckerDioInterceptor()); // Evaluates Mucker mock rules & streams traffic!
+```
+
+### 2. iOS Swift (`URLSession`)
+```swift
+URLProtocol.registerClass(MuckerURLProtocol.self) // Intercepts URLSession without certs
+```
+
+### 3. Web & Node.js (`axios`)
+```javascript
+attachMucker(axiosInstance); // Intercepts Axios requests via local Mucker REST API
+```
+
+Read the full [Cross-Platform Interceptors Guide](https://yongjhih.github.io/mucker/cross-platform) for setup across Flutter, iOS, and KMP.
+
+---
+
 ## 📊 Comparison Matrix
 
 | Feature | **Mucker** | Chucker | Stetho (Dead) | Flipper (Dead) | Charles / Proxyman |
@@ -199,6 +226,7 @@ ws.on('message', (raw) => {
 | **In-App Mobile UI** | ✅ **Yes** | ✅ Yes | ❌ No | ❌ No | ❌ No |
 | **Computer Browser UI** | ✅ **Yes** | ❌ No | ⚠️ chrome://inspect | ❌ Requires Electron | ❌ Requires Desktop App |
 | **CDP Fetch Protocol** | ✅ **Yes** | ❌ No | ❌ Network only | ❌ Proprietary | ❌ No |
+| **Cross-Platform (Dio/iOS)** | ✅ **Yes** | ❌ Android Only| ❌ Android Only| ⚠️ Complex C++ | ⚠️ Requires Desktop |
 | **Release Safety** | ✅ `mucker-noop` | ✅ `chucker-no-op` | ⚠️ Manual | ⚠️ Complex | ✅ Clean |
 
 For a deep dive into the history of CDP mock responses (from 2017 `Network.continueInterceptedRequest` to 2019 `Fetch.fulfillRequest` and 2023 DevTools UI "Override Content") and why Stetho/Flipper were abandoned, read the [Evolution of CDP Mock Response](https://yongjhih.github.io/mucker/cdp-history).
@@ -210,9 +238,11 @@ For a deep dive into the history of CDP mock responses (from 2017 `Network.conti
 * [`mucker/`](mucker): Core Android library with embedded HTTP/WebSocket server and `MuckerInterceptor`.
 * [`mucker-noop/`](mucker-noop): Empty stubs for release builds ensuring zero APK overhead.
 * [`app/`](app): Demo Android application showing real-time OkHttp request mocking.
+* [`dart/mucker/`](dart/mucker): Dart & Flutter client package supporting **Dio** and **package:http**.
 * [`dashboard/`](dashboard): Impeccable single-page application (SPA) dashboard.
 * [`cli/`](cli): Zero-dependency Node.js CLI tool (`mucker`).
 * [`skills/mucker/`](skills/mucker): Agent skill definition for AI coding assistants.
+* [`skills/mucker-dashboard/`](skills/mucker-dashboard): Agent skill for modular dashboard plugin development.
 * [`docs/`](docs): GitHub Pages Jekyll documentation website.
 * [`.devcontainer/`](.devcontainer): Complete containerized development environment.
 

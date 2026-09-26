@@ -10,6 +10,8 @@
   <div class="sidebar-section">
     <h3>Deep Dives</h3>
     <ul>
+      <li><a href="{{ '/dashboard-modularity' | relative_url }}" class="{% if page.url contains 'dashboard-modularity' %}active{% endif %}">Dashboard Modularity</a></li>
+      <li><a href="{{ '/cross-platform' | relative_url }}" class="{% if page.url contains 'cross-platform' %}active{% endif %}">Cross-Platform Clients</a></li>
       <li><a href="{{ '/cdp-history' | relative_url }}" class="{% if page.url contains 'cdp-history' %}active{% endif %}">CDP Mocking Evolution</a></li>
       <li><a href="{{ '/comparison' | relative_url }}" class="{% if page.url contains 'comparison' %}active{% endif %}">Comparison Matrix</a></li>
     </ul>
