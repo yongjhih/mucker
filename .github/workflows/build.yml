@@ -38,5 +38,19 @@ jobs:
       - name: Test CLI
         run: |
           cd cli
-          node bin/mucker.mjs --help
-          node bin/mucker.mjs --version
+          npm test
+
+  build-dart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Test Dart Client
+        run: |
+          cd dart/mucker
+          dart pub get
+          dart test
+
