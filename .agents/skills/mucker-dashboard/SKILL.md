@@ -90,7 +90,24 @@ window.MuckerDashboard.registerPlugin({
 
 ---
 
-## 4. Building a Custom Dashboard from Scratch
+## 4. Interactive Timeline & Programmatic API
+
+The dashboard includes a high-performance Canvas waterfall timeline with interactive time range selection and zooming:
+* **Interactive Interval Brush**: Click and drag to create a time filter window; drag the window body or resize handles to filter requests in real time.
+* **Zoom Controls**: Mouse wheel zoom, `[+]` Zoom In (1.35x), `[−]` Zoom Out (1.35x), and `[Fit All]` buttons.
+* **Programmatic Control**: Use `window.MuckerDashboard.timeline`:
+  ```javascript
+  const { timeline } = window.MuckerDashboard;
+  timeline.zoom(0.67);                      // Zoom in
+  timeline.fitAll();                         // Fit all traffic in view
+  timeline.setSelection(startMs, endMs);     // Filter to time range
+  timeline.clearSelection();                 // Clear filter
+  timeline.highlightRequest('req_123');      // Highlight request bar
+  ```
+
+---
+
+## 5. Building a Custom Dashboard from Scratch
 
 ### Connection Checklist
 1. **ADB Port Forwarding**:
@@ -138,7 +155,7 @@ window.MuckerDashboard.registerPlugin({
 
 ---
 
-## 5. Bundling Custom Dashboard into the Android Library
+## 6. Bundling Custom Dashboard into the Android Library
 
 To have your custom build embedded directly in the Android app (for In-App WebView and standalone phone browsing):
 
@@ -152,7 +169,7 @@ To have your custom build embedded directly in the Android app (for In-App WebVi
 
 ---
 
-## 6. Impeccable Web Craftsmanship Guidelines (`pbakaus/impeccableskilled`)
+## 7. Impeccable Web Craftsmanship Guidelines (`pbakaus/impeccableskilled`)
 
 When creating custom Mucker frontends or plugins:
 * **Never use blocking `alert()` or `confirm()`**: Always use non-blocking toast notifications (`showToast()`).

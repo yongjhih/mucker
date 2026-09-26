@@ -844,6 +844,187 @@
         height: 55vh;
       }
     }
+
+    /* Timeline Component */
+    .timeline-container {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      user-select: none;
+      transition: max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      max-height: 140px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .timeline-container.collapsed {
+      max-height: 37px;
+    }
+
+    .timeline-container.hidden {
+      display: none;
+    }
+
+    .timeline-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 14px;
+      font-size: 0.76rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+      flex-shrink: 0;
+    }
+
+    .timeline-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .timeline-title {
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .timeline-stats {
+      color: var(--text-subtle);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+
+    .timeline-selection-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.18);
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      color: #c7d2fe;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .btn-clear-selection {
+      background: transparent;
+      border: none;
+      color: #e0e7ff;
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0 3px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .btn-clear-selection:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+    }
+
+    .timeline-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .timeline-ctrl-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+    }
+
+    .timeline-ctrl-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .zoom-display {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      min-width: 42px;
+      text-align: center;
+      padding: 0 4px;
+      font-weight: 600;
+    }
+
+    .timeline-canvas-wrapper {
+      position: relative;
+      height: 90px;
+      width: 100%;
+      background: var(--bg-base);
+      cursor: crosshair;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    #timelineCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .timeline-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 50;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      color: var(--text-main);
+      box-shadow: var(--shadow-lg);
+      transform: translate(-50%, -120%);
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-family: var(--font-sans);
+    }
+
+    .timeline-tooltip-method {
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .timeline-tooltip-url {
+      color: var(--text-muted);
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .timeline-tooltip-timing {
+      font-family: var(--font-mono);
+      color: var(--text-subtle);
+    }
   </style>
 </head>
 <body>
@@ -869,6 +1050,10 @@
         <span id="connStatusText">Connecting...</span>
       </div>
 
+      <button class="btn btn-sm" id="btnToggleTimeline" title="Toggle Network Timeline Overview">
+        <span>⏱ Timeline</span>
+      </button>
+
       <button class="btn btn-sm" id="btnToggleBreakpoint" title="Toggle Breakpoint Interception Mode">
         <span id="bpIcon">⏸</span> Breakpoint: <span id="bpState" style="color:var(--text-subtle)">OFF</span>
       </button>
@@ -882,6 +1067,31 @@
       </button>
     </div>
   </header>
+
+  <!-- Timeline Component -->
+  <div class="timeline-container" id="timelineContainer">
+    <div class="timeline-toolbar">
+      <div class="timeline-meta">
+        <span class="timeline-title">⏱ Timeline</span>
+        <span class="timeline-stats" id="timelineStats">0 requests</span>
+        <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
+          <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
+          <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
+        </div>
+      </div>
+      <div class="timeline-controls">
+        <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
+        <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
+        <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
+        <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit All</button>
+        <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
+      </div>
+    </div>
+    <div class="timeline-canvas-wrapper" id="timelineCanvasWrapper">
+      <canvas id="timelineCanvas"></canvas>
+      <div id="timelineTooltip" class="timeline-tooltip" style="display:none;"></div>
+    </div>
+  </div>
 
   <!-- Main Container -->
   <div class="app-main">
@@ -1104,6 +1314,7 @@ ws.on('message', (raw) => {
       filter: 'ALL',
       search: '',
       editingRuleId: null,
+      timeFilter: null,
     };
 
     function resolveTarget() {
@@ -1147,6 +1358,8 @@ ws.on('message', (raw) => {
     const connPill = document.getElementById('connPill');
     const pulsingDot = document.getElementById('pulsingDot');
     const connStatusText = document.getElementById('connStatusText');
+    const btnToggleTimeline = document.getElementById('btnToggleTimeline');
+    const timelineContainer = document.getElementById('timelineContainer');
     const btnToggleBreakpoint = document.getElementById('btnToggleBreakpoint');
     const bpState = document.getElementById('bpState');
     const requestList = document.getElementById('requestList');
@@ -1208,6 +1421,570 @@ ws.on('message', (raw) => {
 
     // Init Discovery URLs
     updateDiscoveryUrls();
+
+    // Helper to safely draw rounded rectangles
+    function drawRoundRect(ctx, x, y, w, h, r = 3) {
+      if (w <= 0 || h <= 0) return;
+      r = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    /**
+     * Interactive High-DPI Canvas Network Timeline Component
+     * Supports:
+     * - Waterfall request bars with method & status color coding
+     * - Drag interval selection window with dual resize handles
+     * - Dynamic zooming & panning (mouse wheel, buttons, scale ruler)
+     * - Integrated real-time list filtering
+     */
+    class MuckerTimeline {
+      constructor(canvasId, containerId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.container = document.getElementById(containerId);
+        this.wrapper = document.getElementById('timelineCanvasWrapper');
+        this.tooltip = document.getElementById('timelineTooltip');
+        this.stats = document.getElementById('timelineStats');
+        this.selectionPill = document.getElementById('timelineSelectionPill');
+        this.selectionText = document.getElementById('timelineSelectionText');
+        this.zoomDisplay = document.getElementById('zoomDisplay');
+        this.btnZoomIn = document.getElementById('btnZoomIn');
+        this.btnZoomOut = document.getElementById('btnZoomOut');
+        this.btnFitTimeline = document.getElementById('btnFitTimeline');
+        this.btnClearTimeSelection = document.getElementById('btnClearTimeSelection');
+        this.btnCollapseTimeline = document.getElementById('btnCollapseTimeline');
+
+        this.zoomLevel = 1.0;
+        this.viewTimeStart = null;
+        this.viewTimeEnd = null;
+        this.minTime = Date.now() - 5000;
+        this.maxTime = Date.now();
+
+        this.selectStart = null;
+        this.selectEnd = null;
+
+        this.dragMode = null; // 'create', 'move', 'resize-left', 'resize-right'
+        this.dragStartX = 0;
+        this.dragStartSel1 = 0;
+        this.dragStartSel2 = 0;
+        this.hoverRequest = null;
+        this.dpr = window.devicePixelRatio || 1;
+        this.isCollapsed = false;
+
+        this.initEvents();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+      }
+
+      resize() {
+        if (!this.wrapper) return;
+        const rect = this.wrapper.getBoundingClientRect();
+        this.width = rect.width;
+        this.height = rect.height || 90;
+        this.canvas.width = this.width * this.dpr;
+        this.canvas.height = this.height * this.dpr;
+        this.draw();
+      }
+
+      updateBounds() {
+        if (!state.requests || state.requests.length === 0) {
+          this.minTime = Date.now() - 5000;
+          this.maxTime = Date.now();
+          return;
+        }
+        let min = Infinity;
+        let max = -Infinity;
+        for (const r of state.requests) {
+          const t = r.timestamp || Date.now();
+          const end = t + Math.max(r.responseTime || 20, 20);
+          if (t < min) min = t;
+          if (end > max) max = end;
+        }
+        this.minTime = min;
+        this.maxTime = Math.max(max, min + 1000);
+      }
+
+      initViewWindow() {
+        this.updateBounds();
+        const span = Math.max(2000, this.maxTime - this.minTime);
+        const pad = span * 0.05;
+        this.viewTimeStart = this.minTime - pad;
+        this.viewTimeEnd = this.maxTime + pad;
+        this.zoomLevel = 1.0;
+        this.updateZoomDisplay();
+      }
+
+      timeToX(timeMs) {
+        if (this.viewTimeStart === null || this.viewTimeEnd === null) return 0;
+        const span = this.viewTimeEnd - this.viewTimeStart;
+        return ((timeMs - this.viewTimeStart) / (span || 1)) * this.width;
+      }
+
+      xToTime(x) {
+        if (this.viewTimeStart === null || this.viewTimeEnd === null) return Date.now();
+        const span = this.viewTimeEnd - this.viewTimeStart;
+        return this.viewTimeStart + (x / (this.width || 1)) * span;
+      }
+
+      updateZoomDisplay() {
+        if (!this.zoomDisplay) return;
+        if (this.zoomLevel >= 1) {
+          this.zoomDisplay.innerText = this.zoomLevel.toFixed(1) + 'x';
+        } else {
+          this.zoomDisplay.innerText = this.zoomLevel.toFixed(2) + 'x';
+        }
+      }
+
+      zoom(factor, centerX) {
+        this.updateBounds();
+        const totalSpan = Math.max(2000, this.maxTime - this.minTime);
+        centerX = centerX !== undefined ? centerX : this.width / 2;
+        const centerTime = this.xToTime(centerX);
+        const currentSpan = this.viewTimeEnd - this.viewTimeStart;
+        const newSpan = Math.max(50, Math.min(totalSpan * 10, currentSpan * factor));
+        const ratio = centerX / (this.width || 1);
+        this.viewTimeStart = centerTime - ratio * newSpan;
+        this.viewTimeEnd = this.viewTimeStart + newSpan;
+        this.zoomLevel = totalSpan / newSpan;
+        this.updateZoomDisplay();
+        this.draw();
+      }
+
+      fitAll() {
+        this.initViewWindow();
+        this.draw();
+      }
+
+      applySelection() {
+        if (this.selectStart !== null && this.selectEnd !== null) {
+          const s1 = Math.min(this.selectStart, this.selectEnd);
+          const s2 = Math.max(this.selectStart, this.selectEnd);
+          state.timeFilter = { start: s1, end: s2 };
+          const relStart = Math.max(0, (s1 - this.minTime) / 1000);
+          const relEnd = Math.max(0, (s2 - this.minTime) / 1000);
+          const dur = (s2 - s1) / 1000;
+          this.selectionPill.style.display = 'flex';
+          this.selectionText.innerText = `Range: ${relStart.toFixed(2)}s – ${relEnd.toFixed(2)}s (${dur.toFixed(2)}s)`;
+        } else {
+          state.timeFilter = null;
+          this.selectionPill.style.display = 'none';
+        }
+        renderRequestList();
+        this.draw();
+      }
+
+      setSelection(startMs, endMs) {
+        this.selectStart = startMs;
+        this.selectEnd = endMs;
+        this.applySelection();
+      }
+
+      clearSelection() {
+        this.selectStart = null;
+        this.selectEnd = null;
+        this.applySelection();
+      }
+
+      onNewRequest(req) {
+        this.updateBounds();
+        if (this.viewTimeStart === null || this.viewTimeEnd === null) {
+          this.initViewWindow();
+        } else {
+          // If viewing live edge at default zoom, expand window rightwards
+          if (this.zoomLevel <= 1.05 && req.timestamp > this.viewTimeEnd - 500) {
+            const span = this.viewTimeEnd - this.viewTimeStart;
+            this.viewTimeEnd = req.timestamp + span * 0.15;
+            this.viewTimeStart = this.viewTimeEnd - span;
+          }
+        }
+        this.draw();
+      }
+
+      highlightRequest(id) {
+        this.draw();
+      }
+
+      findRequestAt(x, y) {
+        if (!state.requests || state.requests.length === 0) return null;
+        const total = state.requests.length;
+        for (let i = 0; i < total; i++) {
+          const req = state.requests[i];
+          const x1 = this.timeToX(req.timestamp);
+          const dur = Math.max(req.responseTime || 20, 20);
+          const x2 = this.timeToX(req.timestamp + dur);
+          const barW = Math.max(x2 - x1, 6);
+          const lane = i % 5;
+          const barY = 24 + lane * 12;
+          if (x >= x1 - 3 && x <= x1 + barW + 3 && y >= barY && y <= barY + 11) {
+            return req;
+          }
+        }
+        return null;
+      }
+
+      draw() {
+        if (!this.ctx || !this.width || !this.height) return;
+        this.updateBounds();
+        if (this.viewTimeStart === null) this.initViewWindow();
+
+        const ctx = this.ctx;
+        ctx.save();
+        ctx.scale(this.dpr, this.dpr);
+
+        // Update stats
+        if (this.stats) {
+          const count = state.requests.length;
+          const spanSec = ((this.maxTime - this.minTime) / 1000).toFixed(1);
+          this.stats.innerText = `${count} req${count === 1 ? '' : 's'} (${spanSec}s total)`;
+        }
+
+        // Background
+        ctx.fillStyle = '#090d16';
+        ctx.fillRect(0, 0, this.width, this.height);
+
+        // Calculate dynamic tick step
+        const visibleSpan = this.viewTimeEnd - this.viewTimeStart;
+        const standardSteps = [10, 25, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 15000, 30000, 60000, 120000, 300000];
+        const targetStep = visibleSpan / 8;
+        let stepMs = standardSteps.find(s => s >= targetStep) || 60000;
+
+        // Ruler bar background
+        ctx.fillStyle = '#111827';
+        ctx.fillRect(0, 0, this.width, 20);
+        ctx.strokeStyle = '#1f293d';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, 20);
+        ctx.lineTo(this.width, 20);
+        ctx.stroke();
+
+        // Draw Ticks & Vertical Grid Lines
+        const firstTick = Math.floor(this.viewTimeStart / stepMs) * stepMs;
+        ctx.font = '10px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillStyle = '#64748b';
+        ctx.textAlign = 'center';
+
+        for (let t = firstTick; t <= this.viewTimeEnd + stepMs; t += stepMs) {
+          const x = this.timeToX(t);
+          if (x < -20 || x > this.width + 20) continue;
+
+          // Vertical grid line
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.beginPath();
+          ctx.moveTo(x, 20);
+          ctx.lineTo(x, this.height);
+          ctx.stroke();
+
+          // Tick line on ruler
+          ctx.strokeStyle = '#374151';
+          ctx.beginPath();
+          ctx.moveTo(x, 14);
+          ctx.lineTo(x, 20);
+          ctx.stroke();
+
+          // Tick Label
+          const relMs = t - this.minTime;
+          let label = '';
+          if (Math.abs(relMs) < 1) label = '0s';
+          else if (stepMs < 1000 && Math.abs(relMs) < 1000) label = `${relMs}ms`;
+          else {
+            const sec = relMs / 1000;
+            label = sec >= 0 ? `${sec.toFixed(stepMs < 1000 ? 1 : 0)}s` : `${sec.toFixed(1)}s`;
+          }
+          ctx.fillText(label, x, 13);
+        }
+
+        // Draw Waterfall Request Bars
+        const reqs = state.requests || [];
+        for (let i = 0; i < reqs.length; i++) {
+          const req = reqs[i];
+          const x1 = this.timeToX(req.timestamp);
+          const dur = Math.max(req.responseTime || 20, 15);
+          const x2 = this.timeToX(req.timestamp + dur);
+          const barW = Math.max(x2 - x1, 5);
+          const lane = i % 5;
+          const y = 24 + lane * 12;
+
+          let color = '#6366f1';
+          if (req.isPaused) color = '#f59e0b';
+          else if (req.isMocked) color = '#a855f7';
+          else if (Number(req.statusCode) >= 400) color = '#ef4444';
+          else if (Number(req.statusCode) >= 200) color = '#10b981';
+
+          ctx.fillStyle = color;
+          drawRoundRect(ctx, x1, y, barW, 9, 2);
+          ctx.fill();
+
+          // Selection highlight
+          if (req.id === state.selectedRequestId) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.5;
+            drawRoundRect(ctx, x1 - 1, y - 1, barW + 2, 11, 3);
+            ctx.stroke();
+          }
+        }
+
+        // Draw Selection Range Overlay
+        if (this.selectStart !== null && this.selectEnd !== null) {
+          const s1 = Math.min(this.selectStart, this.selectEnd);
+          const s2 = Math.max(this.selectStart, this.selectEnd);
+          const sx1 = Math.max(0, this.timeToX(s1));
+          const sx2 = Math.min(this.width, this.timeToX(s2));
+
+          // Dim masks
+          ctx.fillStyle = 'rgba(7, 10, 18, 0.68)';
+          ctx.fillRect(0, 0, sx1, this.height);
+          ctx.fillRect(sx2, 0, this.width - sx2, this.height);
+
+          // Selection window
+          ctx.fillStyle = 'rgba(99, 102, 241, 0.09)';
+          ctx.fillRect(sx1, 0, sx2 - sx1, this.height);
+
+          ctx.strokeStyle = 'rgba(99, 102, 241, 0.6)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(sx1, 0, sx2 - sx1, this.height);
+
+          // Left Handle
+          ctx.strokeStyle = '#818cf8';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(sx1, 0);
+          ctx.lineTo(sx1, this.height);
+          ctx.stroke();
+
+          ctx.fillStyle = '#6366f1';
+          drawRoundRect(ctx, sx1 - 4, this.height / 2 - 12, 8, 24, 4);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(sx1 - 1, this.height / 2 - 5, 2, 3);
+          ctx.fillRect(sx1 - 1, this.height / 2 + 2, 2, 3);
+
+          // Right Handle
+          ctx.strokeStyle = '#818cf8';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(sx2, 0);
+          ctx.lineTo(sx2, this.height);
+          ctx.stroke();
+
+          ctx.fillStyle = '#6366f1';
+          drawRoundRect(ctx, sx2 - 4, this.height / 2 - 12, 8, 24, 4);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(sx2 - 1, this.height / 2 - 5, 2, 3);
+          ctx.fillRect(sx2 - 1, this.height / 2 + 2, 2, 3);
+        }
+
+        ctx.restore();
+      }
+
+      initEvents() {
+        const getX = (e) => {
+          const rect = this.canvas.getBoundingClientRect();
+          let clientX = e.clientX;
+          if (clientX === undefined) {
+            if (e.touches && e.touches.length > 0) clientX = e.touches[0].clientX;
+            else if (e.changedTouches && e.changedTouches.length > 0) clientX = e.changedTouches[0].clientX;
+            else clientX = 0;
+          }
+          return clientX - rect.left;
+        };
+
+        const getY = (e) => {
+          const rect = this.canvas.getBoundingClientRect();
+          let clientY = e.clientY;
+          if (clientY === undefined) {
+            if (e.touches && e.touches.length > 0) clientY = e.touches[0].clientY;
+            else if (e.changedTouches && e.changedTouches.length > 0) clientY = e.changedTouches[0].clientY;
+            else clientY = 0;
+          }
+          return clientY - rect.top;
+        };
+
+        const HANDLE_RADIUS = 8;
+
+        const onDown = (e) => {
+          const x = getX(e);
+          const y = getY(e);
+          if (x < 0 || x > this.width) return;
+
+          let sx1 = null, sx2 = null;
+          if (this.selectStart !== null && this.selectEnd !== null) {
+            const s1 = Math.min(this.selectStart, this.selectEnd);
+            const s2 = Math.max(this.selectStart, this.selectEnd);
+            sx1 = this.timeToX(s1);
+            sx2 = this.timeToX(s2);
+          }
+
+          if (sx1 !== null && Math.abs(x - sx1) <= HANDLE_RADIUS) {
+            this.dragMode = 'resize-left';
+          } else if (sx2 !== null && Math.abs(x - sx2) <= HANDLE_RADIUS) {
+            this.dragMode = 'resize-right';
+          } else if (sx1 !== null && sx2 !== null && x > sx1 && x < sx2) {
+            const reqHit = this.findRequestAt(x, y);
+            if (reqHit) {
+              selectRequest(reqHit.id);
+              return;
+            }
+            this.dragMode = 'move';
+            this.dragStartX = x;
+            this.dragStartSel1 = Math.min(this.selectStart, this.selectEnd);
+            this.dragStartSel2 = Math.max(this.selectStart, this.selectEnd);
+            this.canvas.style.cursor = 'grabbing';
+          } else {
+            const reqHit = this.findRequestAt(x, y);
+            if (reqHit) {
+              selectRequest(reqHit.id);
+              return;
+            }
+            this.dragMode = 'create';
+            this.selectStart = this.xToTime(x);
+            this.selectEnd = this.selectStart;
+            this.draw();
+          }
+        };
+
+        const onMove = (e) => {
+          const x = getX(e);
+          const y = getY(e);
+
+          if (!this.dragMode) {
+            let sx1 = null, sx2 = null;
+            if (this.selectStart !== null && this.selectEnd !== null) {
+              const s1 = Math.min(this.selectStart, this.selectEnd);
+              const s2 = Math.max(this.selectStart, this.selectEnd);
+              sx1 = this.timeToX(s1);
+              sx2 = this.timeToX(s2);
+            }
+
+            if (sx1 !== null && Math.abs(x - sx1) <= HANDLE_RADIUS) {
+              this.canvas.style.cursor = 'ew-resize';
+            } else if (sx2 !== null && Math.abs(x - sx2) <= HANDLE_RADIUS) {
+              this.canvas.style.cursor = 'ew-resize';
+            } else if (sx1 !== null && sx2 !== null && x > sx1 && x < sx2) {
+              this.canvas.style.cursor = 'grab';
+            } else {
+              this.canvas.style.cursor = 'crosshair';
+            }
+
+            // Check tooltip hover
+            const reqHit = this.findRequestAt(x, y);
+            if (reqHit && this.tooltip) {
+              const relSec = ((reqHit.timestamp - this.minTime) / 1000).toFixed(2);
+              this.tooltip.style.display = 'flex';
+              this.tooltip.style.left = `${Math.min(this.width - 150, Math.max(10, x))}px`;
+              this.tooltip.style.top = `${y}px`;
+              this.tooltip.innerHTML = `
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="timeline-tooltip-method method-${(reqHit.method||'GET').toLowerCase()}">${reqHit.method||'GET'}</span>
+                  <span style="font-weight:700;">${reqHit.statusCode || (reqHit.isPaused ? 'PAUSED' : 'PENDING')}</span>
+                  ${reqHit.isMocked ? '<span style="color:var(--accent);font-weight:700;">[MOCKED]</span>' : ''}
+                </div>
+                <div class="timeline-tooltip-url">${escapeHtml(reqHit.url)}</div>
+                <div class="timeline-tooltip-timing">Start: +${relSec}s • Duration: ${reqHit.responseTime ? reqHit.responseTime + 'ms' : 'active'}</div>
+              `;
+            } else if (this.tooltip) {
+              this.tooltip.style.display = 'none';
+            }
+            return;
+          }
+
+          if (this.dragMode === 'resize-left') {
+            this.selectStart = this.xToTime(x);
+            this.applySelection();
+          } else if (this.dragMode === 'resize-right') {
+            this.selectEnd = this.xToTime(x);
+            this.applySelection();
+          } else if (this.dragMode === 'move') {
+            const dt = this.xToTime(x) - this.xToTime(this.dragStartX);
+            this.selectStart = this.dragStartSel1 + dt;
+            this.selectEnd = this.dragStartSel2 + dt;
+            this.applySelection();
+          } else if (this.dragMode === 'create') {
+            this.selectEnd = this.xToTime(x);
+            this.draw();
+          }
+        };
+
+        const onUp = (e) => {
+          if (this.dragMode === 'create') {
+            if (Math.abs(this.selectStart - this.selectEnd) < (this.viewTimeEnd - this.viewTimeStart) * 0.015) {
+              this.clearSelection();
+            } else {
+              this.applySelection();
+            }
+          }
+          this.dragMode = null;
+          this.canvas.style.cursor = 'crosshair';
+        };
+
+        this.canvas.addEventListener('mousedown', onDown);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+
+        // Touch support
+        this.canvas.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          onDown(e);
+        }, { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+          if (this.dragMode) onMove(e);
+        }, { passive: false });
+        this.canvas.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          if (this.dragMode) onUp(e);
+        }, { passive: false });
+
+        // Double click to clear selection
+        this.canvas.addEventListener('dblclick', () => this.clearSelection());
+
+        // Mouse wheel zoom
+        this.canvas.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const x = getX(e);
+          const factor = e.deltaY < 0 ? 0.75 : 1.35;
+          this.zoom(factor, x);
+        }, { passive: false });
+
+        // Controls
+        if (this.btnZoomIn) this.btnZoomIn.addEventListener('click', () => this.zoom(0.75));
+        if (this.btnZoomOut) this.btnZoomOut.addEventListener('click', () => this.zoom(1.35));
+        if (this.btnFitTimeline) this.btnFitTimeline.addEventListener('click', () => this.fitAll());
+        if (this.btnClearTimeSelection) this.btnClearTimeSelection.addEventListener('click', () => this.clearSelection());
+
+        // Collapse / Expand toggle
+        if (this.btnCollapseTimeline) {
+          this.btnCollapseTimeline.addEventListener('click', () => {
+            this.isCollapsed = !this.isCollapsed;
+            this.container.classList.toggle('collapsed', this.isCollapsed);
+            this.btnCollapseTimeline.innerText = this.isCollapsed ? '▼' : '▲';
+            if (!this.isCollapsed) setTimeout(() => this.resize(), 50);
+          });
+        }
+      }
+    }
+
+    // Initialize Timeline
+    const timeline = new MuckerTimeline('timelineCanvas', 'timelineContainer');
+
+    btnToggleTimeline.addEventListener('click', () => {
+      const isHidden = timelineContainer.classList.toggle('hidden');
+      btnToggleTimeline.classList.toggle('active', !isHidden);
+      if (!isHidden) {
+        setTimeout(() => timeline.resize(), 50);
+      }
+    });
 
     // Theme Toggle
     btnToggleTheme.addEventListener('click', () => {
@@ -1328,6 +2105,7 @@ ws.on('message', (raw) => {
         if (state.requests.length > 500) state.requests.pop();
       }
       renderRequestList();
+      timeline.onNewRequest(rec);
       if (state.selectedRequestId === rec.id || (!state.selectedRequestId && rec.isPaused)) {
         selectRequest(rec.id);
       }
@@ -1362,6 +2140,7 @@ ws.on('message', (raw) => {
         if (Array.isArray(histRes) && histRes.length > 0) {
           state.requests = histRes;
           renderRequestList();
+          timeline.fitAll();
         }
       } catch (e) {
         console.error('Fetch data error:', e);
@@ -1374,6 +2153,7 @@ ws.on('message', (raw) => {
       state,
       showToast,
       host,
+      timeline,
       registerPlugin(plugin) {
         if (!plugin || !plugin.id) return;
         if (registeredPlugins.some(p => p.id === plugin.id)) return;
@@ -1441,6 +2221,8 @@ ws.on('message', (raw) => {
     btnClearHistory.addEventListener('click', async () => {
       state.requests = [];
       state.selectedRequestId = null;
+      timeline.clearSelection();
+      timeline.fitAll();
       renderRequestList();
       renderInspector();
       await fetch(`${host}/api/history`, { method: 'DELETE' }).catch(() => {});
@@ -1476,6 +2258,11 @@ ws.on('message', (raw) => {
         if (state.filter === 'PAUSED' && !r.isPaused) return false;
         if (['GET','POST','PUT','DELETE'].includes(state.filter) && r.method !== state.filter) return false;
         if (state.search && !r.url.toLowerCase().includes(state.search)) return false;
+        if (state.timeFilter) {
+          const rStart = r.timestamp || 0;
+          const rEnd = rStart + Math.max(r.responseTime || 20, 20);
+          if (rStart > state.timeFilter.end || rEnd < state.timeFilter.start) return false;
+        }
         return true;
       });
 
@@ -1520,6 +2307,7 @@ ws.on('message', (raw) => {
       state.selectedRequestId = id;
       renderRequestList();
       renderInspector();
+      timeline.highlightRequest(id);
     }
 
     // Render Inspector Detail

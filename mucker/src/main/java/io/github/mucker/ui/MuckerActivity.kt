@@ -35,14 +35,43 @@ class MuckerActivity : AppCompatActivity() {
                 allowFileAccess = true
                 mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             }
-            webViewClient = WebViewClient()
-            webChromeClient = WebChromeClient()
+            webViewClient = object : WebViewClient() {
+                @Suppress("DEPRECATION")
+                override fun onReceivedError(
+                    view: WebView?,
+                    errorCode: Int,
+                    description: String?,
+                    failingUrl: String?
+                ) {
+                    android.util.Log.e("MuckerWebView", "WebView Error: $description on $failingUrl")
+                }
+            }
+            webChromeClient = object : WebChromeClient() {
+                override fun onConsoleMessage(consoleMessage: android.webkit.ConsoleMessage?): Boolean {
+                    android.util.Log.d(
+                        "MuckerWebView",
+                        "${consoleMessage?.message()} -- line ${consoleMessage?.lineNumber()} of ${consoleMessage?.sourceId()}"
+                    )
+                    return true
+                }
+            }
         }
 
         setContentView(webView)
 
-        val targetUrl = "http://localhost:${Mucker.port}/"
-        webView.loadUrl(targetUrl)
+        var html: String? = null
+        try {
+            assets.open("mucker-web/index.html").use { input ->
+                html = input.bufferedReader(Charsets.UTF_8).readText()
+            }
+        } catch (_: Exception) {}
+
+        val baseUrl = "http://127.0.0.1:${Mucker.port}/"
+        if (html != null) {
+            webView.loadDataWithBaseURL(baseUrl, html!!, "text/html", "UTF-8", null)
+        } else {
+            webView.loadUrl(baseUrl)
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

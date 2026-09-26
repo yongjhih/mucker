@@ -259,7 +259,77 @@ If you want your custom frontend to be served **inside the Android app** (via th
 
 ---
 
-## 5. Complete REST & WebSocket Protocol Specification
+## 5. Interactive Timeline Component & Programmatic API
+
+The official Mucker Dashboard includes a high-performance **interactive canvas waterfall timeline**. It enables visual inspection of concurrent OkHttp traffic, latency waterfalls, and precise time slice filtering.
+
+```mermaid
+flowchart LR
+    A["Incoming Traffic Stream"] --> B["Multi-Lane Canvas Waterfall"]
+    B --> C["Dynamic Scale Ruler (10ms - 60s)"]
+    C --> D["Interval Selection Brush"]
+    D --> E["Filtered Request List"]
+    subgraph Controls["Timeline Controls"]
+        Z["Zoom In / Out / Wheel"]
+        F["Fit All Viewport"]
+        H["Handles: Left/Right Resizing"]
+    end
+    Controls -.-> B
+```
+
+### Visual Features
+* **Adaptive Scale Ruler**: Automatically computes tick divisions (`10ms`, `25ms`, `50ms`, `100ms`, `250ms`, `500ms`, `1s`, `2s`, `5s`, `10s`, `30s`, `60s`) based on current zoom level and time span.
+* **Color-Coded Status Lanes**:
+  * 🟡 **Pending / Paused**: `#f59e0b` (waiting on breakpoint fulfillment)
+  * 🟣 **Mocked**: `#a855f7` (overridden by Mucker rule or CDP)
+  * 🟢 **Success (2xx / 3xx)**: `#10b981`
+  * 🔴 **Error (4xx / 5xx)**: `#ef4444`
+* **Interactive Interval Brush**:
+  * Click & drag anywhere on the timeline to create a time filter window.
+  * Drag the window body to slide the active inspection window.
+  * Drag left or right handles (`resize-left`, `resize-right`) for granular adjustment.
+  * The main request list instantly updates to display only requests active within that time interval.
+  * Double-click or click `✕` on the selection pill to reset.
+* **Zoom Navigation**:
+  * Mouse wheel scroll zooms smoothly centered around your cursor coordinate.
+  * Dedicated toolbar buttons: `[+]` (1.35x zoom in), `[−]` (1.35x zoom out), and `[Fit All]` (reset viewport).
+  * Real-time zoom level badge indicator (e.g., `1.0x`, `30.9x`).
+
+### Programmatic Timeline API (`window.MuckerDashboard.timeline`)
+
+Custom plugins and external scripts can control the timeline programmatically via the global `window.MuckerDashboard.timeline` instance:
+
+```javascript
+// Access the active timeline instance
+const { timeline } = window.MuckerDashboard;
+
+// 1. Zoom in by 1.5x centered at canvas center
+timeline.zoom(0.67);
+
+// 2. Zoom out by 1.5x
+timeline.zoom(1.5);
+
+// 3. Reset view to fit all recorded requests
+timeline.fitAll();
+
+// 4. Programmatically filter requests to a specific time interval (epoch ms)
+const now = Date.now();
+timeline.setSelection(now - 5000, now);
+
+// 5. Clear interval filter
+timeline.clearSelection();
+
+// 6. Highlight a specific request on the timeline canvas
+timeline.highlightRequest('req_171092849');
+
+// 7. Coordinate & Time conversion helpers
+const canvasX = timeline.timeToX(Date.now() - 1000);
+const timestamp = timeline.xToTime(canvasX);
+```
+
+---
+
+## 6. Complete REST & WebSocket Protocol Specification
 
 ### REST API Reference
 
