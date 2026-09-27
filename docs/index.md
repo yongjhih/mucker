@@ -239,26 +239,26 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
     <p>Zero-configuration synchronization between OkHttp, the Embedded Micro-Server, and developer clients.</p>
   </div>
 
-  <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
-```mermaid
-flowchart LR
-    subgraph AndroidApp["Android App Runtime"]
-        OK[OkHttp Client] -->|intercept| MI[MuckerInterceptor]
-        MI -->|evaluate rule| ME[MockEngine]
-        ME -->|matched rule / fulfill| MI
-        MI -->|no rule / bypass| RemoteAPI[(Remote Backend)]
-        ME <-->|sync & events| MS[MuckerHttpServer<br>Port 8080]
+  <div class="mermaid">
+flowchart TD
+    subgraph AndroidApp["Android App Runtime (OkHttp)"]
+        direction TB
+        OK["OkHttp Client"] -->|intercept| MI["MuckerInterceptor"]
+        MI -->|1. match rule| ME["MockEngine"]
+        ME -->|mock response| MI
+        MI -.->|2. bypass| RemoteAPI[("Remote Backend")]
+        ME <-->|sync & events| MS["MuckerHttpServer (Port 8080)"]
     end
 
-    subgraph Clients["Dev Clients (Zero Certs)"]
-        CLI["Mucker CLI<br>(mucker forward / listen)"]
-        SPA["Browser Dashboard<br>(Impeccable SPA)"]
-        CDP["Chrome DevTools / Puppeteer<br>(CDP Fetch Domain)"]
-        InApp["In-App Notification<br>& WebView"]
+    subgraph Clients["Developer Clients (Zero Certs Required)"]
+        direction TB
+        CLI["Mucker CLI (forward / listen)"]
+        SPA["Web Dashboard (Waterfall & Editor)"]
+        CDP["Playwright / Puppeteer (CDP Fetch Chaos)"]
+        InApp["Mobile Notification & In-App WebView"]
     end
 
     MS <== "HTTP REST & WebSocket (CDP)" ==> Clients
-```
   </div>
 </section>
 

@@ -145,7 +145,19 @@
   let mermaidModule = null;
 
   async function renderMermaidDiagrams() {
-    const targets = document.querySelectorAll('pre code.language-mermaid, pre.mermaid, div.mermaid, .mermaid-chart');
+    let targets = Array.from(document.querySelectorAll('pre code.language-mermaid, pre.mermaid, div.mermaid, .mermaid-chart'));
+
+    // Fallback scan: Detect any blocks where Kramdown left raw mermaid text
+    document.querySelectorAll('pre, code, div, p').forEach(el => {
+      if (targets.includes(el)) return;
+      if (el.children.length === 0) {
+        const text = (el.textContent || '').trim();
+        if (text.startsWith('```mermaid') || text.startsWith('flowchart') || text.startsWith('sequenceDiagram') || text.startsWith('graph')) {
+          targets.push(el);
+        }
+      }
+    });
+
     if (targets.length === 0) return;
 
     if (!mermaidModule) {
@@ -178,7 +190,11 @@
     for (const el of targets) {
       chartIdx++;
       const isAlreadyContainer = el.classList.contains('mermaid-chart');
-      const rawSource = isAlreadyContainer ? el.dataset.mermaidSource : (el.textContent || '').trim();
+      let rawSource = isAlreadyContainer ? el.dataset.mermaidSource : (el.textContent || '').trim();
+      rawSource = rawSource
+        .replace(/^```(?:mermaid)?\s*/i, '')
+        .replace(/```\s*$/, '')
+        .trim();
       if (!rawSource) continue;
 
       const container = isAlreadyContainer ? el : document.createElement('div');
