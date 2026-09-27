@@ -24,6 +24,7 @@
       --primary: #6366f1;
       --primary-hover: #4f46e5;
       --primary-subtle: rgba(99, 102, 241, 0.15);
+      --primary-hover-bg: rgba(99, 102, 241, 0.09);
 
       --accent: #38bdf8;
       --accent-subtle: rgba(56, 189, 248, 0.15);
@@ -63,6 +64,7 @@
       --primary: #4f46e5;
       --primary-hover: #4338ca;
       --primary-subtle: rgba(79, 70, 229, 0.08);
+      --primary-hover-bg: rgba(79, 70, 229, 0.05);
 
       --accent: #0284c7;
       --accent-subtle: rgba(2, 132, 199, 0.12);
@@ -406,16 +408,16 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      transition: background 0.12s ease, border-left-color 0.12s ease;
-      border-left: 3px solid transparent;
+      transition: background 0.12s ease, border-left-color 0.12s ease, box-shadow 0.12s ease;
+      border-left: 1px solid transparent;
       position: relative;
     }
 
     .request-item:hover,
     .request-item.hovered {
-      background: var(--bg-surface-elevated);
-      border-left: 1px solid var(--accent);
-      box-shadow: inset 2px 0 0 var(--accent);
+      background: var(--primary-hover-bg);
+      border-left: 1px solid var(--primary);
+      box-shadow: inset 2px 0 0 var(--primary);
     }
 
     .request-item.selected {
@@ -433,7 +435,8 @@
 
     .request-item.paused {
       background: var(--warning-subtle);
-      border-left: 3px solid var(--warning) !important;
+      border-left: 1px solid var(--warning) !important;
+      box-shadow: inset 2px 0 0 var(--warning);
       animation: alertPulse 2s infinite ease-in-out;
     }
 
@@ -1108,14 +1111,14 @@
     /* Aggregated Consecutive Endpoints */
     .request-item.request-group-header {
       background: var(--bg-surface);
-      border-left: 1px solid var(--accent);
-      box-shadow: inset 2px 0 0 var(--accent);
+      border-left: 1px solid transparent;
+      box-shadow: none;
     }
     .request-item.request-group-header:hover,
     .request-item.request-group-header.hovered {
-      background: var(--bg-surface-elevated);
-      border-left: 1px solid var(--accent) !important;
-      box-shadow: inset 2px 0 0 var(--accent);
+      background: var(--primary-hover-bg);
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
     .request-item.request-group-header.selected:not(.expanded) {
       background: var(--primary-subtle) !important;
@@ -1133,7 +1136,9 @@
     }
     .request-item.request-group-header.expanded:hover,
     .request-item.request-group-header.expanded.hovered {
-      background: var(--bg-subtle) !important;
+      background: var(--primary-hover-bg) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
     .btn-group-toggle {
       background: transparent;
@@ -1174,13 +1179,13 @@
       margin-right: 8px;
       border-radius: 0;
       border-bottom: 1px solid var(--border-subtle);
-      transition: background 0.12s ease, border-color 0.12s ease;
+      transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
     }
     .request-item.request-child-item:hover,
     .request-item.request-child-item.hovered {
-      background: var(--bg-surface-elevated) !important;
-      border-left: 1px solid var(--accent) !important;
-      box-shadow: inset 2px 0 0 var(--accent);
+      background: var(--primary-hover-bg) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
     .request-item.request-child-item.selected {
       background: rgba(99, 102, 241, 0.22) !important;
@@ -1950,6 +1955,7 @@ ws.on('message', (raw) => {
         }
       })(),
     };
+    window.state = state;
 
     function resolveTarget() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -2306,7 +2312,7 @@ ws.on('message', (raw) => {
         }
       }
 
-      setHoveredRequests(ids, syncList = true) {
+      setHoveredRequests(ids, syncList = true, showTooltip = false) {
         if (!ids) {
           this.hoveredRequestIds = null;
           this.hideTooltip();
@@ -2323,7 +2329,11 @@ ws.on('message', (raw) => {
 
         if (firstReq) {
           this.ensureVisible(firstReq.timestamp);
-          this.showTooltipForRequest(firstReq);
+          if (showTooltip) {
+            this.showTooltipForRequest(firstReq);
+          } else {
+            this.hideTooltip();
+          }
         } else {
           this.hideTooltip();
         }
@@ -2340,25 +2350,25 @@ ws.on('message', (raw) => {
           const req = state.requests.find(r => r.id === id);
           if (req) {
             this.ensureVisible(req.timestamp);
-            this.showTooltipForRequest(req);
           }
         }
+        this.hideTooltip();
         this.draw();
       }
 
       findRequestAt(x, y) {
         if (!state.requests || state.requests.length === 0) return null;
         const total = state.requests.length;
-        for (let i = 0; i < total; i++) {
+        for (let i = total - 1; i >= 0; i--) {
           const req = state.requests[i];
           const x1 = this.timeToX(req.timestamp);
-          const dur = Math.max(req.responseTime || 20, 20);
+          const dur = Math.max(req.responseTime || 20, 15);
           const x2 = this.timeToX(req.timestamp + dur);
-          const barW = Math.max(x2 - x1, 6);
+          const barW = Math.max(x2 - x1, 5);
           const numLanes = Math.max(3, Math.floor((this.height - 28) / 12));
           const lane = i % numLanes;
           const barY = 24 + lane * 12;
-          if (x >= x1 - 3 && x <= x1 + barW + 3 && y >= barY && y <= barY + 11) {
+          if (x >= x1 - 4 && x <= x1 + barW + 4 && y >= barY - 2 && y <= barY + 12) {
             return req;
           }
         }
@@ -2516,25 +2526,32 @@ ws.on('message', (raw) => {
             ctx.fillText(badgeText, x1, 13);
             ctx.restore();
 
-            // 3. Highlighted Waterfall Bar (Glow + Fill + Crisp Ring)
+            // 3. Highlighted Waterfall Bar with crisp selection ring (圈選)
             ctx.save();
-            ctx.shadowColor = '#38bdf8';
-            ctx.shadowBlur = 10;
-            ctx.fillStyle = color;
-            drawRoundRect(ctx, x1 - 1, y - 2, barW + 2, 13, 3);
+            const ringPad = 3;
+            const ringX = x1 - ringPad;
+            const ringY = y - ringPad;
+            const ringW = barW + ringPad * 2;
+            const ringH = 9 + ringPad * 2;
+            const ringRadius = 4;
+
+            // Luminous selection ring (圈選)
+            ctx.shadowColor = isSelected ? 'rgba(250, 204, 21, 0.85)' : 'rgba(56, 189, 248, 0.85)';
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = isSelected ? 'rgba(250, 204, 21, 0.15)' : 'rgba(56, 189, 248, 0.16)';
+            drawRoundRect(ctx, ringX, ringY, ringW, ringH, ringRadius);
             ctx.fill();
 
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = isSelected ? '#facc15' : '#38bdf8';
             ctx.lineWidth = 1.5;
-            drawRoundRect(ctx, x1 - 2, y - 3, barW + 4, 15, 4);
+            drawRoundRect(ctx, ringX, ringY, ringW, ringH, ringRadius);
             ctx.stroke();
 
-            if (isSelected) {
-              ctx.strokeStyle = '#facc15';
-              ctx.lineWidth = 2;
-              drawRoundRect(ctx, x1 - 3, y - 4, barW + 6, 17, 5);
-              ctx.stroke();
-            }
+            // Inner core bar
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = color;
+            drawRoundRect(ctx, x1, y, barW, 9, 2);
+            ctx.fill();
             ctx.restore();
           }
         }
@@ -2664,6 +2681,11 @@ ws.on('message', (raw) => {
           const y = getY(e);
 
           if (!this.dragMode) {
+            // If mouse is outside this canvas, do not handle canvas hover
+            if (x < 0 || x > this.width || y < 0 || y > this.height) {
+              return;
+            }
+
             let sx1 = null, sx2 = null;
             if (this.selectStart !== null && this.selectEnd !== null) {
               const s1 = Math.min(this.selectStart, this.selectEnd);
@@ -2682,15 +2704,14 @@ ws.on('message', (raw) => {
               this.canvas.style.cursor = 'crosshair';
             }
 
-            // Check tooltip hover & linked item highlight
+            // Check request bar hover & linked item highlight
             const reqHit = this.findRequestAt(x, y);
             if (reqHit) {
-              this.showTooltipForRequest(reqHit, x, y);
-              this.setHoveredRequests(new Set([reqHit.id]), true);
+              this.canvas.style.cursor = 'pointer';
+              this.setHoveredRequests(new Set([reqHit.id]), true, false);
             } else {
-              this.hideTooltip();
               if (this.hoveredRequestIds) {
-                this.setHoveredRequests(null, true);
+                this.setHoveredRequests(null, true, false);
               }
             }
             return;
@@ -2727,8 +2748,10 @@ ws.on('message', (raw) => {
 
         this.canvas.addEventListener('mousedown', onDown);
         this.canvas.addEventListener('mouseleave', () => {
-          if (this.tooltip) this.tooltip.style.display = 'none';
-          this.setHoveredRequests(null, true);
+          this.hideTooltip();
+          if (this.hoveredRequestIds) {
+            this.setHoveredRequests(null, true, false);
+          }
         });
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
@@ -2778,6 +2801,7 @@ ws.on('message', (raw) => {
 
     // Initialize Timeline
     const timeline = new MuckerTimeline('timelineCanvas', 'timelineContainer');
+    window.timeline = timeline;
 
     btnToggleTimeline.addEventListener('click', () => {
       const isHidden = timelineContainer.classList.toggle('hidden');
@@ -3345,7 +3369,7 @@ ws.on('message', (raw) => {
       });
 
       if (syncTimeline && timeline && typeof timeline.setHoveredRequests === 'function') {
-        timeline.setHoveredRequests(state.hoveredRequestIds, false);
+        timeline.setHoveredRequests(state.hoveredRequestIds, false, false);
       }
     }
 
@@ -3375,7 +3399,7 @@ ws.on('message', (raw) => {
       });
 
       if (timeline && typeof timeline.setHoveredRequests === 'function') {
-        timeline.setHoveredRequests(state.hoveredRequestIds, false);
+        timeline.setHoveredRequests(state.hoveredRequestIds, false, false);
       }
     }
 
@@ -3385,9 +3409,14 @@ ws.on('message', (raw) => {
         return;
       }
       setListHover(id, false);
-      const itemEl = document.querySelector(`.request-item[data-req-id="${id}"]`);
-      if (itemEl && typeof itemEl.scrollIntoViewIfNeeded === 'function') {
-        itemEl.scrollIntoViewIfNeeded(false);
+      const itemEl = document.querySelector(`.request-item[data-req-id="${id}"]`) ||
+                     document.querySelector(`.request-item[data-group-req-ids*="${id}"]`);
+      if (itemEl) {
+        if (typeof itemEl.scrollIntoViewIfNeeded === 'function') {
+          itemEl.scrollIntoViewIfNeeded(false);
+        } else if (typeof itemEl.scrollIntoView === 'function') {
+          itemEl.scrollIntoView({ block: 'nearest' });
+        }
       }
     }
 
@@ -3603,6 +3632,10 @@ ws.on('message', (raw) => {
         }
       });
     }
+    window.setListHover = setListHover;
+    window.clearListHover = clearListHover;
+    window.renderRequestList = renderRequestList;
+    window.selectRequest = selectRequest;
 
     function selectRequest(id) {
       state.selectedRequestId = id;
@@ -4501,6 +4534,43 @@ ws.on('message', (raw) => {
     initPaneResizers();
     connectWs();
     fetchInitialData();
+
+    // Automated Visual Testing Hook
+    const testUrlParams = new URLSearchParams(window.location.search);
+    const testHoverList = testUrlParams.get('test_hover_list');
+    const testHoverTimeline = testUrlParams.get('test_hover_timeline');
+    const testTheme = testUrlParams.get('theme');
+    if (testTheme) {
+      document.documentElement.setAttribute('data-theme', testTheme);
+    }
+    if (testHoverList !== null || testHoverTimeline !== null) {
+      setTimeout(() => {
+        if (!state.requests || state.requests.length === 0) {
+          const now = Date.now();
+          state.requests = [
+            { id: 'req_1', method: 'GET', url: 'https://api.example.com/v1/user/profile', statusCode: 200, responseTime: 85, timestamp: now - 3500 },
+            { id: 'req_2', method: 'POST', url: 'https://api.example.com/v1/checkout/pay', statusCode: 200, responseTime: 240, timestamp: now - 2800 },
+            { id: 'req_3', method: 'GET', url: 'https://api.example.com/v1/feed?cursor=1', statusCode: 304, responseTime: 45, timestamp: now - 1900 },
+            { id: 'req_4', method: 'GET', url: 'https://api.example.com/v1/feed?cursor=2', statusCode: 500, responseTime: 320, timestamp: now - 1100 },
+            { id: 'req_5', method: 'GET', url: 'https://api.example.com/v1/config', statusCode: 200, responseTime: 35, isMocked: true, timestamp: now - 400 }
+          ];
+          renderRequestList();
+          if (timeline) {
+            timeline.initViewWindow();
+            timeline.fitAll();
+          }
+        }
+        const reqIdx = parseInt(testHoverList || testHoverTimeline || '0', 10) || 0;
+        const targetReq = state.requests[Math.min(reqIdx, state.requests.length - 1)];
+        if (targetReq) {
+          if (testHoverList !== null) {
+            setListHover(targetReq.id, true);
+          } else if (testHoverTimeline !== null && timeline) {
+            timeline.setHoveredRequests(new Set([targetReq.id]), true, false);
+          }
+        }
+      }, 500);
+    }
   </script>
 </body>
 </html>
