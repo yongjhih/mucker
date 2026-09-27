@@ -838,9 +838,16 @@
 
     /* Mobile adjustments */
     @media (max-width: 768px) {
+      html, body {
+        height: auto;
+        min-height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
       .app-main {
         flex-direction: column;
-        overflow-y: auto;
+        overflow-y: visible;
+        height: auto;
         -webkit-overflow-scrolling: touch;
       }
       .sidebar {
@@ -1563,7 +1570,7 @@ ws.on('message', (raw) => {
       timeFilter: null,
       groupByConsecutive: true,
       expandedGroups: new Set(),
-      responseViewMode: 'tree', // 'tree' | 'edit'
+      responseViewMode: 'edit', // directly editable by default without extra buttons
     };
 
     function resolveTarget() {
@@ -2920,12 +2927,22 @@ ws.on('message', (raw) => {
       }
     };
 
+    window.copyResponseBody = function(reqId) {
+      const editor = document.getElementById('responseJsonEditor');
+      const text = editor ? editor.value : (state.requests.find(r => r.id === reqId)?.responseBody || '');
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Response body copied to clipboard!', 'info');
+      }).catch(() => {});
+    };
+
     window.revertEditorJson = function(reqId) {
       const req = state.requests.find(r => r.id === reqId);
       if (!req) return;
       const editor = document.getElementById('responseJsonEditor');
       if (!editor) return;
       editor.value = formatJsonIfPossible(req.responseBody || '');
+      const modBadge = document.getElementById('editorModifiedBadge');
+      if (modBadge) modBadge.style.display = 'none';
       showToast('Reverted to original payload', 'info');
     };
 
@@ -3072,11 +3089,16 @@ ws.on('message', (raw) => {
           responseBodyHtml = `
             <div class="card">
               <div class="card-header">
-                <span>Response Body</span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span>Response Body</span>
+                  <span class="badge" style="font-size:0.68rem;background:rgba(99,102,241,0.15);color:var(--color-primary-400);">Directly Editable</span>
+                  <span id="editorModifiedBadge" class="badge" style="display:none;font-size:0.68rem;background:rgba(245,158,11,0.2);color:var(--color-warning);">● Unsaved</span>
+                </div>
                 <div style="display:flex;gap:6px;">
-                  <button class="btn btn-sm ${state.responseViewMode === 'tree' ? 'active' : ''}" onclick="setResponseViewMode('tree')">🌳 Tree View</button>
-                  <button class="btn btn-sm ${state.responseViewMode === 'edit' ? 'active' : ''}" onclick="setResponseViewMode('edit')">✏️ Live Edit & Mock</button>
-                  <button class="btn btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('responseJsonEditor').value)">Copy</button>
+                  <button class="btn btn-sm active" title="Direct Code Editor">✏️ Editor</button>
+                  <button class="btn btn-sm" onclick="setResponseViewMode('tree')" title="View as Collapsible JSON Tree">🌳 Tree</button>
+                  <button class="btn btn-sm" onclick="formatEditorJson()">Format</button>
+                  <button class="btn btn-sm" onclick="copyResponseBody('${req.id}')">Copy</button>
                 </div>
               </div>
               <div class="card-body">
@@ -3084,24 +3106,25 @@ ws.on('message', (raw) => {
                   <div class="mock-editor-banner is-mocked">
                     <div>
                       <div>🟣 <strong>Active Mock Rule</strong> (${matchingRule ? escapeHtml(matchingRule.id) : 'Mocked endpoint'})</div>
-                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Live edits will update the mock rule response payload directly.</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Live edits directly update this endpoint's mock rule. (Press <code>⌘S</code> to save)</div>
                     </div>
-                    <button class="btn btn-sm btn-primary" onclick="saveLiveMockData('${req.id}')">💾 Update Mock Data</button>
+                    <button class="btn btn-sm btn-primary" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')">💾 Update Mock Data</button>
                   </div>
                 ` : `
                   <div class="mock-editor-banner is-unmocked">
                     <div>
                       <div>🌐 <strong>Live Network Response</strong> (Unmocked)</div>
-                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Editing will convert this response into an active Mock Rule for this endpoint.</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Type directly to convert this response into an active Mock Rule. (Press <code>⌘S</code> to mock)</div>
                     </div>
-                    <button class="btn btn-sm btn-warning" onclick="saveLiveMockData('${req.id}')">⚡ Mock Endpoint with this Data</button>
+                    <button class="btn btn-sm btn-warning" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')">⚡ Mock Endpoint with this Data</button>
                   </div>
                 `}
-                <textarea class="json-editor-textarea" id="responseJsonEditor" spellcheck="false">${escapeHtml(formatJsonIfPossible(req.responseBody))}</textarea>
+                <textarea class="json-editor-textarea" id="responseJsonEditor" spellcheck="false" placeholder="Edit JSON response directly...">${escapeHtml(formatJsonIfPossible(req.responseBody))}</textarea>
                 <div class="json-editor-actions">
-                  <div style="display:flex;gap:6px;">
+                  <div style="display:flex;gap:6px;align-items:center;">
                     <button class="btn btn-sm" onclick="formatEditorJson()">Format JSON</button>
                     <button class="btn btn-sm" onclick="revertEditorJson('${req.id}')">Revert</button>
+                    <span style="font-size:0.72rem;color:var(--text-subtle);margin-left:4px;">Shortcuts: <code>⌘S</code> or <code>Ctrl+Enter</code></span>
                   </div>
                   <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" onclick="saveLiveMockData('${req.id}')">${isAlreadyMocked ? '💾 Update Mock Data' : '⚡ Mock Endpoint'}</button>
                 </div>
@@ -3113,18 +3136,38 @@ ws.on('message', (raw) => {
           responseBodyHtml = `
             <div class="card">
               <div class="card-header">
-                <span>Response Body</span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span>Response Body</span>
+                  <span class="badge" style="font-size:0.68rem;background:rgba(56,189,248,0.15);color:var(--color-primary-400);">Tree View</span>
+                </div>
                 <div style="display:flex;gap:6px;">
-                  <button class="btn btn-sm ${state.responseViewMode === 'tree' ? 'active' : ''}" onclick="setResponseViewMode('tree')">🌳 Tree View</button>
-                  <button class="btn btn-sm ${state.responseViewMode === 'edit' ? 'active' : ''}" onclick="setResponseViewMode('edit')">✏️ Live Edit & Mock</button>
+                  <button class="btn btn-sm" onclick="setResponseViewMode('edit')" title="Direct Code Editor">✏️ Editor</button>
+                  <button class="btn btn-sm active" title="Collapsible Tree">🌳 Tree</button>
                   ${parsedResBody ? `
                     <button class="btn btn-sm" id="btnExpandAllJson" title="Expand all JSON nodes">▼ Expand</button>
                     <button class="btn btn-sm" id="btnCollapseAllJson" title="Collapse all JSON nodes">▶ Collapse</button>
                   ` : ''}
-                  <button class="btn btn-sm" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(req.responseBody)}'))">Copy</button>
+                  <button class="btn btn-sm" onclick="copyResponseBody('${req.id}')">Copy</button>
                 </div>
               </div>
               <div class="card-body" id="resBodyCardBody">
+                ${isAlreadyMocked ? `
+                  <div class="mock-editor-banner is-mocked" style="margin-bottom:12px;">
+                    <div>
+                      <div>🟣 <strong>Active Mock Rule</strong> (${matchingRule ? escapeHtml(matchingRule.id) : 'Mocked endpoint'})</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">This endpoint is currently mocked. Click below to edit payload.</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="setResponseViewMode('edit')">✏️ Edit Mock Data</button>
+                  </div>
+                ` : `
+                  <div class="mock-editor-banner is-unmocked" style="margin-bottom:12px;">
+                    <div>
+                      <div>🌐 <strong>Live Network Response</strong> (Unmocked)</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Switch to Editor to modify payload and mock endpoint.</div>
+                    </div>
+                    <button class="btn btn-sm btn-warning" onclick="setResponseViewMode('edit')">⚡ Mock Endpoint</button>
+                  </div>
+                `}
                 ${parsedResBody ? '' : `<pre class="code-block">${escapeHtml(req.responseBody)}</pre>`}
               </div>
             </div>
@@ -3230,7 +3273,7 @@ ws.on('message', (raw) => {
         }
       }
 
-      // Handle Tab key in JSON editor
+      // Handle Tab key & Shortcuts in JSON editor
       const editorEl = document.getElementById('responseJsonEditor');
       if (editorEl) {
         editorEl.addEventListener('keydown', (e) => {
@@ -3240,7 +3283,15 @@ ws.on('message', (raw) => {
             const end = editorEl.selectionEnd;
             editorEl.value = editorEl.value.substring(0, start) + '  ' + editorEl.value.substring(end);
             editorEl.selectionStart = editorEl.selectionEnd = start + 2;
+          } else if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'Enter')) {
+            e.preventDefault();
+            saveLiveMockData(req.id);
           }
+        });
+
+        editorEl.addEventListener('input', () => {
+          const modBadge = document.getElementById('editorModifiedBadge');
+          if (modBadge) modBadge.style.display = 'inline-flex';
         });
       }
     }
