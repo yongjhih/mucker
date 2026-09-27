@@ -3295,39 +3295,19 @@ ws.on('message', (raw) => {
       inspectorDetail.innerHTML = `
         ${pausedBanner}
 
-        <!-- General Info Card -->
-        <div class="card">
-          <div class="card-header">
-            <span>General Information</span>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-sm" onclick="mockThisRequest('${req.id}')">⚡ Create Rule</button>
-              <button class="btn btn-sm" onclick="copyCurl('${req.id}')">Copy cURL</button>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="key-value-grid">
-              <span class="grid-key">Request URL</span>
-              <span class="grid-val">${escapeHtml(req.url)}</span>
-              <span class="grid-key">Method</span>
-              <span class="grid-val">${req.method}</span>
-              <span class="grid-key">Status</span>
-              <span class="grid-val">${req.statusCode || (req.isPaused ? 'PAUSED' : 'PENDING')}</span>
-              <span class="grid-key">Timing</span>
-              <span class="grid-val">${req.responseTime ? req.responseTime + ' ms' : 'N/A'}</span>
-              <span class="grid-key">Mock Status</span>
-              <span class="grid-val">${isAlreadyMocked ? `<span class="mock-tag">MOCKED ${matchingRule ? '(' + escapeHtml(matchingRule.id) + ')' : ''}</span>` : 'Real network response'}</span>
-            </div>
-          </div>
-        </div>
-
         <!-- Request Headers -->
         <div class="card">
           <div class="card-header">
             <span>Request Headers</span>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-sm" onclick="copyCurl('${req.id}')" title="Copy request as cURL command">Copy cURL</button>
+              <button class="btn btn-sm" onclick="mockThisRequest('${req.id}')" title="Create rule in Mock Rules tab">⚡ Create Rule</button>
+            </div>
           </div>
           <div class="card-body">
             <div class="key-value-grid">
-              ${headersGrid || '<span style="color:var(--text-subtle);">No headers</span>'}
+              <span class="grid-key">:url</span><span class="grid-val" style="word-break:break-all;">${escapeHtml(req.url)}</span>
+              ${headersGrid}
             </div>
           </div>
         </div>

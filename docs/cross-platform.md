@@ -37,19 +37,19 @@ flowchart TD
 
 ---
 
-## 1. Flutter & Dart: `dio` Interceptor
+## 1. Flutter & Dart: `dio` Interceptor Module
 
-Mucker provides first-class support for Flutter applications using the popular [`dio`](https://pub.dev/packages/dio) package.
+Mucker provides first-class support for Flutter applications using the popular [`dio`](https://pub.dev/packages/dio) package, available either as a dedicated module [`mucker_dio`](https://github.com/yongjhih/mucker/tree/main/dart/mucker_dio) or bundled in [`mucker`](https://github.com/yongjhih/mucker/tree/main/dart/mucker).
 
 ### Installation
 
-Add `mucker` to your Flutter / Dart `pubspec.yaml`:
+Add `mucker_dio` (or `mucker`) to your Flutter / Dart `pubspec.yaml`:
 
 ```yaml
 dependencies:
   dio: ^5.4.0
-  mucker:
-    path: ./dart/mucker  # or git repository
+  mucker_dio:
+    path: ./dart/mucker_dio  # or git repository
 ```
 
 ### Usage with Dio
@@ -58,16 +58,16 @@ Simply register `MuckerDioInterceptor` in your Dio instance:
 
 ```dart
 import 'package:dio/dio.dart';
-import 'package:mucker/mucker.dart';
+import 'package:mucker_dio/mucker_dio.dart';
 
 final dio = Dio();
 
 // Attach Mucker Interceptor
 dio.interceptors.add(
   MuckerDioInterceptor(
-    serverUrl: 'http://127.0.0.1:8080', // Default Mucker engine port
-    autoSyncRules: true,                // Dynamically sync rules from Mucker Server
-    reportTelemetry: true,              // Stream requests to Mucker Dashboard
+    autoSyncRules: true,   // Dynamically sync rules from Mucker Dashboard
+    reportTelemetry: true, // Stream full requests & payloads to Mucker Dashboard
+    breakpointMode: true,  // Pause requests for live developer action in Dashboard
   ),
 );
 
@@ -76,6 +76,13 @@ final response = await dio.get('https://api.example.com/v1/user/profile');
 print(response.data);
 print(response.headers.value('X-Mocked-By')); // "MuckerDioInterceptor"
 ```
+
+### Features Supported in Dio:
+* **Automatic Android Host Resolution**: Automatically resolves `http://10.0.2.2:8080` on Android emulators and `http://127.0.0.1:8080` on iOS/desktop without hardcoding IPs.
+* **Live Breakpoint Mode**: Pauses outgoing Dio requests, alerts the Mucker Dashboard, and allows you to fulfill with custom mock JSON or continue to the real network.
+* **Chaos / Fault Injection**: Injects connection timeouts (`DioExceptionType.connectionTimeout`) and connection errors for automated CI/CD chaos testing.
+* **Full Inspection Telemetry**: Captures request headers, query params, request body (`data`), response headers, status code, and latency in real time.
+
 
 ### Usage with `package:http`
 

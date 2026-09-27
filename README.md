@@ -281,7 +281,8 @@ For a deep dive into the history of CDP mock responses (from 2017 `Network.conti
 * [`mucker-noop/`](mucker-noop): Empty stubs for release builds ensuring zero APK overhead.
 * [`app/`](app): Demo Android application showing real-time OkHttp request mocking.
 * [`examples/chaos-ci/`](examples/chaos-ci): Playwright & Puppeteer chaos fault-injection test scripts for CI/CD pipelines.
-* [`dart/mucker/`](dart/mucker): Dart & Flutter client package supporting **Dio** and **package:http**.
+* [`dart/mucker_dio/`](dart/mucker_dio): Dedicated Flutter & Dart **Dio** interceptor module supporting live breakpoints, chaos fault injection, and dynamic mock rules.
+* [`dart/mucker/`](dart/mucker): Umbrella Dart & Flutter client package supporting **Dio** and **package:http**.
 * [`dashboard/`](dashboard): Impeccable single-page application (SPA) dashboard.
 * [`cli/`](cli): Zero-dependency Node.js CLI tool (`mucker`).
 * [`skills/mucker/`](skills/mucker): Agent skill definition for AI coding assistants.
