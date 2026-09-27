@@ -1033,9 +1033,17 @@
       background: var(--bg-surface);
       border-left: 3px solid var(--accent);
     }
+    .request-item.request-group-header.selected:not(.expanded) {
+      background: var(--primary-subtle) !important;
+      border-left: 3px solid var(--primary) !important;
+    }
     .request-item.request-group-header.expanded {
       background: var(--bg-surface-elevated);
       border-bottom: 1px dashed var(--border-subtle);
+    }
+    .request-item.request-group-header.expanded.has-child-selected {
+      border-left: 3px solid var(--primary) !important;
+      background: rgba(99, 102, 241, 0.08) !important;
     }
     .btn-group-toggle {
       background: transparent;
@@ -1076,6 +1084,15 @@
       margin-right: 8px;
       border-radius: 0;
       border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .request-item.request-child-item:hover {
+      background: var(--bg-surface-elevated);
+    }
+    .request-item.request-child-item.selected {
+      background: rgba(99, 102, 241, 0.22) !important;
+      border-left: 3px solid var(--primary) !important;
+      box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.4);
     }
     .request-item.request-child-item:last-child {
       border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -1085,6 +1102,20 @@
       font-family: var(--font-mono);
       margin-right: 6px;
       font-size: 0.72rem;
+    }
+    .request-item.request-child-item.selected .child-branch {
+      color: var(--primary) !important;
+      font-weight: 800;
+    }
+    .child-selected-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--primary);
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      margin-right: 6px;
     }
 
     /* JSON Tree, Syntax Highlighting & Live Mock Editor */
@@ -2940,9 +2971,10 @@ ws.on('message', (raw) => {
           requestList.appendChild(li);
         } else {
           // Multi-call consecutive aggregated endpoint
-          const isExpanded = state.expandedGroups.has(group.groupId) || group.hasSelected;
+          const hasChildSelected = group.items.some(it => it.id === state.selectedRequestId);
+          const isExpanded = state.expandedGroups.has(group.groupId) || hasChildSelected;
           const headerLi = document.createElement('li');
-          headerLi.className = `request-item request-group-header ${isExpanded ? 'expanded' : ''} ${group.hasSelected ? 'selected' : ''}`;
+          headerLi.className = `request-item request-group-header ${isExpanded ? 'expanded' : ''} ${hasChildSelected ? (isExpanded ? 'has-child-selected' : 'selected') : ''}`;
 
           const latestReq = group.items[0];
           let statusClass = 'code-2xx';
@@ -2991,8 +3023,9 @@ ws.on('message', (raw) => {
           // Render nested child items when expanded
           if (isExpanded) {
             group.items.forEach((childReq, childIdx) => {
+              const isChildSelected = childReq.id === state.selectedRequestId;
               const childLi = document.createElement('li');
-              childLi.className = `request-item request-child-item ${childReq.id === state.selectedRequestId ? 'selected' : ''} ${childReq.isPaused ? 'paused' : ''}`;
+              childLi.className = `request-item request-child-item ${isChildSelected ? 'selected' : ''} ${childReq.isPaused ? 'paused' : ''}`;
               
               let childStatusClass = 'code-2xx';
               const cNum = Number(childReq.statusCode || 0);
@@ -3003,7 +3036,8 @@ ws.on('message', (raw) => {
               childLi.innerHTML = `
                 <div class="request-item-top">
                   <span class="child-branch">↳ #${group.items.length - childIdx}</span>
-                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-subtle);">${formatTime(childReq.timestamp)}</span>
+                  ${isChildSelected ? '<span class="child-selected-badge">ACTIVE</span>' : ''}
+                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:${isChildSelected ? 'var(--text-main)' : 'var(--text-subtle)'};">${formatTime(childReq.timestamp)}</span>
                   <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-left:auto;margin-right:6px;">${childReq.responseTime ? childReq.responseTime + 'ms' : 'active'}</span>
                   <div class="item-tags">
                     ${childReq.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
@@ -3219,41 +3253,28 @@ ws.on('message', (raw) => {
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;">
                 <span>Response Body</span>
-                <span class="badge" style="font-size:0.68rem;background:rgba(99,102,241,0.15);color:var(--color-primary-400);">CodeMirror Editor</span>
-                <span id="editorModifiedBadge" class="badge" style="display:none;font-size:0.68rem;background:rgba(245,158,11,0.2);color:var(--color-warning);">● Unsaved</span>
+                ${isAlreadyMocked ? `
+                  <span class="badge" style="font-size:0.7rem;background:rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35);">🟣 Mocked</span>
+                ` : `
+                  <span class="badge" style="font-size:0.7rem;background:rgba(245,158,11,0.15);color:var(--color-warning);border:1px solid rgba(245,158,11,0.3);">🌐 Live</span>
+                `}
+                <span id="editorModifiedBadge" class="badge" style="display:none;font-size:0.68rem;background:rgba(239,68,68,0.2);color:#f87171;">● Unsaved</span>
               </div>
-              <div style="display:flex;gap:6px;">
-                <button class="btn btn-sm" id="btnFoldAll" title="Fold / Collapse all JSON blocks">▶ Fold All</button>
-                <button class="btn btn-sm" id="btnUnfoldAll" title="Unfold / Expand all JSON blocks">▼ Unfold All</button>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')" title="Save as mock rule (⌘S)">
+                  ${isAlreadyMocked ? '💾 Save Mock' : '⚡ Mock (⌘S)'}
+                </button>
+                <button class="btn btn-sm" id="btnFoldAll" title="Fold / Collapse all JSON blocks">▶ Fold</button>
+                <button class="btn btn-sm" id="btnUnfoldAll" title="Unfold / Expand all JSON blocks">▼ Unfold</button>
                 <button class="btn btn-sm" id="btnFormatJson" title="Format JSON with 2-space indentation">Format</button>
-                <button class="btn btn-sm" id="btnRevertJson" title="Revert to original response">Revert</button>
                 <button class="btn btn-sm" id="btnCopyJson" title="Copy response to clipboard">Copy</button>
               </div>
             </div>
             <div class="card-body">
-              ${isAlreadyMocked ? `
-                <div class="mock-editor-banner is-mocked">
-                  <div>
-                    <div>🟣 <strong>Active Mock Rule</strong> (${matchingRule ? escapeHtml(matchingRule.id) : 'Mocked endpoint'})</div>
-                    <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Live edits directly update this endpoint's mock rule. (Press <code>⌘S</code> to save)</div>
-                  </div>
-                  <button class="btn btn-sm btn-primary" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')">💾 Update Mock Data</button>
-                </div>
-              ` : `
-                <div class="mock-editor-banner is-unmocked">
-                  <div>
-                    <div>🌐 <strong>Live Network Response</strong> (Unmocked)</div>
-                    <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Type directly to convert this response into an active Mock Rule. (Press <code>⌘S</code> to mock)</div>
-                  </div>
-                  <button class="btn btn-sm btn-warning" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')">⚡ Mock Endpoint with this Data</button>
-                </div>
-              `}
               <textarea class="json-editor-textarea" id="responseJsonEditor" spellcheck="false" placeholder="Edit JSON response directly...">${escapeHtml(formatJsonIfPossible(req.responseBody))}</textarea>
-              <div class="json-editor-actions">
-                <div style="display:flex;gap:6px;align-items:center;">
-                  <span style="font-size:0.72rem;color:var(--text-subtle);">Shortcuts: <code>⌘S</code> or <code>Ctrl+Enter</code> to save · Click <code>▾</code> in gutter to fold</span>
-                </div>
-                <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" onclick="saveLiveMockData('${req.id}')">${isAlreadyMocked ? '💾 Update Mock Data' : '⚡ Mock Endpoint'}</button>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:0.72rem;color:var(--text-subtle);">
+                <span>⌘S or Ctrl+Enter to save · Click ▾ in gutter to fold</span>
+                <button class="btn btn-sm" id="btnRevertJson" style="font-size:0.68rem;padding:2px 8px;" title="Revert to original response">Revert</button>
               </div>
             </div>
           </div>
