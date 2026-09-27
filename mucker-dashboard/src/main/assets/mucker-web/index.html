@@ -255,6 +255,32 @@
       border-color: var(--primary);
     }
 
+    .btn.active,
+    .btn[aria-pressed="true"] {
+      background: var(--primary-subtle);
+      border-color: var(--primary);
+      color: var(--text-main);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn.active:hover,
+    .btn[aria-pressed="true"]:hover {
+      background: rgba(99, 102, 241, 0.28);
+      border-color: var(--primary-hover);
+    }
+
+    #btnToggleGroup.active {
+      background: rgba(56, 189, 248, 0.14);
+      border-color: rgba(56, 189, 248, 0.55);
+      color: var(--accent);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 8px rgba(56, 189, 248, 0.2);
+    }
+
+    #btnToggleGroup.active:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: var(--accent);
+    }
+
     .btn-primary {
       background: var(--primary);
       border-color: var(--primary);
@@ -380,21 +406,31 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      transition: background 0.1s;
+      transition: background 0.12s ease, border-left-color 0.12s ease;
+      border-left: 3px solid transparent;
+      position: relative;
     }
 
-    .request-item:hover {
+    .request-item:hover,
+    .request-item.hovered {
       background: var(--bg-surface-elevated);
+      border-left: 3px solid var(--accent);
     }
 
     .request-item.selected {
       background: var(--primary-subtle);
-      border-left: 3px solid var(--primary);
+      border-left: 3px solid var(--primary) !important;
+    }
+
+    .request-item.selected:hover,
+    .request-item.selected.hovered {
+      background: rgba(99, 102, 241, 0.22);
+      border-left: 3px solid var(--primary) !important;
     }
 
     .request-item.paused {
       background: var(--warning-subtle);
-      border-left: 3px solid var(--warning);
+      border-left: 3px solid var(--warning) !important;
       animation: alertPulse 2s infinite ease-in-out;
     }
 
@@ -1071,6 +1107,11 @@
       background: var(--bg-surface);
       border-left: 3px solid var(--accent);
     }
+    .request-item.request-group-header:hover,
+    .request-item.request-group-header.hovered {
+      background: var(--bg-surface-elevated);
+      border-left: 3px solid var(--accent) !important;
+    }
     .request-item.request-group-header.selected:not(.expanded) {
       background: var(--primary-subtle) !important;
       border-left: 3px solid var(--primary) !important;
@@ -1082,6 +1123,10 @@
     .request-item.request-group-header.expanded.has-child-selected {
       border-left: 3px solid var(--primary) !important;
       background: rgba(99, 102, 241, 0.08) !important;
+    }
+    .request-item.request-group-header.expanded:hover,
+    .request-item.request-group-header.expanded.hovered {
+      background: var(--bg-subtle) !important;
     }
     .btn-group-toggle {
       background: transparent;
@@ -1122,10 +1167,12 @@
       margin-right: 8px;
       border-radius: 0;
       border-bottom: 1px solid var(--border-subtle);
-      transition: background 0.15s ease, border-color 0.15s ease;
+      transition: background 0.12s ease, border-color 0.12s ease;
     }
-    .request-item.request-child-item:hover {
-      background: var(--bg-surface-elevated);
+    .request-item.request-child-item:hover,
+    .request-item.request-child-item.hovered {
+      background: var(--bg-surface-elevated) !important;
+      border-left: 2px solid var(--accent) !important;
     }
     .request-item.request-child-item.selected {
       background: rgba(99, 102, 241, 0.22) !important;
@@ -1630,7 +1677,7 @@
       <div class="sidebar-header">
         <div class="search-row">
           <input type="text" class="search-input" id="searchFilter" placeholder="Filter URL (e.g. /api/v1/user)...">
-          <button class="btn btn-sm active" id="btnToggleGroup" title="Aggregate Consecutive Endpoints (Toggle Grouping)">⊞ Group</button>
+          <button class="btn btn-sm active" id="btnToggleGroup" title="Consecutive endpoint grouping is ON (Click to ungroup)" aria-pressed="true"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:4px;box-shadow:0 0 6px var(--accent);"></span>⊞ Grouped</button>
           <button class="btn btn-sm" id="btnClearHistory" title="Clear request logs">Clear</button>
         </div>
         <div class="filter-chips">
@@ -1873,6 +1920,7 @@ ws.on('message', (raw) => {
       requests: [],
       rules: [],
       selectedRequestId: null,
+      hoveredRequestIds: null,
       filter: 'ALL',
       search: '',
       editingRuleId: null,
@@ -2189,6 +2237,23 @@ ws.on('message', (raw) => {
         this.draw();
       }
 
+      setHoveredRequests(ids, syncList = true) {
+        if (!ids) {
+          this.hoveredRequestIds = null;
+        } else if (ids instanceof Set) {
+          this.hoveredRequestIds = ids;
+        } else if (Array.isArray(ids)) {
+          this.hoveredRequestIds = new Set(ids);
+        } else {
+          this.hoveredRequestIds = new Set([ids]);
+        }
+        this.draw();
+        if (syncList && typeof highlightListItem === 'function') {
+          const firstId = this.hoveredRequestIds ? this.hoveredRequestIds.values().next().value : null;
+          highlightListItem(firstId);
+        }
+      }
+
       highlightRequest(id) {
         this.draw();
       }
@@ -2302,12 +2367,40 @@ ws.on('message', (raw) => {
           else if (Number(req.statusCode) >= 400) color = '#ef4444';
           else if (Number(req.statusCode) >= 200) color = '#10b981';
 
+          const isHovered = this.hoveredRequestIds && this.hoveredRequestIds.has(req.id);
+          const isSelected = req.id === state.selectedRequestId;
+
+          // Vertical indicator guideline across timeline height when hovered
+          if (isHovered) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(x1, 20);
+            ctx.lineTo(x1, this.height);
+            ctx.stroke();
+            ctx.restore();
+          }
+
           ctx.fillStyle = color;
           drawRoundRect(ctx, x1, y, barW, 9, 2);
           ctx.fill();
 
+          // Hover highlight outline (linked with traffic list)
+          if (isHovered) {
+            ctx.save();
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.55)';
+            ctx.shadowBlur = 6;
+            drawRoundRect(ctx, x1 - 2, y - 2, barW + 4, 13, 3);
+            ctx.stroke();
+            ctx.restore();
+          }
+
           // Selection highlight
-          if (req.id === state.selectedRequestId) {
+          if (isSelected) {
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 1.5;
             drawRoundRect(ctx, x1 - 1, y - 1, barW + 2, 11, 3);
@@ -2458,24 +2551,30 @@ ws.on('message', (raw) => {
               this.canvas.style.cursor = 'crosshair';
             }
 
-            // Check tooltip hover
+            // Check tooltip hover & linked item highlight
             const reqHit = this.findRequestAt(x, y);
-            if (reqHit && this.tooltip) {
-              const relSec = ((reqHit.timestamp - this.minTime) / 1000).toFixed(2);
-              this.tooltip.style.display = 'flex';
-              this.tooltip.style.left = `${Math.min(this.width - 150, Math.max(10, x))}px`;
-              this.tooltip.style.top = `${y}px`;
-              this.tooltip.innerHTML = `
-                <div style="display:flex;align-items:center;gap:6px;">
-                  <span class="timeline-tooltip-method method-${(reqHit.method||'GET').toLowerCase()}">${reqHit.method||'GET'}</span>
-                  <span style="font-weight:700;">${reqHit.statusCode || (reqHit.isPaused ? 'PAUSED' : 'PENDING')}</span>
-                  ${reqHit.isMocked ? '<span style="color:var(--accent);font-weight:700;">[MOCKED]</span>' : ''}
-                </div>
-                <div class="timeline-tooltip-url">${escapeHtml(reqHit.url)}</div>
-                <div class="timeline-tooltip-timing">Start: +${relSec}s • Duration: ${reqHit.responseTime ? reqHit.responseTime + 'ms' : 'active'}</div>
-              `;
-            } else if (this.tooltip) {
-              this.tooltip.style.display = 'none';
+            if (reqHit) {
+              if (this.tooltip) {
+                const relSec = ((reqHit.timestamp - this.minTime) / 1000).toFixed(2);
+                this.tooltip.style.display = 'flex';
+                this.tooltip.style.left = `${Math.min(this.width - 150, Math.max(10, x))}px`;
+                this.tooltip.style.top = `${y}px`;
+                this.tooltip.innerHTML = `
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="timeline-tooltip-method method-${(reqHit.method||'GET').toLowerCase()}">${reqHit.method||'GET'}</span>
+                    <span style="font-weight:700;">${reqHit.statusCode || (reqHit.isPaused ? 'PAUSED' : 'PENDING')}</span>
+                    ${reqHit.isMocked ? '<span style="color:var(--accent);font-weight:700;">[MOCKED]</span>' : ''}
+                  </div>
+                  <div class="timeline-tooltip-url">${escapeHtml(reqHit.url)}</div>
+                  <div class="timeline-tooltip-timing">Start: +${relSec}s • Duration: ${reqHit.responseTime ? reqHit.responseTime + 'ms' : 'active'}</div>
+                `;
+              }
+              this.setHoveredRequests(new Set([reqHit.id]), true);
+            } else {
+              if (this.tooltip) this.tooltip.style.display = 'none';
+              if (this.hoveredRequestIds) {
+                this.setHoveredRequests(null, true);
+              }
             }
             return;
           }
@@ -2510,6 +2609,10 @@ ws.on('message', (raw) => {
         };
 
         this.canvas.addEventListener('mousedown', onDown);
+        this.canvas.addEventListener('mouseleave', () => {
+          if (this.tooltip) this.tooltip.style.display = 'none';
+          this.setHoveredRequests(null, true);
+        });
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
 
@@ -2832,13 +2935,27 @@ ws.on('message', (raw) => {
       }
     }
 
+    function updateGroupButton() {
+      if (!btnToggleGroup) return;
+      const isGrouped = !!state.groupByConsecutive;
+      btnToggleGroup.classList.toggle('active', isGrouped);
+      btnToggleGroup.setAttribute('aria-pressed', isGrouped ? 'true' : 'false');
+      btnToggleGroup.innerHTML = isGrouped 
+        ? '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:4px;box-shadow:0 0 6px var(--accent);"></span>⊞ Grouped' 
+        : '⊞ Group';
+      btnToggleGroup.title = isGrouped 
+        ? 'Consecutive endpoint grouping is ON (Click to ungroup calls)' 
+        : 'Consecutive endpoint grouping is OFF (Click to group consecutive calls)';
+    }
+
     if (btnToggleGroup) {
       btnToggleGroup.addEventListener('click', () => {
         state.groupByConsecutive = !state.groupByConsecutive;
-        btnToggleGroup.classList.toggle('active', state.groupByConsecutive);
+        updateGroupButton();
         showToast(state.groupByConsecutive ? 'Consecutive endpoint grouping enabled' : 'Consecutive endpoint grouping disabled', 'info');
         renderRequestList();
       });
+      updateGroupButton();
     }
 
     // JSON Helper Utilities & Tree Renderer
@@ -3084,6 +3201,79 @@ ws.on('message', (raw) => {
       return `<div class="request-item-meta-cols">${parts.join('<span class="meta-dot">·</span>')}</div>`;
     }
 
+    // Bi-directional Hover Highlighting (Traffic list <-> Timeline)
+    function setListHover(reqIds, syncTimeline = true) {
+      if (!reqIds) {
+        state.hoveredRequestIds = null;
+      } else if (Array.isArray(reqIds)) {
+        state.hoveredRequestIds = new Set(reqIds);
+      } else if (reqIds instanceof Set) {
+        state.hoveredRequestIds = reqIds;
+      } else {
+        state.hoveredRequestIds = new Set([reqIds]);
+      }
+
+      document.querySelectorAll('.request-item').forEach(el => {
+        const id = el.dataset.reqId;
+        const groupIds = el.dataset.groupReqIds ? el.dataset.groupReqIds.split(',') : null;
+        let isHovered = false;
+        if (state.hoveredRequestIds) {
+          if (id && state.hoveredRequestIds.has(id)) {
+            isHovered = true;
+          } else if (groupIds && groupIds.some(gId => state.hoveredRequestIds.has(gId))) {
+            isHovered = true;
+          }
+        }
+        el.classList.toggle('hovered', isHovered);
+      });
+
+      if (syncTimeline && timeline && typeof timeline.setHoveredRequests === 'function') {
+        timeline.setHoveredRequests(state.hoveredRequestIds, false);
+      }
+    }
+
+    function clearListHover(reqIds) {
+      if (!state.hoveredRequestIds) return;
+      if (reqIds) {
+        const ids = Array.isArray(reqIds) ? reqIds : [reqIds];
+        ids.forEach(id => state.hoveredRequestIds.delete(id));
+        if (state.hoveredRequestIds.size === 0) {
+          state.hoveredRequestIds = null;
+        }
+      } else {
+        state.hoveredRequestIds = null;
+      }
+
+      document.querySelectorAll('.request-item.hovered').forEach(el => {
+        const id = el.dataset.reqId;
+        const groupIds = el.dataset.groupReqIds ? el.dataset.groupReqIds.split(',') : null;
+        let stillHovered = false;
+        if (state.hoveredRequestIds) {
+          if (id && state.hoveredRequestIds.has(id)) stillHovered = true;
+          else if (groupIds && groupIds.some(gId => state.hoveredRequestIds.has(gId))) stillHovered = true;
+        }
+        if (!stillHovered) {
+          el.classList.remove('hovered');
+        }
+      });
+
+      if (timeline && typeof timeline.setHoveredRequests === 'function') {
+        timeline.setHoveredRequests(state.hoveredRequestIds, false);
+      }
+    }
+
+    function highlightListItem(id) {
+      if (!id) {
+        clearListHover();
+        return;
+      }
+      setListHover(id, false);
+      const itemEl = document.querySelector(`.request-item[data-req-id="${id}"]`);
+      if (itemEl && typeof itemEl.scrollIntoViewIfNeeded === 'function') {
+        itemEl.scrollIntoViewIfNeeded(false);
+      }
+    }
+
     // Render Request List with Consecutive Endpoints Aggregation & Configurable Columns
     function renderRequestList() {
       const filtered = state.requests.filter(r => {
@@ -3145,8 +3335,10 @@ ws.on('message', (raw) => {
       groups.forEach(group => {
         if (!group.isGroup || group.items.length === 1) {
           const req = group.items[0];
+          const isHovered = state.hoveredRequestIds && state.hoveredRequestIds.has(req.id);
           const li = document.createElement('li');
-          li.className = `request-item ${req.id === state.selectedRequestId ? 'selected' : ''} ${req.isPaused ? 'paused' : ''}`;
+          li.className = `request-item ${req.id === state.selectedRequestId ? 'selected' : ''} ${req.isPaused ? 'paused' : ''} ${isHovered ? 'hovered' : ''}`;
+          li.dataset.reqId = req.id;
           
           let statusClass = 'code-2xx';
           const codeNum = Number(req.statusCode || 0);
@@ -3170,16 +3362,23 @@ ws.on('message', (raw) => {
             </div>
           `;
 
+          li.addEventListener('mouseenter', () => setListHover(req.id));
+          li.addEventListener('mouseleave', () => clearListHover(req.id));
           li.addEventListener('click', () => selectRequest(req.id));
           requestList.appendChild(li);
         } else {
           // Multi-call consecutive aggregated endpoint
           const hasChildSelected = group.items.some(it => it.id === state.selectedRequestId);
           const isExpanded = state.expandedGroups.has(group.groupId) || hasChildSelected;
+          const groupIds = group.items.map(it => it.id);
+          const isGroupHovered = state.hoveredRequestIds && groupIds.some(id => state.hoveredRequestIds.has(id));
           const headerLi = document.createElement('li');
-          headerLi.className = `request-item request-group-header ${isExpanded ? 'expanded' : ''} ${hasChildSelected ? (isExpanded ? 'has-child-selected' : 'selected') : ''}`;
+          headerLi.className = `request-item request-group-header ${isExpanded ? 'expanded' : ''} ${hasChildSelected ? (isExpanded ? 'has-child-selected' : 'selected') : ''} ${isGroupHovered ? 'hovered' : ''}`;
 
           const latestReq = group.items[0];
+          headerLi.dataset.reqId = latestReq.id;
+          headerLi.dataset.groupReqIds = groupIds.join(',');
+
           let statusClass = 'code-2xx';
           const codeNum = Number(latestReq.statusCode || 0);
           if (codeNum >= 500) statusClass = 'code-5xx';
@@ -3220,6 +3419,8 @@ ws.on('message', (raw) => {
             renderRequestList();
           });
 
+          headerLi.addEventListener('mouseenter', () => setListHover(groupIds));
+          headerLi.addEventListener('mouseleave', () => clearListHover(groupIds));
           headerLi.addEventListener('click', () => {
             selectRequest(latestReq.id);
           });
@@ -3230,8 +3431,10 @@ ws.on('message', (raw) => {
           if (isExpanded) {
             group.items.forEach((childReq, childIdx) => {
               const isChildSelected = childReq.id === state.selectedRequestId;
+              const isChildHovered = state.hoveredRequestIds && state.hoveredRequestIds.has(childReq.id);
               const childLi = document.createElement('li');
-              childLi.className = `request-item request-child-item ${isChildSelected ? 'selected' : ''} ${childReq.isPaused ? 'paused' : ''}`;
+              childLi.className = `request-item request-child-item ${isChildSelected ? 'selected' : ''} ${childReq.isPaused ? 'paused' : ''} ${isChildHovered ? 'hovered' : ''}`;
+              childLi.dataset.reqId = childReq.id;
               
               let childStatusClass = 'code-2xx';
               const cNum = Number(childReq.statusCode || 0);
@@ -3254,6 +3457,8 @@ ws.on('message', (raw) => {
                 </div>
               `;
 
+              childLi.addEventListener('mouseenter', () => setListHover(childReq.id));
+              childLi.addEventListener('mouseleave', () => clearListHover(childReq.id));
               childLi.addEventListener('click', () => selectRequest(childReq.id));
               requestList.appendChild(childLi);
             });
