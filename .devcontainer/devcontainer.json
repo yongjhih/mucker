@@ -44,6 +44,6 @@
       }
     }
   },
-  "postCreateCommand": "npm install && cd cli && npm install && npm run build && cd ../dashboard && npm install",
+  "postCreateCommand": "npm install && cd cli && npm install && npm run build && cd ../dashboard && npm install && cd .. && chmod +x ./gradlew && ./gradlew :app:assembleDebug",
   "remoteUser": "root"
 }

@@ -6,7 +6,6 @@ import io.github.mucker.core.MockEngine
 import io.github.mucker.core.MockRuleRegistry
 import io.github.mucker.core.RequestHistory
 import io.github.mucker.server.MuckerHttpServer
-import io.github.mucker.ui.MuckerNotification
 import io.github.mucker.util.NetworkUtils
 
 /**
@@ -55,7 +54,7 @@ object Mucker {
         }
 
         if (config.showNotification) {
-            MuckerNotification.show(context, serverUrl)
+            triggerNotificationShow(context, serverUrl)
         }
     }
 
@@ -72,6 +71,26 @@ object Mucker {
     fun stop() {
         server?.stop()
         server = null
-        appContext?.let { MuckerNotification.hide(it) }
+        appContext?.let { triggerNotificationHide(it) }
+    }
+
+    private fun triggerNotificationShow(context: Context, url: String) {
+        try {
+            val clazz = Class.forName("io.github.mucker.ui.MuckerNotification")
+            val method = clazz.getMethod("show", Context::class.java, String::class.java)
+            method.invoke(null, context, url)
+        } catch (_: Throwable) {
+            // Headless mode: no notification UI available on classpath
+        }
+    }
+
+    private fun triggerNotificationHide(context: Context) {
+        try {
+            val clazz = Class.forName("io.github.mucker.ui.MuckerNotification")
+            val method = clazz.getMethod("hide", Context::class.java)
+            method.invoke(null, context)
+        } catch (_: Throwable) {
+            // Headless mode
+        }
     }
 }

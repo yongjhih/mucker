@@ -4,7 +4,12 @@ import { c } from '../lib/colors.mjs';
 import { findAdbPath, listDevices, forwardPort } from '../lib/adb.mjs';
 import { MuckerClient } from '../lib/api.mjs';
 import { listenLive } from '../lib/cdp.mjs';
-import { exec } from 'node:child_process';
+import { exec, spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const VERSION = '1.0.0';
 
@@ -26,6 +31,7 @@ ${c.bold('USAGE:')}
   ${c.green('mucker')} <command> [options]
 
 ${c.bold('COMMANDS:')}
+  ${c.yellow('demo')}                       One-line build, run demo app & launch browser dashboard
   ${c.yellow('forward')} [port]               Forward adb port to connected device (default: 8080)
   ${c.yellow('status')}                     Check Mucker status & connected app
   ${c.yellow('open')}                       Open the Mucker Web Dashboard in your browser
@@ -127,6 +133,16 @@ async function main() {
   }
 
   switch (parsed.command) {
+    case 'demo': {
+      console.log(c.cyan('Launching Mucker one-line demo...'));
+      const scriptPath = path.resolve(__dirname, '../../scripts/quickstart.sh');
+      const child = spawn('bash', [scriptPath], { stdio: 'inherit' });
+      child.on('close', (code) => {
+        process.exit(code || 0);
+      });
+      break;
+    }
+
     case 'forward': {
       const port = Number(parsed.positionals[1] || parsed.flags.port || 8080);
       const adb = findAdbPath();

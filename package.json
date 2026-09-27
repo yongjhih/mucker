@@ -8,8 +8,10 @@
     "dashboard"
   ],
   "scripts": {
+    "demo": "./scripts/quickstart.sh",
+    "chaos": "node examples/chaos-ci/chaos-injector.mjs",
     "build:dashboard": "npm run build --workspace=dashboard && npm run copy:dashboard",
-    "copy:dashboard": "node -e \"const fs = require('fs'); const path = require('path'); const src = path.join('dashboard', 'dist', 'index.html'); const destDir = path.join('mucker', 'src', 'main', 'assets', 'mucker-web'); fs.mkdirSync(destDir, { recursive: true }); fs.copyFileSync(src, path.join(destDir, 'index.html')); console.log('Copied dashboard single-bundle to Android assets!');\"",
+    "copy:dashboard": "node -e \"const fs = require('fs'); const path = require('path'); const src = path.join('dashboard', 'dist', 'index.html'); const targets = [path.join('mucker-dashboard', 'src', 'main', 'assets', 'mucker-web'), path.join('mucker', 'src', 'main', 'assets', 'mucker-web'), path.join('docs', 'dashboard')]; targets.forEach(t => { fs.mkdirSync(t, { recursive: true }); fs.copyFileSync(src, path.join(t, 'index.html')); }); console.log('Copied dashboard single-bundle to Android assets & docs!');\"",
     "build:cli": "npm run build --workspace=cli",
     "build:all": "npm run build:dashboard && npm run build:cli",
     "dev:dashboard": "npm run dev --workspace=dashboard",

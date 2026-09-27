@@ -13,7 +13,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mucker-project"
+rootProject.name = "mucker"
+include(":mucker-interceptor")
+include(":mucker-dashboard")
 include(":mucker")
 include(":mucker-noop")
 include(":app")

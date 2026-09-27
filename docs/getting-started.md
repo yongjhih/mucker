@@ -4,18 +4,38 @@ title: Quickstart Guide
 subtitle: Get up and running with Mucker in under two minutes with zero certificates.
 ---
 
-## 1. Add Dependencies
+## 1. Add Dependencies via JitPack
 
-In your application module's `build.gradle.kts`:
+Add the JitPack repository in your root `settings.gradle.kts` (or `build.gradle.kts`):
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+In your application module's `build.gradle.kts`, choose between the all-in-one bundle, headless interceptor, or in-app dashboard:
 
 ```kotlin
 dependencies {
-    // OkHttp (if not already included)
+    // OkHttp (host app dependency)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Mucker: active in debug builds, replaced with clean no-op stubs in release
-    debugImplementation("io.github.mucker:mucker:1.0.0")
-    releaseImplementation("io.github.mucker:mucker-noop:1.0.0")
+    // Option A: Full Bundle (Headless Interceptor + In-App WebView Dashboard)
+    debugImplementation("com.github.yongjhih.mucker:mucker:1.0.0")
+
+    // Option B: Headless Interceptor (Zero UI, pure OkHttp mock engine & CDP server)
+    // debugImplementation("com.github.yongjhih.mucker:mucker-interceptor:1.0.0")
+
+    // Option C: In-App Web Dashboard (MuckerActivity, Notification Drawer, and Web Assets)
+    // debugImplementation("com.github.yongjhih.mucker:mucker-dashboard:1.0.0")
+
+    // Release: Clean zero-overhead stubs
+    releaseImplementation("com.github.yongjhih.mucker:mucker-noop:1.0.0")
 }
 ```
 

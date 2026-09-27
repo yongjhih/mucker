@@ -71,21 +71,61 @@ While Chucker is an indispensable tool for *inspecting* mobile network logs, it 
 
 ---
 
-## ⚡ Quickstart
+## 🚀 One-Line Instant Demo
 
-### 1. Add Dependencies
+Experience Mucker immediately without manual setup:
 
-In your `app/build.gradle.kts`:
+```bash
+npm run demo
+# or
+./scripts/quickstart.sh
+# or
+npx mucker demo
+```
+*Automatically boots emulator, compiles & installs the demo app, forwards ADB port 8080, launches the app, and opens the Mucker Web Dashboard in your default browser.*
+
+> [!TIP]
+> **Zero-Install Devcontainer**: Open this repo in **GitHub Codespaces** or **VS Code Dev Containers**. The devcontainer comes pre-configured with OpenJDK 17, Android SDK 34, and Node.js 22 LTS, compiling `:app:assembleDebug` automatically!
+
+---
+
+## ⚡ Quickstart & JitPack Integration
+
+### 1. Add JitPack Repository
+
+In your root `settings.gradle.kts` (or `build.gradle.kts`):
 
 ```kotlin
-dependencies {
-    // Mucker active in debug, replaced by clean zero-overhead stubs in release
-    debugImplementation("io.github.mucker:mucker:1.0.0")
-    releaseImplementation("io.github.mucker:mucker-noop:1.0.0")
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
 }
 ```
 
-### 2. Initialize in Application
+### 2. Add Dependencies (Modular & Flexible)
+
+Pick the artifact configuration that fits your project needs:
+
+```kotlin
+dependencies {
+    // Option A: Complete Bundle (Headless Interceptor + In-App WebView Dashboard)
+    debugImplementation("com.github.yongjhih.mucker:mucker:1.0.0")
+
+    // Option B: Headless Interceptor (Pure OkHttp Interceptor + Embedded CDP/REST Server, Zero UI)
+    // debugImplementation("com.github.yongjhih.mucker:mucker-interceptor:1.0.0")
+
+    // Option C: In-App Dashboard (MuckerActivity, Notification Drawer, and Web Assets)
+    // debugImplementation("com.github.yongjhih.mucker:mucker-dashboard:1.0.0")
+
+    // Release: Zero-overhead no-op stubs
+    releaseImplementation("com.github.yongjhih.mucker:mucker-noop:1.0.0")
+}
+```
+
+### 3. Initialize in Application
 
 ```kotlin
 class MyApp : Application() {
@@ -98,7 +138,7 @@ class MyApp : Application() {
 }
 ```
 
-### 3. Attach OkHttp Interceptor
+### 4. Attach OkHttp Interceptor
 
 ```kotlin
 val okHttpClient = OkHttpClient.Builder()
@@ -235,16 +275,19 @@ For a deep dive into the history of CDP mock responses (from 2017 `Network.conti
 
 ## 📦 Monorepo Structure
 
-* [`mucker/`](mucker): Core Android library with embedded HTTP/WebSocket server and `MuckerInterceptor`.
+* [`mucker-interceptor/`](mucker-interceptor): Headless Android library containing the OkHttp interceptor, embedded HTTP/CDP mock engine server (zero UI dependencies).
+* [`mucker-dashboard/`](mucker-dashboard): In-app Android WebView activity (`MuckerActivity`), persistent status notification, and bundled web assets.
+* [`mucker/`](mucker): Complete umbrella artifact combining `:mucker-interceptor` and `:mucker-dashboard` for 1-line integration.
 * [`mucker-noop/`](mucker-noop): Empty stubs for release builds ensuring zero APK overhead.
 * [`app/`](app): Demo Android application showing real-time OkHttp request mocking.
+* [`examples/chaos-ci/`](examples/chaos-ci): Playwright & Puppeteer chaos fault-injection test scripts for CI/CD pipelines.
 * [`dart/mucker/`](dart/mucker): Dart & Flutter client package supporting **Dio** and **package:http**.
 * [`dashboard/`](dashboard): Impeccable single-page application (SPA) dashboard.
 * [`cli/`](cli): Zero-dependency Node.js CLI tool (`mucker`).
 * [`skills/mucker/`](skills/mucker): Agent skill definition for AI coding assistants.
 * [`skills/mucker-dashboard/`](skills/mucker-dashboard): Agent skill for modular dashboard plugin development.
-* [`docs/`](docs): GitHub Pages Jekyll documentation website.
-* [`.devcontainer/`](.devcontainer): Complete containerized development environment.
+* [`docs/`](docs): GitHub Pages Jekyll documentation website adhering to [Web Craftsmanship Standards](https://yongjhih.github.io/mucker/web-craftsmanship).
+* [`.devcontainer/`](.devcontainer): Containerized development environment with pre-installed Android SDK 34 and auto-compilation.
 
 ---
 

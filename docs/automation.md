@@ -115,9 +115,61 @@ asyncio.run(run_mucker_test())
 
 ---
 
-## 4. AI Agent Skill Integration
+## 4. Playwright & Puppeteer Chaos Engineering in CI/CD
+
+Mucker provides ready-to-run chaos injection scripts (`examples/chaos-ci/`) to test app fault-tolerance directly inside GitHub Actions or GitLab CI.
+
+### Puppeteer CDP Session Chaos Injection
+
+```javascript
+import puppeteer from 'puppeteer';
+
+// Connect Puppeteer directly to Mucker's CDP WebSocket on the Android device
+const browser = await puppeteer.connect({
+  browserWSEndpoint: 'ws://localhost:8080/devtools/page'
+});
+
+const pages = await browser.pages();
+const client = await pages[0].target().createCDPSession();
+
+// Enable network interception
+await client.send('Fetch.enable', {
+  patterns: [{ urlPattern: '*' }]
+});
+
+// Randomly inject 500 errors and artificial latency
+client.on('Fetch.requestPaused', async (event) => {
+  const isChaos = Math.random() < 0.35; // 35% error rate
+
+  if (isChaos) {
+    console.log(`[Chaos] Injecting HTTP 500 into ${event.request.url}`);
+    await client.send('Fetch.fulfillRequest', {
+      requestId: event.requestId,
+      responseCode: 500,
+      responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+      body: Buffer.from(JSON.stringify({ error: 'Chaos Injected Failure' })).toString('base64')
+    });
+  } else {
+    await client.send('Fetch.continueRequest', { requestId: event.requestId });
+  }
+});
+```
+
+### One-Command Chaos Execution
+Run the zero-dependency built-in chaos injector against your connected Android app or emulator:
+
+```bash
+npm run chaos
+# or
+node examples/chaos-ci/chaos-injector.mjs
+```
+
+---
+
+## 5. AI Agent Skill Integration
 
 Mucker includes an agent skill definition at `skills/mucker/SKILL.md`. When using AI coding assistants (such as Google Antigravity, Cursor, or Claude Code), the agent can:
 1. Automatically run `mucker forward` to bridge ADB.
 2. Inject edge-case mock responses (401 Unauthorized, 503 Maintenance, empty response lists) during interactive debugging.
 3. Validate Android app resilience without requiring backend services to be deployed.
+

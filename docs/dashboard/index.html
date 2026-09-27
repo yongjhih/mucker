@@ -829,59 +829,100 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    #inspectorDetail {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
     /* Mobile adjustments */
     @media (max-width: 768px) {
       .app-main {
         flex-direction: column;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .sidebar {
         width: 100%;
-        height: 45vh;
+        height: auto;
+        max-height: 42vh;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
       }
       .content-pane {
-        height: 55vh;
+        height: auto;
+        min-height: 58vh;
+        overflow: visible;
+      }
+      .tab-content {
+        overflow-y: visible;
       }
     }
 
-    /* Timeline Component */
+    /* Timeline Component - Floating Controls (Reduced Height, No Dedicated Row) */
     .timeline-container {
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
       position: relative;
       user-select: none;
-      transition: max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-      max-height: 140px;
+      transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 94px;
+      max-height: 94px;
       overflow: hidden;
       flex-shrink: 0;
     }
 
     .timeline-container.collapsed {
-      max-height: 37px;
+      height: 28px;
+      max-height: 28px;
     }
 
     .timeline-container.hidden {
       display: none;
     }
 
-    .timeline-toolbar {
+    .timeline-canvas-wrapper {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      background: var(--bg-base);
+      cursor: crosshair;
+      overflow: hidden;
+    }
+
+    /* Floating Toolbar anchored on Canvas Top-Left (Older Time Direction) */
+    .timeline-floating-bar {
+      position: absolute;
+      top: 5px;
+      left: 8px;
+      z-index: 10;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 6px 14px;
-      font-size: 0.76rem;
-      border-bottom: 1px solid var(--border-color);
-      background: var(--bg-surface-elevated);
-      flex-shrink: 0;
+      gap: 8px;
+      padding: 3px 8px;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      font-size: 0.74rem;
+      pointer-events: auto;
+      max-width: calc(100% - 16px);
+    }
+
+    [data-theme="light"] .timeline-floating-bar {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .timeline-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -892,12 +933,13 @@
       color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+      font-size: 0.73rem;
     }
 
     .timeline-stats {
       color: var(--text-subtle);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
     }
 
@@ -905,12 +947,12 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: rgba(99, 102, 241, 0.18);
+      padding: 1px 7px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.22);
       border: 1px solid rgba(99, 102, 241, 0.45);
       color: #c7d2fe;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-family: var(--font-mono);
       font-weight: 600;
     }
@@ -920,7 +962,7 @@
       border: none;
       color: #e0e7ff;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       padding: 0 3px;
       line-height: 1;
       display: flex;
@@ -937,7 +979,7 @@
     .timeline-controls {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
@@ -945,17 +987,17 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      border-radius: var(--radius-sm);
-      padding: 2px 8px;
-      font-size: 0.72rem;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.7rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 24px;
-      height: 24px;
+      min-width: 22px;
+      height: 22px;
     }
 
     .timeline-ctrl-btn:hover {
@@ -966,28 +1008,228 @@
 
     .zoom-display {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--accent);
-      min-width: 42px;
+      min-width: 36px;
       text-align: center;
-      padding: 0 4px;
       font-weight: 600;
-    }
-
-    .timeline-canvas-wrapper {
-      position: relative;
-      height: 90px;
-      width: 100%;
-      background: var(--bg-base);
-      cursor: crosshair;
-      overflow: hidden;
-      flex-shrink: 0;
     }
 
     #timelineCanvas {
       width: 100%;
       height: 100%;
       display: block;
+    }
+
+    /* Aggregated Consecutive Endpoints */
+    .request-item.request-group-header {
+      background: var(--bg-surface);
+      border-left: 3px solid var(--accent);
+    }
+    .request-item.request-group-header.expanded {
+      background: var(--bg-surface-elevated);
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+    .btn-group-toggle {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      margin-right: 4px;
+      font-size: 0.62rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-group-toggle:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+    .group-count-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: rgba(99, 102, 241, 0.18);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+    }
+    .request-item.request-child-item {
+      padding-left: 28px !important;
+      background: var(--bg-base);
+      border-left: 2px dashed var(--border-color);
+      margin-left: 12px;
+      margin-right: 8px;
+      border-radius: 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .request-item.request-child-item:last-child {
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    }
+    .child-branch {
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+      margin-right: 6px;
+      font-size: 0.72rem;
+    }
+
+    /* JSON Tree, Syntax Highlighting & Live Mock Editor */
+    :root {
+      --json-key: #38bdf8;
+      --json-string: #34d399;
+      --json-number: #fbbf24;
+      --json-bool: #f472b6;
+      --json-null: #94a3b8;
+      --json-punct: #64748b;
+    }
+    [data-theme="light"] {
+      --json-key: #0284c7;
+      --json-string: #059669;
+      --json-number: #d97706;
+      --json-bool: #db2777;
+      --json-null: #64748b;
+      --json-punct: #94a3b8;
+    }
+
+    .json-tree-container {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      overflow-x: auto;
+      max-height: 380px;
+      user-select: text;
+    }
+
+    .json-node {
+      position: relative;
+      padding-left: 16px;
+    }
+    .json-node.root-node {
+      padding-left: 0;
+    }
+    .json-header {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .json-toggle {
+      position: absolute;
+      left: 1px;
+      top: 3px;
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.52rem;
+      color: var(--text-subtle);
+      border-radius: 2px;
+      transition: transform 0.15s ease, color 0.15s ease;
+      user-select: none;
+    }
+    .json-toggle:hover {
+      color: var(--text-main);
+      background: var(--bg-subtle);
+    }
+    .json-node.collapsed > .json-children,
+    .json-node.collapsed > .json-footer {
+      display: none;
+    }
+    .json-node.collapsed > .json-header .json-toggle {
+      transform: rotate(-90deg);
+    }
+    .json-node.collapsed > .json-header .json-collapsed-preview {
+      display: inline;
+    }
+    .json-collapsed-preview {
+      display: none;
+      color: var(--text-subtle);
+      font-style: italic;
+      margin: 0 4px;
+      font-size: 0.72rem;
+    }
+
+    .json-key {
+      color: var(--json-key);
+      font-weight: 600;
+    }
+    .json-string {
+      color: var(--json-string);
+      word-break: break-all;
+    }
+    .json-number {
+      color: var(--json-number);
+    }
+    .json-bool {
+      color: var(--json-bool);
+      font-weight: 600;
+    }
+    .json-null {
+      color: var(--json-null);
+      font-style: italic;
+    }
+    .json-punct {
+      color: var(--json-punct);
+    }
+
+    /* Live Mock Editor */
+    .mock-editor-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+      font-size: 0.78rem;
+    }
+    .mock-editor-banner.is-unmocked {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--warning);
+    }
+    .mock-editor-banner.is-mocked {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+    }
+    .json-editor-textarea {
+      width: 100%;
+      height: 220px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: var(--bg-surface);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      resize: vertical;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .json-editor-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-subtle);
+    }
+    .json-editor-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .timeline-tooltip {
@@ -1068,27 +1310,30 @@
     </div>
   </header>
 
-  <!-- Timeline Component -->
+  <!-- Timeline Component with Floating Controls (Older Direction / Left) -->
   <div class="timeline-container" id="timelineContainer">
-    <div class="timeline-toolbar">
-      <div class="timeline-meta">
-        <span class="timeline-title">⏱ Timeline</span>
-        <span class="timeline-stats" id="timelineStats">0 requests</span>
-        <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
-          <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
-          <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
-        </div>
-      </div>
-      <div class="timeline-controls">
-        <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
-        <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
-        <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
-        <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit All</button>
-        <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
-      </div>
-    </div>
     <div class="timeline-canvas-wrapper" id="timelineCanvasWrapper">
       <canvas id="timelineCanvas"></canvas>
+
+      <!-- Floating Controls anchored on Canvas Top-Left (Older Time Direction) -->
+      <div class="timeline-floating-bar" id="timelineFloatingBar">
+        <div class="timeline-meta">
+          <span class="timeline-title">⏱ Waterfall</span>
+          <span class="timeline-stats" id="timelineStats">0 requests</span>
+          <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
+            <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
+            <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
+          </div>
+        </div>
+        <div class="timeline-controls">
+          <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
+          <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
+          <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
+          <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit</button>
+          <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
+        </div>
+      </div>
+
       <div id="timelineTooltip" class="timeline-tooltip" style="display:none;"></div>
     </div>
   </div>
@@ -1100,6 +1345,7 @@
       <div class="sidebar-header">
         <div class="search-row">
           <input type="text" class="search-input" id="searchFilter" placeholder="Filter URL (e.g. /api/v1/user)...">
+          <button class="btn btn-sm active" id="btnToggleGroup" title="Aggregate Consecutive Endpoints (Toggle Grouping)">⊞ Group</button>
           <button class="btn btn-sm" id="btnClearHistory" title="Clear request logs">Clear</button>
         </div>
         <div class="filter-chips">
@@ -1315,6 +1561,9 @@ ws.on('message', (raw) => {
       search: '',
       editingRuleId: null,
       timeFilter: null,
+      groupByConsecutive: true,
+      expandedGroups: new Set(),
+      responseViewMode: 'tree', // 'tree' | 'edit'
     };
 
     function resolveTarget() {
@@ -1367,6 +1616,7 @@ ws.on('message', (raw) => {
     const rulesTableBody = document.getElementById('rulesTableBody');
     const ruleCountBadge = document.getElementById('ruleCountBadge');
     const searchFilter = document.getElementById('searchFilter');
+    const btnToggleGroup = document.getElementById('btnToggleGroup');
     const ruleModal = document.getElementById('ruleModal');
     const btnNewRule = document.getElementById('btnNewRule');
     const btnNewRuleTab = document.getElementById('btnNewRuleTab');
@@ -2251,7 +2501,235 @@ ws.on('message', (raw) => {
       }
     }
 
-    // Render Request List
+    if (btnToggleGroup) {
+      btnToggleGroup.addEventListener('click', () => {
+        state.groupByConsecutive = !state.groupByConsecutive;
+        btnToggleGroup.classList.toggle('active', state.groupByConsecutive);
+        showToast(state.groupByConsecutive ? 'Consecutive endpoint grouping enabled' : 'Consecutive endpoint grouping disabled', 'info');
+        renderRequestList();
+      });
+    }
+
+    // JSON Helper Utilities & Tree Renderer
+    function parseJsonSafe(str) {
+      if (!str || typeof str !== 'string') return null;
+      try {
+        return JSON.parse(str);
+      } catch {
+        return null;
+      }
+    }
+
+    function findMatchingMockRule(req) {
+      if (!req || !state.rules || state.rules.length === 0) return null;
+      return state.rules.find(r => {
+        if (r.method !== 'ALL' && r.method !== req.method) return false;
+        try {
+          const regex = new RegExp(r.urlPattern);
+          return regex.test(req.url);
+        } catch {
+          return r.urlPattern === req.url;
+        }
+      });
+    }
+
+    function createJsonTreeElement(data, isRoot = true) {
+      const container = document.createElement('div');
+      container.className = isRoot ? 'json-tree-container' : 'json-children';
+
+      function buildNode(val, keyName = null, isLast = true) {
+        const node = document.createElement('div');
+        node.className = 'json-node';
+
+        const header = document.createElement('span');
+        header.className = 'json-header';
+
+        if (keyName !== null) {
+          const keySpan = document.createElement('span');
+          keySpan.className = 'json-key';
+          keySpan.textContent = typeof keyName === 'number' ? `[${keyName}]` : `"${keyName}"`;
+          header.appendChild(keySpan);
+
+          const colon = document.createElement('span');
+          colon.className = 'json-punct';
+          colon.textContent = ': ';
+          header.appendChild(colon);
+        }
+
+        if (val === null) {
+          const nullSpan = document.createElement('span');
+          nullSpan.className = 'json-null';
+          nullSpan.textContent = 'null';
+          header.appendChild(nullSpan);
+          if (!isLast) {
+            const comma = document.createElement('span');
+            comma.className = 'json-punct';
+            comma.textContent = ',';
+            header.appendChild(comma);
+          }
+          node.appendChild(header);
+          return node;
+        }
+
+        const type = typeof val;
+        if (type === 'boolean') {
+          const boolSpan = document.createElement('span');
+          boolSpan.className = 'json-bool';
+          boolSpan.textContent = String(val);
+          header.appendChild(boolSpan);
+          if (!isLast) {
+            const comma = document.createElement('span');
+            comma.className = 'json-punct';
+            comma.textContent = ',';
+            header.appendChild(comma);
+          }
+          node.appendChild(header);
+          return node;
+        }
+
+        if (type === 'number') {
+          const numSpan = document.createElement('span');
+          numSpan.className = 'json-number';
+          numSpan.textContent = String(val);
+          header.appendChild(numSpan);
+          if (!isLast) {
+            const comma = document.createElement('span');
+            comma.className = 'json-punct';
+            comma.textContent = ',';
+            header.appendChild(comma);
+          }
+          node.appendChild(header);
+          return node;
+        }
+
+        if (type === 'string') {
+          const strSpan = document.createElement('span');
+          strSpan.className = 'json-string';
+          strSpan.textContent = `"${val}"`;
+          header.appendChild(strSpan);
+          if (!isLast) {
+            const comma = document.createElement('span');
+            comma.className = 'json-punct';
+            comma.textContent = ',';
+            header.appendChild(comma);
+          }
+          node.appendChild(header);
+          return node;
+        }
+
+        if (Array.isArray(val)) {
+          const toggle = document.createElement('span');
+          toggle.className = 'json-toggle';
+          toggle.innerHTML = '▼';
+          header.insertBefore(toggle, header.firstChild);
+
+          const openBracket = document.createElement('span');
+          openBracket.className = 'json-punct';
+          openBracket.textContent = '[';
+          header.appendChild(openBracket);
+
+          const preview = document.createElement('span');
+          preview.className = 'json-collapsed-preview';
+          preview.textContent = `${val.length} item${val.length === 1 ? '' : 's'}`;
+          header.appendChild(preview);
+
+          const closeBracketInline = document.createElement('span');
+          closeBracketInline.className = 'json-punct json-collapsed-preview';
+          closeBracketInline.textContent = `]${isLast ? '' : ','}`;
+          header.appendChild(closeBracketInline);
+
+          node.appendChild(header);
+
+          const childrenWrapper = document.createElement('div');
+          childrenWrapper.className = 'json-children';
+          val.forEach((item, idx) => {
+            childrenWrapper.appendChild(buildNode(item, idx, idx === val.length - 1));
+          });
+
+          const footer = document.createElement('div');
+          footer.className = 'json-footer';
+          footer.innerHTML = `<span class="json-punct">]${isLast ? '' : ','}</span>`;
+
+          node.appendChild(childrenWrapper);
+          node.appendChild(footer);
+
+          toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            node.classList.toggle('collapsed');
+          });
+
+          return node;
+        }
+
+        if (type === 'object') {
+          const keys = Object.keys(val);
+          const toggle = document.createElement('span');
+          toggle.className = 'json-toggle';
+          toggle.innerHTML = '▼';
+          header.insertBefore(toggle, header.firstChild);
+
+          const openBrace = document.createElement('span');
+          openBrace.className = 'json-punct';
+          openBrace.textContent = '{';
+          header.appendChild(openBrace);
+
+          const preview = document.createElement('span');
+          preview.className = 'json-collapsed-preview';
+          preview.textContent = `${keys.length} key${keys.length === 1 ? '' : 's'}`;
+          header.appendChild(preview);
+
+          const closeBraceInline = document.createElement('span');
+          closeBraceInline.className = 'json-punct json-collapsed-preview';
+          closeBraceInline.textContent = `}${isLast ? '' : ','}`;
+          header.appendChild(closeBraceInline);
+
+          node.appendChild(header);
+
+          const childrenWrapper = document.createElement('div');
+          childrenWrapper.className = 'json-children';
+          keys.forEach((k, idx) => {
+            childrenWrapper.appendChild(buildNode(val[k], k, idx === keys.length - 1));
+          });
+
+          const footer = document.createElement('div');
+          footer.className = 'json-footer';
+          footer.innerHTML = `<span class="json-punct">}${isLast ? '' : ','}</span>`;
+
+          node.appendChild(childrenWrapper);
+          node.appendChild(footer);
+
+          toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            node.classList.toggle('collapsed');
+          });
+
+          return node;
+        }
+
+        return node;
+      }
+
+      const rootNode = buildNode(data, null, true);
+      rootNode.classList.add('root-node');
+      container.appendChild(rootNode);
+      return container;
+    }
+
+    function expandAllJson(container) {
+      if (!container) return;
+      container.querySelectorAll('.json-node.collapsed').forEach(n => n.classList.remove('collapsed'));
+    }
+
+    function collapseAllJson(container) {
+      if (!container) return;
+      container.querySelectorAll('.json-node').forEach(n => {
+        if (n.querySelector(':scope > .json-children')) {
+          n.classList.add('collapsed');
+        }
+      });
+    }
+
+    // Render Request List with Consecutive Endpoints Aggregation
     function renderRequestList() {
       const filtered = state.requests.filter(r => {
         if (state.filter === 'MOCKED' && !r.isMocked) return false;
@@ -2272,34 +2750,150 @@ ws.on('message', (raw) => {
         return;
       }
 
-      filtered.forEach(req => {
-        const li = document.createElement('li');
-        li.className = `request-item ${req.id === state.selectedRequestId ? 'selected' : ''} ${req.isPaused ? 'paused' : ''}`;
-        
-        let statusClass = 'code-2xx';
-        const codeNum = Number(req.statusCode || 0);
-        if (codeNum >= 500) statusClass = 'code-5xx';
-        else if (codeNum >= 400) statusClass = 'code-4xx';
-        else if (codeNum >= 300) statusClass = 'code-3xx';
+      // Group consecutive requests matching the same endpoint (method + path)
+      const groups = [];
+      if (state.groupByConsecutive) {
+        let current = null;
+        for (let i = 0; i < filtered.length; i++) {
+          const req = filtered[i];
+          const path = getUrlPath(req.url);
+          const key = `${req.method || 'GET'}|${path}`;
+          if (current && current.key === key) {
+            current.items.push(req);
+            if (req.id === state.selectedRequestId) current.hasSelected = true;
+            if (req.isPaused) current.hasPaused = true;
+            if (req.isMocked) current.hasMocked = true;
+          } else {
+            current = {
+              isGroup: true,
+              key: key,
+              groupId: `grp_${key}_${i}`,
+              method: req.method || 'GET',
+              path: path,
+              url: req.url,
+              host: getHost(req.url),
+              items: [req],
+              hasSelected: req.id === state.selectedRequestId,
+              hasPaused: !!req.isPaused,
+              hasMocked: !!req.isMocked
+            };
+            groups.push(current);
+          }
+        }
+      } else {
+        filtered.forEach(r => groups.push({ isGroup: false, items: [r], hasSelected: r.id === state.selectedRequestId }));
+      }
 
-        li.innerHTML = `
-          <div class="request-item-top">
-            <span class="method-badge method-${(req.method||'GET').toLowerCase()}">${req.method||'GET'}</span>
-            <span class="url-path" title="${escapeHtml(req.url)}">${escapeHtml(getUrlPath(req.url))}</span>
-            <div class="item-tags">
-              ${req.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
-              ${req.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
-              ${req.statusCode ? `<span class="status-code ${statusClass}">${req.statusCode}</span>` : ''}
+      groups.forEach(group => {
+        if (!group.isGroup || group.items.length === 1) {
+          const req = group.items[0];
+          const li = document.createElement('li');
+          li.className = `request-item ${req.id === state.selectedRequestId ? 'selected' : ''} ${req.isPaused ? 'paused' : ''}`;
+          
+          let statusClass = 'code-2xx';
+          const codeNum = Number(req.statusCode || 0);
+          if (codeNum >= 500) statusClass = 'code-5xx';
+          else if (codeNum >= 400) statusClass = 'code-4xx';
+          else if (codeNum >= 300) statusClass = 'code-3xx';
+
+          li.innerHTML = `
+            <div class="request-item-top">
+              <span class="method-badge method-${(req.method||'GET').toLowerCase()}">${req.method||'GET'}</span>
+              <span class="url-path" title="${escapeHtml(req.url)}">${escapeHtml(getUrlPath(req.url))}</span>
+              <div class="item-tags">
+                ${req.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
+                ${req.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
+                ${req.statusCode ? `<span class="status-code ${statusClass}">${req.statusCode}</span>` : ''}
+              </div>
             </div>
-          </div>
-          <div class="request-item-bottom">
-            <span>${getHost(req.url)}</span>
-            <span>${req.responseTime ? req.responseTime + 'ms' : formatTime(req.timestamp)}</span>
-          </div>
-        `;
+            <div class="request-item-bottom">
+              <span>${getHost(req.url)}</span>
+              <span>${req.responseTime ? req.responseTime + 'ms' : formatTime(req.timestamp)}</span>
+            </div>
+          `;
 
-        li.addEventListener('click', () => selectRequest(req.id));
-        requestList.appendChild(li);
+          li.addEventListener('click', () => selectRequest(req.id));
+          requestList.appendChild(li);
+        } else {
+          // Multi-call consecutive aggregated endpoint
+          const isExpanded = state.expandedGroups.has(group.groupId) || group.hasSelected;
+          const headerLi = document.createElement('li');
+          headerLi.className = `request-item request-group-header ${isExpanded ? 'expanded' : ''} ${group.hasSelected ? 'selected' : ''}`;
+
+          const latestReq = group.items[0];
+          let statusClass = 'code-2xx';
+          const codeNum = Number(latestReq.statusCode || 0);
+          if (codeNum >= 500) statusClass = 'code-5xx';
+          else if (codeNum >= 400) statusClass = 'code-4xx';
+          else if (codeNum >= 300) statusClass = 'code-3xx';
+
+          headerLi.innerHTML = `
+            <div class="request-item-top">
+              <button class="btn-group-toggle" title="${isExpanded ? 'Collapse calls' : 'Expand calls'}">
+                ${isExpanded ? '▼' : '▶'}
+              </button>
+              <span class="method-badge method-${(group.method||'GET').toLowerCase()}">${group.method||'GET'}</span>
+              <span class="url-path" title="${escapeHtml(group.url)}">${escapeHtml(group.path)}</span>
+              <div class="item-tags">
+                <span class="group-count-badge" title="${group.items.length} consecutive calls">×${group.items.length}</span>
+                ${group.hasPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
+                ${group.hasMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
+                ${latestReq.statusCode ? `<span class="status-code ${statusClass}">${latestReq.statusCode}</span>` : ''}
+              </div>
+            </div>
+            <div class="request-item-bottom">
+              <span>${group.host}</span>
+              <span>${group.items.length} calls (${formatTime(group.items[group.items.length - 1].timestamp)} – ${formatTime(group.items[0].timestamp)})</span>
+            </div>
+          `;
+
+          const toggleBtn = headerLi.querySelector('.btn-group-toggle');
+          toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (state.expandedGroups.has(group.groupId)) {
+              state.expandedGroups.delete(group.groupId);
+            } else {
+              state.expandedGroups.add(group.groupId);
+            }
+            renderRequestList();
+          });
+
+          headerLi.addEventListener('click', () => {
+            selectRequest(latestReq.id);
+          });
+
+          requestList.appendChild(headerLi);
+
+          // Render nested child items when expanded
+          if (isExpanded) {
+            group.items.forEach((childReq, childIdx) => {
+              const childLi = document.createElement('li');
+              childLi.className = `request-item request-child-item ${childReq.id === state.selectedRequestId ? 'selected' : ''} ${childReq.isPaused ? 'paused' : ''}`;
+              
+              let childStatusClass = 'code-2xx';
+              const cNum = Number(childReq.statusCode || 0);
+              if (cNum >= 500) childStatusClass = 'code-5xx';
+              else if (cNum >= 400) childStatusClass = 'code-4xx';
+              else if (cNum >= 300) childStatusClass = 'code-3xx';
+
+              childLi.innerHTML = `
+                <div class="request-item-top">
+                  <span class="child-branch">↳ #${group.items.length - childIdx}</span>
+                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-subtle);">${formatTime(childReq.timestamp)}</span>
+                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-left:auto;margin-right:6px;">${childReq.responseTime ? childReq.responseTime + 'ms' : 'active'}</span>
+                  <div class="item-tags">
+                    ${childReq.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
+                    ${childReq.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
+                    ${childReq.statusCode ? `<span class="status-code ${childStatusClass}">${childReq.statusCode}</span>` : ''}
+                  </div>
+                </div>
+              `;
+
+              childLi.addEventListener('click', () => selectRequest(childReq.id));
+              requestList.appendChild(childLi);
+            });
+          }
+        }
       });
     }
 
@@ -2309,6 +2903,91 @@ ws.on('message', (raw) => {
       renderInspector();
       timeline.highlightRequest(id);
     }
+
+    window.setResponseViewMode = function(mode) {
+      state.responseViewMode = mode;
+      renderInspector();
+    };
+
+    window.formatEditorJson = function() {
+      const editor = document.getElementById('responseJsonEditor');
+      if (!editor) return;
+      try {
+        editor.value = JSON.stringify(JSON.parse(editor.value), null, 2);
+        showToast('JSON formatted', 'info');
+      } catch (err) {
+        showToast(`Invalid JSON syntax: ${err.message}`, 'error');
+      }
+    };
+
+    window.revertEditorJson = function(reqId) {
+      const req = state.requests.find(r => r.id === reqId);
+      if (!req) return;
+      const editor = document.getElementById('responseJsonEditor');
+      if (!editor) return;
+      editor.value = formatJsonIfPossible(req.responseBody || '');
+      showToast('Reverted to original payload', 'info');
+    };
+
+    window.saveLiveMockData = async function(reqId) {
+      const req = state.requests.find(r => r.id === reqId);
+      if (!req) return;
+      const editor = document.getElementById('responseJsonEditor');
+      if (!editor) return;
+
+      const rawVal = editor.value.trim();
+      let parsed = null;
+      try {
+        parsed = JSON.parse(rawVal);
+      } catch (err) {
+        showToast(`Invalid JSON syntax: ${err.message}`, 'error');
+        return;
+      }
+
+      const formattedVal = JSON.stringify(parsed, null, 2);
+      const matchingRule = findMatchingMockRule(req);
+
+      if (matchingRule) {
+        // Already mocked -> update existing mock data
+        matchingRule.responseBody = formattedVal;
+        await fetch(`${host}/api/rules`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(matchingRule)
+        }).catch(() => {});
+
+        req.responseBody = formattedVal;
+        req.isMocked = true;
+        showToast(`Mock rule (${matchingRule.id}) data updated!`, 'success');
+      } else {
+        // Not mocked yet -> automatically create and apply mock rule
+        const newRule = {
+          id: 'rule_' + Date.now().toString(36),
+          urlPattern: req.url,
+          method: req.method || 'ALL',
+          statusCode: req.statusCode || 200,
+          delayMs: 0,
+          responseBody: formattedVal,
+          isEnabled: true
+        };
+
+        await fetch(`${host}/api/rules`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newRule)
+        }).catch(() => {});
+
+        state.rules.push(newRule);
+        req.responseBody = formattedVal;
+        req.isMocked = true;
+        showToast(`Created & applied mock rule for ${req.method} ${getUrlPath(req.url)}!`, 'success');
+      }
+
+      renderRequestList();
+      renderInspector();
+      renderRules();
+      timeline.draw();
+    };
 
     // Render Inspector Detail
     function renderInspector() {
@@ -2365,6 +3044,105 @@ ws.on('message', (raw) => {
         .map(([k, v]) => `<span class="grid-key">${escapeHtml(k)}:</span><span class="grid-val">${escapeHtml(v)}</span>`)
         .join('');
 
+      const matchingRule = findMatchingMockRule(req);
+      const isAlreadyMocked = !!(matchingRule || req.isMocked);
+
+      // Request Payload HTML
+      let payloadHtml = '';
+      if (req.postData) {
+        const parsedPayload = parseJsonSafe(req.postData);
+        payloadHtml = `
+          <div class="card">
+            <div class="card-header">
+              <span>Request Payload</span>
+              <button class="btn btn-sm" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(req.postData)}'))">Copy</button>
+            </div>
+            <div class="card-body" id="payloadCardBody">
+              ${parsedPayload ? '' : `<pre class="code-block">${escapeHtml(req.postData)}</pre>`}
+            </div>
+          </div>
+        `;
+      }
+
+      // Response Body HTML
+      const parsedResBody = parseJsonSafe(req.responseBody);
+      let responseBodyHtml = '';
+      if (req.responseBody) {
+        if (state.responseViewMode === 'edit') {
+          responseBodyHtml = `
+            <div class="card">
+              <div class="card-header">
+                <span>Response Body</span>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-sm ${state.responseViewMode === 'tree' ? 'active' : ''}" onclick="setResponseViewMode('tree')">🌳 Tree View</button>
+                  <button class="btn btn-sm ${state.responseViewMode === 'edit' ? 'active' : ''}" onclick="setResponseViewMode('edit')">✏️ Live Edit & Mock</button>
+                  <button class="btn btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('responseJsonEditor').value)">Copy</button>
+                </div>
+              </div>
+              <div class="card-body">
+                ${isAlreadyMocked ? `
+                  <div class="mock-editor-banner is-mocked">
+                    <div>
+                      <div>🟣 <strong>Active Mock Rule</strong> (${matchingRule ? escapeHtml(matchingRule.id) : 'Mocked endpoint'})</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Live edits will update the mock rule response payload directly.</div>
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="saveLiveMockData('${req.id}')">💾 Update Mock Data</button>
+                  </div>
+                ` : `
+                  <div class="mock-editor-banner is-unmocked">
+                    <div>
+                      <div>🌐 <strong>Live Network Response</strong> (Unmocked)</div>
+                      <div style="font-size:0.7rem;color:var(--text-subtle);margin-top:2px;">Editing will convert this response into an active Mock Rule for this endpoint.</div>
+                    </div>
+                    <button class="btn btn-sm btn-warning" onclick="saveLiveMockData('${req.id}')">⚡ Mock Endpoint with this Data</button>
+                  </div>
+                `}
+                <textarea class="json-editor-textarea" id="responseJsonEditor" spellcheck="false">${escapeHtml(formatJsonIfPossible(req.responseBody))}</textarea>
+                <div class="json-editor-actions">
+                  <div style="display:flex;gap:6px;">
+                    <button class="btn btn-sm" onclick="formatEditorJson()">Format JSON</button>
+                    <button class="btn btn-sm" onclick="revertEditorJson('${req.id}')">Revert</button>
+                  </div>
+                  <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" onclick="saveLiveMockData('${req.id}')">${isAlreadyMocked ? '💾 Update Mock Data' : '⚡ Mock Endpoint'}</button>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Tree View Mode
+          responseBodyHtml = `
+            <div class="card">
+              <div class="card-header">
+                <span>Response Body</span>
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-sm ${state.responseViewMode === 'tree' ? 'active' : ''}" onclick="setResponseViewMode('tree')">🌳 Tree View</button>
+                  <button class="btn btn-sm ${state.responseViewMode === 'edit' ? 'active' : ''}" onclick="setResponseViewMode('edit')">✏️ Live Edit & Mock</button>
+                  ${parsedResBody ? `
+                    <button class="btn btn-sm" id="btnExpandAllJson" title="Expand all JSON nodes">▼ Expand</button>
+                    <button class="btn btn-sm" id="btnCollapseAllJson" title="Collapse all JSON nodes">▶ Collapse</button>
+                  ` : ''}
+                  <button class="btn btn-sm" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(req.responseBody)}'))">Copy</button>
+                </div>
+              </div>
+              <div class="card-body" id="resBodyCardBody">
+                ${parsedResBody ? '' : `<pre class="code-block">${escapeHtml(req.responseBody)}</pre>`}
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        responseBodyHtml = `
+          <div class="card">
+            <div class="card-header">
+              <span>Response Body</span>
+            </div>
+            <div class="card-body">
+              <span style="color:var(--text-subtle);font-size:0.8rem;">No response body available</span>
+            </div>
+          </div>
+        `;
+      }
+
       inspectorDetail.innerHTML = `
         ${pausedBanner}
 
@@ -2373,7 +3151,7 @@ ws.on('message', (raw) => {
           <div class="card-header">
             <span>General Information</span>
             <div style="display:flex;gap:6px;">
-              <button class="btn btn-sm" onclick="mockThisRequest('${req.id}')">⚡ Mock this API</button>
+              <button class="btn btn-sm" onclick="mockThisRequest('${req.id}')">⚡ Create Rule</button>
               <button class="btn btn-sm" onclick="copyCurl('${req.id}')">Copy cURL</button>
             </div>
           </div>
@@ -2388,7 +3166,7 @@ ws.on('message', (raw) => {
               <span class="grid-key">Timing</span>
               <span class="grid-val">${req.responseTime ? req.responseTime + ' ms' : 'N/A'}</span>
               <span class="grid-key">Mock Status</span>
-              <span class="grid-val">${req.isMocked ? '<span class="mock-tag">MOCKED BY MUCKER</span>' : 'Real network response'}</span>
+              <span class="grid-val">${isAlreadyMocked ? `<span class="mock-tag">MOCKED ${matchingRule ? '(' + escapeHtml(matchingRule.id) + ')' : ''}</span>` : 'Real network response'}</span>
             </div>
           </div>
         </div>
@@ -2405,28 +3183,8 @@ ws.on('message', (raw) => {
           </div>
         </div>
 
-        ${req.postData ? `
-          <!-- Request Payload -->
-          <div class="card">
-            <div class="card-header">
-              <span>Request Payload</span>
-            </div>
-            <div class="card-body">
-              <pre class="code-block">${escapeHtml(formatJsonIfPossible(req.postData))}</pre>
-            </div>
-          </div>
-        ` : ''}
-
-        <!-- Response Body -->
-        <div class="card">
-          <div class="card-header">
-            <span>Response Body</span>
-            ${req.responseBody ? `<button class="btn btn-sm" onclick="navigator.clipboard.writeText(this.closest('.card').querySelector('pre').innerText)">Copy Body</button>` : ''}
-          </div>
-          <div class="card-body">
-            ${req.responseBody ? `<pre class="code-block">${escapeHtml(formatJsonIfPossible(req.responseBody))}</pre>` : '<span style="color:var(--text-subtle);font-size:0.8rem;">No response body available</span>'}
-          </div>
-        </div>
+        ${payloadHtml}
+        ${responseBodyHtml}
 
         ${resHeadersGrid ? `
           <!-- Response Headers -->
@@ -2442,6 +3200,64 @@ ws.on('message', (raw) => {
           </div>
         ` : ''}
       `;
+
+      // Mount JSON Trees if available
+      if (req.postData) {
+        const parsedPayload = parseJsonSafe(req.postData);
+        if (parsedPayload) {
+          const payloadContainer = document.getElementById('payloadCardBody');
+          if (payloadContainer) {
+            payloadContainer.innerHTML = '';
+            payloadContainer.appendChild(createJsonTreeElement(parsedPayload));
+          }
+        }
+      }
+
+      if (req.responseBody && state.responseViewMode === 'tree') {
+        const parsedRes = parseJsonSafe(req.responseBody);
+        if (parsedRes) {
+          const resBodyContainer = document.getElementById('resBodyCardBody');
+          if (resBodyContainer) {
+            resBodyContainer.innerHTML = '';
+            const treeEl = createJsonTreeElement(parsedRes);
+            resBodyContainer.appendChild(treeEl);
+
+            const btnExpand = document.getElementById('btnExpandAllJson');
+            const btnCollapse = document.getElementById('btnCollapseAllJson');
+            if (btnExpand) btnExpand.addEventListener('click', () => expandAllJson(treeEl));
+            if (btnCollapse) btnCollapse.addEventListener('click', () => collapseAllJson(treeEl));
+          }
+        }
+      }
+
+      // Handle Tab key in JSON editor
+      const editorEl = document.getElementById('responseJsonEditor');
+      if (editorEl) {
+        editorEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = editorEl.selectionStart;
+            const end = editorEl.selectionEnd;
+            editorEl.value = editorEl.value.substring(0, start) + '  ' + editorEl.value.substring(end);
+            editorEl.selectionStart = editorEl.selectionEnd = start + 2;
+          }
+        });
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      const icon = type === 'success' ? '✔' : (type === 'error' ? '✖' : (type === 'warning' ? '⚠' : 'ℹ'));
+      toast.innerHTML = `<span style="font-weight:700;">${icon}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 2600);
     }
 
     // Breakpoint Actions
@@ -2449,14 +3265,12 @@ ws.on('message', (raw) => {
       const code = Number(document.getElementById('bpFulfillStatus').value || 200);
       const body = document.getElementById('bpFulfillBody').value || '';
       
-      // Via REST
       await fetch(`${host}/api/paused/${encodeURIComponent(reqId)}/fulfill`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ statusCode: code, responseBody: body, responseHeaders: { 'Content-Type': 'application/json' } })
       }).catch(() => {});
 
-      // Mark local request
       const r = state.requests.find(x => x.id === reqId);
       if (r) {
         r.isPaused = false;
@@ -2491,21 +3305,6 @@ ws.on('message', (raw) => {
       document.getElementById('ruleBody').value = req.responseBody || '{\n  "status": "mocked"\n}';
       ruleModal.classList.add('open');
     };
-
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      if (!container) return;
-      const toast = document.createElement('div');
-      toast.className = `toast toast-${type}`;
-      const icon = type === 'success' ? '✔' : (type === 'error' ? '✖' : (type === 'warning' ? '⚠' : 'ℹ'));
-      toast.innerHTML = `<span style="font-weight:700;">${icon}</span><span>${escapeHtml(message)}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(12px)';
-        setTimeout(() => toast.remove(), 250);
-      }, 2600);
-    }
 
     window.copyCurl = function(reqId) {
       const req = state.requests.find(r => r.id === reqId);
