@@ -1,0 +1,23 @@
+name: flutter_dio_app
+description: Flutter Demo App demonstrating Mucker Dio Interceptor for Zero-Cert CDP Network Inspection and Mocking.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.4.0
+  mucker_dio:
+    path: ../../dart/mucker_dio
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

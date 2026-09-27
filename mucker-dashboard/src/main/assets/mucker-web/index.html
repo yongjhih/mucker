@@ -284,11 +284,12 @@
     /* Left Sidebar: Requests & Filters */
     .sidebar {
       width: 440px;
-      min-width: 320px;
+      min-width: 260px;
       border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       background: var(--bg-surface);
+      flex-shrink: 0;
     }
 
     .sidebar-header {
@@ -868,62 +869,48 @@
       }
     }
 
-    /* Timeline Component - Floating Controls (Reduced Height, No Dedicated Row) */
+    /* Timeline Component - Dedicated Controls Header Row Above Scale Ruler */
     .timeline-container {
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-color);
       position: relative;
       user-select: none;
-      transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      height: 94px;
-      max-height: 94px;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       flex-shrink: 0;
     }
 
-    .timeline-container.collapsed {
-      height: 28px;
-      max-height: 28px;
+    .timeline-container.collapsed .timeline-canvas-wrapper {
+      display: none !important;
     }
 
     .timeline-container.hidden {
-      display: none;
+      display: none !important;
+    }
+
+    .timeline-header-bar {
+      height: 28px;
+      min-height: 28px;
+      max-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 10px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.74rem;
+      user-select: none;
+      flex-shrink: 0;
     }
 
     .timeline-canvas-wrapper {
       position: relative;
-      height: 100%;
+      height: 66px;
       width: 100%;
       background: var(--bg-base);
       cursor: crosshair;
       overflow: hidden;
-    }
-
-    /* Floating Toolbar anchored on Canvas Top-Left (Older Time Direction) */
-    .timeline-floating-bar {
-      position: absolute;
-      top: 5px;
-      left: 8px;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 3px 8px;
-      background: rgba(15, 23, 42, 0.82);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-      font-size: 0.74rem;
-      pointer-events: auto;
-      max-width: calc(100% - 16px);
-    }
-
-    [data-theme="light"] .timeline-floating-bar {
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .timeline-meta {
@@ -1107,15 +1094,115 @@
       color: var(--primary) !important;
       font-weight: 800;
     }
-    .child-selected-badge {
-      font-size: 0.62rem;
-      font-weight: 700;
-      padding: 1px 5px;
+    /* Resizable Panes Splitters */
+    .resizer-horizontal {
+      height: 6px;
+      margin-top: -3px;
+      margin-bottom: -3px;
+      background: transparent;
+      cursor: row-resize;
+      position: relative;
+      z-index: 30;
+      transition: background 0.15s ease;
+      touch-action: none;
+    }
+    .resizer-horizontal:hover,
+    .resizer-horizontal.dragging {
+      background: var(--primary) !important;
+    }
+
+    .resizer-vertical {
+      width: 6px;
+      margin-left: -3px;
+      margin-right: -3px;
+      background: transparent;
+      cursor: col-resize;
+      position: relative;
+      z-index: 30;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+      touch-action: none;
+    }
+    .resizer-vertical:hover,
+    .resizer-vertical.dragging {
+      background: var(--primary) !important;
+    }
+
+    /* Traffic List Column Header */
+    .request-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 10px;
+      background: var(--bg-surface-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.7rem;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .col-header-main {
+      font-weight: 600;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .col-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .col-toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-subtle);
+      border-radius: 10px;
+      padding: 1px 6px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .col-toggle-pill:hover {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+    .col-toggle-pill.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .col-toggle-pill .pill-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .col-format-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
       border-radius: 4px;
-      background: var(--primary);
-      color: #ffffff;
-      letter-spacing: 0.04em;
-      margin-right: 6px;
+      padding: 1px 4px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .request-item-meta-cols {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .meta-dot {
+      opacity: 0.35;
+      font-size: 0.65rem;
     }
 
     /* JSON Tree, Syntax Highlighting & Live Mock Editor */
@@ -1454,38 +1541,38 @@
     </div>
   </header>
 
-  <!-- Timeline Component with Floating Controls (Older Direction / Left) -->
+  <!-- Timeline Component with Dedicated Controls Row Above Canvas Ruler -->
   <div class="timeline-container" id="timelineContainer">
-    <div class="timeline-canvas-wrapper" id="timelineCanvasWrapper">
-      <canvas id="timelineCanvas"></canvas>
-
-      <!-- Floating Controls anchored on Canvas Top-Left (Older Time Direction) -->
-      <div class="timeline-floating-bar" id="timelineFloatingBar">
-        <div class="timeline-meta">
-          <span class="timeline-title">⏱ Waterfall</span>
-          <span class="timeline-stats" id="timelineStats">0 requests</span>
-          <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
-            <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
-            <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
-          </div>
-        </div>
-        <div class="timeline-controls">
-          <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
-          <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
-          <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
-          <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit</button>
-          <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
+    <div class="timeline-header-bar" id="timelineHeaderBar">
+      <div class="timeline-meta">
+        <span class="timeline-title">⏱ Waterfall</span>
+        <span class="timeline-stats" id="timelineStats">0 requests</span>
+        <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
+          <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
+          <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
         </div>
       </div>
-
+      <div class="timeline-controls">
+        <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
+        <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
+        <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
+        <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit</button>
+        <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
+      </div>
+    </div>
+    <div class="timeline-canvas-wrapper" id="timelineCanvasWrapper">
+      <canvas id="timelineCanvas"></canvas>
       <div id="timelineTooltip" class="timeline-tooltip" style="display:none;"></div>
     </div>
   </div>
 
+  <!-- Horizontal Resizer between Timeline & Main Area -->
+  <div class="resizer-horizontal" id="resizerTimeline" title="Drag to adjust timeline height"></div>
+
   <!-- Main Container -->
   <div class="app-main">
     <!-- Left Sidebar: Requests -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebarPane">
       <div class="sidebar-header">
         <div class="search-row">
           <input type="text" class="search-input" id="searchFilter" placeholder="Filter URL (e.g. /api/v1/user)...">
@@ -1503,13 +1590,34 @@
         </div>
       </div>
 
+      <div class="request-list-header" id="requestListHeader">
+        <div class="col-header-main">
+          <span class="col-title">Endpoint</span>
+        </div>
+        <div class="col-header-meta">
+          <button class="col-toggle-pill active" id="colToggleDuration" title="Toggle Duration display (e.g. 180ms)">
+            <span class="pill-dot"></span>⏱ Dur
+          </button>
+          <button class="col-toggle-pill active" id="colToggleTime" title="Toggle Timestamp display">
+            <span class="pill-dot"></span>🕒 Time
+          </button>
+          <select class="col-format-select" id="timeFormatSelect" title="Time Format: Relative (+s) or Clock (HH:mm:ss)">
+            <option value="relative">+Rel</option>
+            <option value="clock">Clock</option>
+          </select>
+        </div>
+      </div>
+
       <ul class="request-list" id="requestList">
         <!-- Rendered items -->
       </ul>
     </div>
 
+    <!-- Vertical Resizer between Sidebar & Content Pane -->
+    <div class="resizer-vertical" id="resizerSidebar" title="Drag to adjust sidebar width"></div>
+
     <!-- Right Content Pane -->
-    <div class="content-pane">
+    <div class="content-pane" id="contentPane">
       <div class="pane-tabs">
         <button class="tab-btn active" data-tab="inspector">
           <span>Inspector</span>
@@ -1719,6 +1827,18 @@ ws.on('message', (raw) => {
       expandedGroups: new Set(),
       activeCmEditor: null,
       activePayloadCm: null,
+      columns: (() => {
+        try {
+          const saved = JSON.parse(localStorage.getItem('mucker_columns_config') || '{}');
+          return {
+            duration: saved.duration !== undefined ? saved.duration : true,
+            time: saved.time !== undefined ? saved.time : true,
+            timeFormat: saved.timeFormat || 'relative',
+          };
+        } catch (_) {
+          return { duration: true, time: true, timeFormat: 'relative' };
+        }
+      })(),
     };
 
     function resolveTarget() {
@@ -1895,7 +2015,7 @@ ws.on('message', (raw) => {
         if (!this.wrapper) return;
         const rect = this.wrapper.getBoundingClientRect();
         this.width = rect.width;
-        this.height = rect.height || 90;
+        this.height = rect.height || 66;
         this.canvas.width = this.width * this.dpr;
         this.canvas.height = this.height * this.dpr;
         this.draw();
@@ -2111,13 +2231,14 @@ ws.on('message', (raw) => {
 
         // Draw Waterfall Request Bars
         const reqs = state.requests || [];
+        const numLanes = Math.max(3, Math.floor((this.height - 28) / 12));
         for (let i = 0; i < reqs.length; i++) {
           const req = reqs[i];
           const x1 = this.timeToX(req.timestamp);
           const dur = Math.max(req.responseTime || 20, 15);
           const x2 = this.timeToX(req.timestamp + dur);
           const barW = Math.max(x2 - x1, 5);
-          const lane = i % 5;
+          const lane = i % numLanes;
           const y = 24 + lane * 12;
 
           let color = '#6366f1';
@@ -2884,7 +3005,31 @@ ws.on('message', (raw) => {
       });
     }
 
-    // Render Request List with Consecutive Endpoints Aggregation
+    // Column-controlled Timing Helper (Relative, Clock, Duration)
+    function renderTimingCols(req, baseTime) {
+      const parts = [];
+      if (state.columns && state.columns.time) {
+        if (state.columns.timeFormat === 'relative') {
+          const bTime = baseTime || (state.requests.length > 0 ? state.requests[state.requests.length - 1].timestamp : req.timestamp);
+          const relMs = (req.timestamp || 0) - bTime;
+          const sec = relMs / 1000;
+          let text = '';
+          if (Math.abs(sec) < 1) text = `+${Math.round(relMs)}ms`;
+          else text = sec >= 0 ? `+${sec.toFixed(2)}s` : `${sec.toFixed(2)}s`;
+          parts.push(`<span class="item-time" title="Relative time: ${text} (${formatTime(req.timestamp)})">${text}</span>`);
+        } else {
+          parts.push(`<span class="item-time" title="${new Date(req.timestamp).toISOString()}">${formatTime(req.timestamp)}</span>`);
+        }
+      }
+      if (state.columns && state.columns.duration) {
+        const durText = req.responseTime ? `${req.responseTime}ms` : (req.isPaused ? 'paused' : 'active');
+        parts.push(`<span class="item-duration" title="Duration: ${durText}">${durText}</span>`);
+      }
+      if (parts.length === 0) return '';
+      return `<div class="request-item-meta-cols">${parts.join('<span class="meta-dot">·</span>')}</div>`;
+    }
+
+    // Render Request List with Consecutive Endpoints Aggregation & Configurable Columns
     function renderRequestList() {
       const filtered = state.requests.filter(r => {
         if (state.filter === 'MOCKED' && !r.isMocked) return false;
@@ -2904,6 +3049,9 @@ ws.on('message', (raw) => {
         requestList.innerHTML = `<li style="padding:24px;text-align:center;color:var(--text-subtle);font-size:0.8rem;">No matching requests</li>`;
         return;
       }
+
+      // Base time for relative timeline column calculation (earliest request in session)
+      const sessionBaseTime = state.requests.length > 0 ? state.requests[state.requests.length - 1].timestamp : Date.now();
 
       // Group consecutive requests matching the same endpoint (method + path)
       const groups = [];
@@ -2963,7 +3111,7 @@ ws.on('message', (raw) => {
             </div>
             <div class="request-item-bottom">
               <span>${getHost(req.url)}</span>
-              <span>${req.responseTime ? req.responseTime + 'ms' : formatTime(req.timestamp)}</span>
+              ${renderTimingCols(req, sessionBaseTime)}
             </div>
           `;
 
@@ -2999,7 +3147,10 @@ ws.on('message', (raw) => {
             </div>
             <div class="request-item-bottom">
               <span>${group.host}</span>
-              <span>${group.items.length} calls (${formatTime(group.items[group.items.length - 1].timestamp)} – ${formatTime(group.items[0].timestamp)})</span>
+              <div class="request-item-meta-cols">
+                <span>${group.items.length} calls</span>
+                ${state.columns && state.columns.time ? `<span class="meta-dot">·</span><span>${formatTime(group.items[group.items.length - 1].timestamp)}–${formatTime(group.items[0].timestamp)}</span>` : ''}
+              </div>
             </div>
           `;
 
@@ -3036,9 +3187,10 @@ ws.on('message', (raw) => {
               childLi.innerHTML = `
                 <div class="request-item-top">
                   <span class="child-branch">↳ #${group.items.length - childIdx}</span>
-                  ${isChildSelected ? '<span class="child-selected-badge">ACTIVE</span>' : ''}
-                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:${isChildSelected ? 'var(--text-main)' : 'var(--text-subtle)'};">${formatTime(childReq.timestamp)}</span>
-                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-left:auto;margin-right:6px;">${childReq.responseTime ? childReq.responseTime + 'ms' : 'active'}</span>
+                  <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-subtle);opacity:0.75;">#${childReq.id.slice(-6)}</span>
+                  <div style="margin-left:auto;margin-right:6px;">
+                    ${renderTimingCols(childReq, sessionBaseTime)}
+                  </div>
                   <div class="item-tags">
                     ${childReq.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
                     ${childReq.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
@@ -3709,6 +3861,180 @@ ws.on('message', (raw) => {
       }
     }
 
+    // Traffic List Column Controls
+    function initColumnControls() {
+      const btnColDur = document.getElementById('colToggleDuration');
+      const btnColTime = document.getElementById('colToggleTime');
+      const selTimeFmt = document.getElementById('timeFormatSelect');
+
+      function syncColHeaderUI() {
+        if (btnColDur) btnColDur.classList.toggle('active', !!state.columns.duration);
+        if (btnColTime) btnColTime.classList.toggle('active', !!state.columns.time);
+        if (selTimeFmt) selTimeFmt.value = state.columns.timeFormat || 'relative';
+      }
+
+      if (btnColDur) {
+        btnColDur.addEventListener('click', () => {
+          state.columns.duration = !state.columns.duration;
+          localStorage.setItem('mucker_columns_config', JSON.stringify(state.columns));
+          syncColHeaderUI();
+          renderRequestList();
+        });
+      }
+
+      if (btnColTime) {
+        btnColTime.addEventListener('click', () => {
+          state.columns.time = !state.columns.time;
+          localStorage.setItem('mucker_columns_config', JSON.stringify(state.columns));
+          syncColHeaderUI();
+          renderRequestList();
+        });
+      }
+
+      if (selTimeFmt) {
+        selTimeFmt.addEventListener('change', (e) => {
+          state.columns.timeFormat = e.target.value;
+          localStorage.setItem('mucker_columns_config', JSON.stringify(state.columns));
+          renderRequestList();
+        });
+      }
+
+      syncColHeaderUI();
+    }
+
+    // Draggable Resizer Splitters (Timeline Height & Sidebar Width)
+    function initPaneResizers() {
+      // 1. Horizontal Splitter: Timeline height
+      const resizerTimeline = document.getElementById('resizerTimeline');
+      const timelineCanvasWrapper = document.getElementById('timelineCanvasWrapper');
+      const savedTimelineHeight = localStorage.getItem('mucker_timeline_canvas_height');
+      if (savedTimelineHeight && timelineCanvasWrapper) {
+        timelineCanvasWrapper.style.height = `${savedTimelineHeight}px`;
+        if (window.timeline) {
+          setTimeout(() => timeline.resize(), 50);
+        }
+      }
+
+      if (resizerTimeline && timelineCanvasWrapper) {
+        let isDraggingH = false;
+        let startY = 0;
+        let startH = 0;
+
+        const onStartH = (clientY) => {
+          isDraggingH = true;
+          startY = clientY;
+          startH = timelineCanvasWrapper.getBoundingClientRect().height;
+          resizerTimeline.classList.add('dragging');
+          document.body.style.cursor = 'row-resize';
+          document.body.style.userSelect = 'none';
+        };
+
+        const onMoveH = (clientY) => {
+          if (!isDraggingH) return;
+          const delta = clientY - startY;
+          const newHeight = Math.max(36, Math.min(320, Math.round(startH + delta)));
+          timelineCanvasWrapper.style.height = `${newHeight}px`;
+          if (window.timeline) timeline.resize();
+        };
+
+        const onEndH = () => {
+          if (!isDraggingH) return;
+          isDraggingH = false;
+          resizerTimeline.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          const finalH = timelineCanvasWrapper.getBoundingClientRect().height;
+          localStorage.setItem('mucker_timeline_canvas_height', Math.round(finalH));
+          if (window.timeline) timeline.resize();
+        };
+
+        resizerTimeline.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          onStartH(e.clientY);
+        });
+        window.addEventListener('mousemove', (e) => {
+          if (isDraggingH) {
+            e.preventDefault();
+            onMoveH(e.clientY);
+          }
+        });
+        window.addEventListener('mouseup', onEndH);
+
+        resizerTimeline.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) onStartH(e.touches[0].clientY);
+        }, { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (isDraggingH && e.touches.length === 1) {
+            onMoveH(e.touches[0].clientY);
+          }
+        }, { passive: true });
+        window.addEventListener('touchend', onEndH);
+      }
+
+      // 2. Vertical Splitter: Sidebar width
+      const resizerSidebar = document.getElementById('resizerSidebar');
+      const sidebarPane = document.getElementById('sidebarPane');
+      const savedSidebarWidth = localStorage.getItem('mucker_sidebar_width');
+      if (savedSidebarWidth && sidebarPane) {
+        sidebarPane.style.width = `${savedSidebarWidth}px`;
+      }
+
+      if (resizerSidebar && sidebarPane) {
+        let isDraggingV = false;
+        let startX = 0;
+        let startW = 0;
+
+        const onStartV = (clientX) => {
+          isDraggingV = true;
+          startX = clientX;
+          startW = sidebarPane.getBoundingClientRect().width;
+          resizerSidebar.classList.add('dragging');
+          document.body.style.cursor = 'col-resize';
+          document.body.style.userSelect = 'none';
+        };
+
+        const onMoveV = (clientX) => {
+          if (!isDraggingV) return;
+          const delta = clientX - startX;
+          const maxW = Math.round(window.innerWidth * 0.75);
+          const newWidth = Math.max(260, Math.min(maxW, Math.round(startW + delta)));
+          sidebarPane.style.width = `${newWidth}px`;
+        };
+
+        const onEndV = () => {
+          if (!isDraggingV) return;
+          isDraggingV = false;
+          resizerSidebar.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+          const finalW = sidebarPane.getBoundingClientRect().width;
+          localStorage.setItem('mucker_sidebar_width', Math.round(finalW));
+        };
+
+        resizerSidebar.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          onStartV(e.clientX);
+        });
+        window.addEventListener('mousemove', (e) => {
+          if (isDraggingV) {
+            e.preventDefault();
+            onMoveV(e.clientX);
+          }
+        });
+        window.addEventListener('mouseup', onEndV);
+
+        resizerSidebar.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) onStartV(e.touches[0].clientX);
+        }, { passive: true });
+        window.addEventListener('touchmove', (e) => {
+          if (isDraggingV && e.touches.length === 1) {
+            onMoveV(e.touches[0].clientX);
+          }
+        }, { passive: true });
+        window.addEventListener('touchend', onEndV);
+      }
+    }
+
     // Keyboard Shortcuts (Impeccable UX)
     window.addEventListener('keydown', (e) => {
       // Cmd/Ctrl + K: Focus Search Filter
@@ -3729,12 +4055,14 @@ ws.on('message', (raw) => {
         } else if (state.selectedRequestId) {
           state.selectedRequestId = null;
           renderInspector();
-          renderRequestsTable();
+          renderRequestList();
         }
       }
     });
 
     // Start
+    initColumnControls();
+    initPaneResizers();
     connectWs();
     fetchInitialData();
   </script>
