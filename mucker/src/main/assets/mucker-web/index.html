@@ -24,6 +24,9 @@
       --primary: #6366f1;
       --primary-hover: #4f46e5;
       --primary-subtle: rgba(99, 102, 241, 0.15);
+
+      --accent: #38bdf8;
+      --accent-subtle: rgba(56, 189, 248, 0.15);
       
       --success: #10b981;
       --success-subtle: rgba(16, 185, 129, 0.15);
@@ -60,6 +63,9 @@
       --primary: #4f46e5;
       --primary-hover: #4338ca;
       --primary-subtle: rgba(79, 70, 229, 0.08);
+
+      --accent: #0284c7;
+      --accent-subtle: rgba(2, 132, 199, 0.12);
       
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
       --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -72,14 +78,19 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
     body {
       font-family: var(--font-sans);
       background-color: var(--bg-base);
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -93,6 +104,7 @@
       justify-content: space-between;
       padding: 0 16px;
       z-index: 20;
+      flex-shrink: 0;
     }
 
     .brand {
@@ -102,6 +114,7 @@
       font-weight: 700;
       font-size: 1.15rem;
       letter-spacing: -0.02em;
+      flex-shrink: 0;
     }
 
     .brand-logo {
@@ -118,13 +131,18 @@
     }
 
     .brand-badge {
-      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       padding: 2px 6px;
-      background: var(--primary-subtle);
-      color: var(--primary);
-      border-radius: 12px;
-      font-weight: 600;
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      user-select: none;
     }
 
     .header-actions {
@@ -276,7 +294,9 @@
 
     /* Main Container Split View */
     .app-main {
-      flex: 1;
+      flex: 1 1 0%;
+      min-height: 0;
+      min-width: 0;
       display: flex;
       overflow: hidden;
     }
@@ -290,6 +310,7 @@
       flex-direction: column;
       background: var(--bg-surface);
       flex-shrink: 0;
+      min-height: 0;
     }
 
     .sidebar-header {
@@ -346,7 +367,8 @@
     }
 
     .request-list {
-      flex: 1;
+      flex: 1 1 0%;
+      min-height: 0;
       overflow-y: auto;
       list-style: none;
     }
@@ -458,7 +480,9 @@
 
     /* Right Main Panel: Detail Inspector & Rules */
     .content-pane {
-      flex: 1;
+      flex: 1 1 0%;
+      min-height: 0;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       background: var(--bg-base);
@@ -473,6 +497,7 @@
       align-items: center;
       padding: 0 16px;
       gap: 16px;
+      flex-shrink: 0;
     }
 
     .tab-btn {
@@ -508,10 +533,14 @@
     }
 
     .tab-content {
-      flex: 1;
+      flex: 1 1 0%;
+      min-height: 0;
+      min-width: 0;
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 16px;
       display: none;
+      -webkit-overflow-scrolling: touch;
     }
 
     .tab-content.active {
@@ -835,10 +864,15 @@
       flex-direction: column;
       gap: 16px;
       width: 100%;
+      min-height: 0;
+      padding-bottom: 24px;
     }
 
     /* Mobile adjustments */
     @media (max-width: 768px) {
+      .brand-badge {
+        display: none;
+      }
       html, body {
         height: auto;
         min-height: 100%;
@@ -3403,11 +3437,10 @@ ws.on('message', (raw) => {
             <div class="card-header">
               <div style="display:flex;align-items:center;gap:8px;">
                 <span>Request Payload</span>
-                <span class="badge" style="font-size:0.68rem;background:rgba(56,189,248,0.15);color:var(--color-primary-400);">Payload</span>
+                <span class="badge" style="font-size:0.68rem;background:rgba(56,189,248,0.15);color:var(--accent);">Payload</span>
               </div>
               <div style="display:flex;gap:6px;">
-                <button class="btn btn-sm" id="btnFoldPayload" title="Fold / Collapse all blocks">▶ Fold All</button>
-                <button class="btn btn-sm" id="btnUnfoldPayload" title="Unfold / Expand all blocks">▼ Unfold All</button>
+                <button class="btn btn-sm" id="btnToggleFoldPayload" title="Fold / Collapse all blocks">▶ Fold</button>
                 <button class="btn btn-sm" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(req.postData)}'))">Copy</button>
               </div>
             </div>
@@ -3429,7 +3462,7 @@ ws.on('message', (raw) => {
                 ${isAlreadyMocked ? `
                   <span class="badge" style="font-size:0.7rem;background:rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35);">🟣 Mocked</span>
                 ` : `
-                  <span class="badge" style="font-size:0.7rem;background:rgba(245,158,11,0.15);color:var(--color-warning);border:1px solid rgba(245,158,11,0.3);">🌐 Live</span>
+                  <span class="badge" style="font-size:0.7rem;background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3);">🌐 Live</span>
                 `}
                 <span id="editorModifiedBadge" class="badge" style="display:none;font-size:0.68rem;background:rgba(239,68,68,0.2);color:#f87171;">● Unsaved</span>
               </div>
@@ -3437,8 +3470,7 @@ ws.on('message', (raw) => {
                 <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')" title="Save as mock rule (⌘S)">
                   ${isAlreadyMocked ? '💾 Save Mock' : '⚡ Mock (⌘S)'}
                 </button>
-                <button class="btn btn-sm" id="btnFoldAll" title="Fold / Collapse all JSON blocks">▶ Fold</button>
-                <button class="btn btn-sm" id="btnUnfoldAll" title="Unfold / Expand all JSON blocks">▼ Unfold</button>
+                <button class="btn btn-sm" id="btnToggleFold" title="Fold / Collapse all JSON blocks">▶ Fold</button>
                 <button class="btn btn-sm" id="btnFormatJson" title="Format JSON with 2-space indentation">Format</button>
                 <button class="btn btn-sm" id="btnCopyJson" title="Copy response to clipboard">Copy</button>
               </div>
@@ -3536,19 +3568,45 @@ ws.on('message', (raw) => {
           if (modBadge) modBadge.style.display = "inline-flex";
         });
 
-        const btnFold = document.getElementById("btnFoldAll");
-        if (btnFold) {
-          btnFold.onclick = () => {
-            state.activeCmEditor.execCommand("foldAll");
-            showToast("Folded all JSON blocks", "info");
-          };
+        function isCmDocFoldable(cm) {
+          if (!cm || cm.lineCount() <= 1) return false;
+          const text = cm.getValue();
+          return text.includes('{') || text.includes('[');
         }
-        const btnUnfold = document.getElementById("btnUnfoldAll");
-        if (btnUnfold) {
-          btnUnfold.onclick = () => {
-            state.activeCmEditor.execCommand("unfoldAll");
-            showToast("Unfolded all JSON blocks", "info");
-          };
+
+        function hasCmFoldedLines(cm) {
+          if (!cm) return false;
+          return cm.getAllMarks().some(m => m.__isFold);
+        }
+
+        const btnToggleFold = document.getElementById("btnToggleFold");
+        if (btnToggleFold) {
+          const isFoldable = isCmDocFoldable(state.activeCmEditor);
+          if (!isFoldable) {
+            btnToggleFold.disabled = true;
+            btnToggleFold.style.opacity = '0.45';
+            btnToggleFold.style.cursor = 'not-allowed';
+            btnToggleFold.title = "Not foldable (single-line or scalar)";
+          } else {
+            const updateFoldBtn = () => {
+              const isFolded = hasCmFoldedLines(state.activeCmEditor);
+              btnToggleFold.innerHTML = isFolded ? '▼ Unfold' : '▶ Fold';
+              btnToggleFold.title = isFolded ? 'Unfold / Expand all JSON blocks' : 'Fold / Collapse all JSON blocks';
+            };
+            btnToggleFold.onclick = () => {
+              if (hasCmFoldedLines(state.activeCmEditor)) {
+                state.activeCmEditor.execCommand("unfoldAll");
+                showToast("Unfolded all JSON blocks", "info");
+              } else {
+                state.activeCmEditor.execCommand("foldAll");
+                showToast("Folded all JSON blocks", "info");
+              }
+              updateFoldBtn();
+            };
+            state.activeCmEditor.on("fold", updateFoldBtn);
+            state.activeCmEditor.on("unfold", updateFoldBtn);
+            updateFoldBtn();
+          }
         }
         const btnFormat = document.getElementById("btnFormatJson");
         if (btnFormat) {
@@ -3577,17 +3635,32 @@ ws.on('message', (raw) => {
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
 
-        const btnFoldP = document.getElementById("btnFoldPayload");
-        if (btnFoldP) {
-          btnFoldP.onclick = () => {
-            state.activePayloadCm.execCommand("foldAll");
-          };
-        }
-        const btnUnfoldP = document.getElementById("btnUnfoldPayload");
-        if (btnUnfoldP) {
-          btnUnfoldP.onclick = () => {
-            state.activePayloadCm.execCommand("unfoldAll");
-          };
+        const btnToggleP = document.getElementById("btnToggleFoldPayload");
+        if (btnToggleP) {
+          const isFoldable = isCmDocFoldable(state.activePayloadCm);
+          if (!isFoldable) {
+            btnToggleP.disabled = true;
+            btnToggleP.style.opacity = '0.45';
+            btnToggleP.style.cursor = 'not-allowed';
+            btnToggleP.title = "Not foldable (single-line or scalar)";
+          } else {
+            const updateFoldP = () => {
+              const isFolded = hasCmFoldedLines(state.activePayloadCm);
+              btnToggleP.innerHTML = isFolded ? '▼ Unfold' : '▶ Fold';
+              btnToggleP.title = isFolded ? 'Unfold / Expand all blocks' : 'Fold / Collapse all blocks';
+            };
+            btnToggleP.onclick = () => {
+              if (hasCmFoldedLines(state.activePayloadCm)) {
+                state.activePayloadCm.execCommand("unfoldAll");
+              } else {
+                state.activePayloadCm.execCommand("foldAll");
+              }
+              updateFoldP();
+            };
+            state.activePayloadCm.on("fold", updateFoldP);
+            state.activePayloadCm.on("unfold", updateFoldP);
+            updateFoldP();
+          }
         }
       }
     }

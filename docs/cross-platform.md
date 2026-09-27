@@ -39,11 +39,11 @@ flowchart TD
 
 ## 1. Flutter & Dart: `dio` Interceptor Module
 
-Mucker provides first-class support for Flutter applications using the popular [`dio`](https://pub.dev/packages/dio) package, available either as a dedicated module [`mucker_dio`](https://github.com/yongjhih/mucker/tree/main/dart/mucker_dio) or bundled in [`mucker`](https://github.com/yongjhih/mucker/tree/main/dart/mucker).
+Mucker provides first-class support for Flutter applications using the popular [`dio`](https://pub.dev/packages/dio) package via the dedicated module [`mucker_dio`](https://github.com/yongjhih/mucker/tree/main/dart/mucker_dio).
 
 ### Installation
 
-Add `mucker_dio` (or `mucker`) to your Flutter / Dart `pubspec.yaml`:
+Add `mucker_dio` to your Flutter / Dart `pubspec.yaml`:
 
 ```yaml
 dependencies:
