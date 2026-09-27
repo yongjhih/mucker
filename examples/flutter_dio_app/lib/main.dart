@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:mucker_dio/mucker_dio.dart';
+import 'package:mucker/dio.dart';
 
 void main() {
   runApp(const MuckerFlutterDemoApp());

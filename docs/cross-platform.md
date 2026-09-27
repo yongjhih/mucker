@@ -37,19 +37,19 @@ flowchart TD
 
 ---
 
-## 1. Flutter & Dart: `dio` Interceptor Module
+## 1. Flutter & Dart: `dio` & `http` Interceptors
 
-Mucker provides first-class support for Flutter applications using the popular [`dio`](https://pub.dev/packages/dio) package via the dedicated module [`mucker_dio`](https://github.com/yongjhih/mucker/tree/main/dart/mucker_dio).
+Mucker provides first-class support for Flutter applications using [`dio`](https://pub.dev/packages/dio) and standard [`http`](https://pub.dev/packages/http) via the [`mucker`](https://github.com/yongjhih/mucker/tree/main/dart/mucker) Dart package.
 
 ### Installation
 
-Add `mucker_dio` to your Flutter / Dart `pubspec.yaml`:
+Add `mucker` to your Flutter / Dart `pubspec.yaml`:
 
 ```yaml
 dependencies:
   dio: ^5.4.0
-  mucker_dio:
-    path: ./dart/mucker_dio  # or git repository
+  mucker:
+    path: ./dart/mucker  # or git repository
 ```
 
 ### Usage with Dio
@@ -58,7 +58,7 @@ Simply register `MuckerDioInterceptor` in your Dio instance:
 
 ```dart
 import 'package:dio/dio.dart';
-import 'package:mucker_dio/mucker_dio.dart';
+import 'package:mucker/dio.dart';
 
 final dio = Dio();
 

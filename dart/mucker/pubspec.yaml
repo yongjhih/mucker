@@ -1,0 +1,14 @@
+name: mucker
+description: Zero-cert CDP-compatible network mock engine client and interceptors for Dart & Flutter (Dio & http).
+version: 1.0.0
+homepage: https://github.com/yongjhih/mucker
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  http: ^1.2.0
+  dio: ^5.4.0
+
+dev_dependencies:
+  test: ^1.25.0

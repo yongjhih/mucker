@@ -48,9 +48,9 @@ jobs:
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
 
-      - name: Test Flutter/Dart Dio Interceptor Module
+      - name: Test Flutter & Dart Mucker Client (Dio & http)
         run: |
-          cd dart/mucker_dio
+          cd dart/mucker
           dart pub get
           dart test
 

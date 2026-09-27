@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.4.0
-  mucker_dio:
-    path: ../../dart/mucker_dio
+  mucker:
+    path: ../../dart/mucker
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,6 @@
 # Mucker Flutter Dio Demo App
 
-A sample Flutter application demonstrating zero-certificate HTTP traffic inspection, dynamic mocking, breakpoints, and chaos fault injection using [`mucker_dio`](../../dart/mucker_dio) with [Dio](https://pub.dev/packages/dio).
+A sample Flutter application demonstrating zero-certificate HTTP traffic inspection, dynamic mocking, breakpoints, and chaos fault injection using [`mucker`](../../dart/mucker) with [Dio](https://pub.dev/packages/dio).
 
 ---
 
