@@ -33,6 +33,16 @@ npm run demo
 > 3. Click the request, **directly edit the JSON response** in the CodeMirror editor (no button required), and press `⌘S` or `Ctrl+Enter`.
 > 4. Tap the button again on the Android phone — your mocked JSON payload is served immediately!
 
+<div class="browser-frame" style="margin: 24px 0;">
+  <div class="browser-header">
+    <span class="term-dot red"></span>
+    <span class="term-dot yellow"></span>
+    <span class="term-dot green"></span>
+    <div class="browser-address">http://localhost:8080 — Mucker Web Dashboard</div>
+  </div>
+  <img src="{{ '/assets/images/dashboard-desktop-live.png' | relative_url }}" alt="Mucker Desktop Web Dashboard with Live CodeMirror Mock Editor" style="width:100%;height:auto;display:block;">
+</div>
+
 ---
 
 ### Option B: Zero-Install Cloud Dev Container (GitHub Codespaces)

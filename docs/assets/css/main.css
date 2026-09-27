@@ -586,6 +586,131 @@ a:hover {
   flex-shrink: 0;
 }
 
+/* Dashboard Screenshots Showcase */
+.dashboard-showcase {
+  margin-top: 48px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.showcase-title-group h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.showcase-title-group p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.showcase-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-surface-elevated);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+}
+
+.showcase-tab-btn {
+  background: none;
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.showcase-tab-btn:hover {
+  color: var(--text-main);
+}
+
+.showcase-tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+.showcase-panel {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+.showcase-panel.active {
+  display: flex;
+}
+
+.browser-frame {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: #090d16;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+}
+
+.browser-header {
+  background: var(--bg-surface-elevated);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.browser-address {
+  margin-left: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  flex: 1;
+  max-width: 400px;
+}
+
+.browser-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.showcase-caption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Documentation Layout */
 .doc-container {
   max-width: 1300px;

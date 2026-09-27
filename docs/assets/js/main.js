@@ -223,10 +223,35 @@
     }
   }
 
+  // Showcase Tab Switcher
+  function initShowcaseTabs() {
+    const tabBtns = document.querySelectorAll('.showcase-tab-btn');
+    if (!tabBtns.length) return;
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.showcase;
+        if (!targetId) return;
+
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.showcase-panel').forEach(panel => {
+          if (panel.id === targetId) {
+            panel.classList.add('active');
+          } else {
+            panel.classList.remove('active');
+          }
+        });
+      });
+    });
+  }
+
   // Initial render
   function initPage() {
     renderMermaidDiagrams();
     applySyntaxHighlighting();
+    initShowcaseTabs();
   }
 
   if (document.readyState === 'loading') {

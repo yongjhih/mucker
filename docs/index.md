@@ -164,6 +164,77 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
       </ul>
     </div>
   </div>
+
+  <!-- Interactive Dashboard Screenshots Showcase -->
+  <div class="dashboard-showcase">
+    <div class="showcase-header">
+      <div class="showcase-title-group">
+        <h3>Live Dashboard &amp; Inspector Showcase</h3>
+        <p>Watch network requests stream onto the waterfall timeline, inspect headers, and edit mock responses in-place.</p>
+      </div>
+      <div class="showcase-tabs">
+        <button class="showcase-tab-btn active" data-showcase="panel-desktop">Desktop Dashboard</button>
+        <button class="showcase-tab-btn" data-showcase="panel-hover">Waterfall Vivid Hover</button>
+        <button class="showcase-tab-btn" data-showcase="panel-mobile">Mobile In-App</button>
+      </div>
+    </div>
+
+    <!-- Panel 1: Desktop Live Inspector -->
+    <div class="showcase-panel active" id="panel-desktop">
+      <div class="browser-frame">
+        <div class="browser-header">
+          <span class="term-dot red"></span>
+          <span class="term-dot yellow"></span>
+          <span class="term-dot green"></span>
+          <div class="browser-address">http://localhost:8080 &mdash; Mucker Web Dashboard</div>
+        </div>
+        <img src="{{ '/assets/images/dashboard-desktop-live.png' | relative_url }}" alt="Mucker Desktop Web Dashboard with Live CodeMirror Mock Editor" loading="lazy">
+      </div>
+      <div class="showcase-caption">
+        <span><strong>Direct In-Place Response Editing:</strong> Click any request and edit JSON immediately in CodeMirror without any "Enter Edit Mode" button barrier. Press <code>&#8984;S</code> / <code>Ctrl+Enter</code> to activate the mock rule live.</span>
+        <a href="{{ '/dashboard/' | relative_url }}" class="btn btn-sm" style="color:var(--accent);">Open Live Demo &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Panel 2: Waterfall Vivid Hover Guideline -->
+    <div class="showcase-panel" id="panel-hover">
+      <div class="browser-frame">
+        <div class="browser-header">
+          <span class="term-dot red"></span>
+          <span class="term-dot yellow"></span>
+          <span class="term-dot green"></span>
+          <div class="browser-address">http://localhost:8080 &mdash; Waterfall Bi-Directional Hover</div>
+        </div>
+        <img src="{{ '/assets/images/dashboard-hover-highlight.png' | relative_url }}" alt="Mucker Timeline Waterfall with Vivid Hover Highlight" loading="lazy">
+      </div>
+      <div class="showcase-caption">
+        <span><strong>Bi-Directional Hover Guideline:</strong> Hovering any list item dims background bars, projects a vertical dashed cyan guide, displays a ruler timestamp badge (<code>+1.87s</code>), and renders a floating popover tooltip.</span>
+      </div>
+    </div>
+
+    <!-- Panel 3: Mobile In-App WebView & Demo -->
+    <div class="showcase-panel" id="panel-mobile">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;align-items:start;">
+        <div class="browser-frame">
+          <div class="browser-header">
+            <span class="term-dot green"></span>
+            <div class="browser-address">Android Notification &gt; In-App WebView</div>
+          </div>
+          <img src="{{ '/assets/images/dashboard-inapp-mobile.png' | relative_url }}" alt="Mucker In-App WebView Dashboard on Android" loading="lazy">
+        </div>
+        <div class="browser-frame">
+          <div class="browser-header">
+            <span class="term-dot green"></span>
+            <div class="browser-address">Mucker Demo App (MainActivity)</div>
+          </div>
+          <img src="{{ '/assets/images/demo-app-native.png' | relative_url }}" alt="Mucker Native Demo App with Test Buttons" loading="lazy">
+        </div>
+      </div>
+      <div class="showcase-caption">
+        <span><strong>Zero Setup on Phone:</strong> Tap the "Mucker Active" system notification to open the full dashboard in an in-app WebView without leaving your app, or test endpoints directly in the demo.</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Features Section -->
