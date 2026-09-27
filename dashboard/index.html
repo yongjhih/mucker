@@ -414,18 +414,21 @@
     .request-item:hover,
     .request-item.hovered {
       background: var(--bg-surface-elevated);
-      border-left: 3px solid var(--accent);
+      border-left: 1px solid var(--accent);
+      box-shadow: inset 2px 0 0 var(--accent);
     }
 
     .request-item.selected {
       background: var(--primary-subtle);
-      border-left: 3px solid var(--primary) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
 
     .request-item.selected:hover,
     .request-item.selected.hovered {
       background: rgba(99, 102, 241, 0.22);
-      border-left: 3px solid var(--primary) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
 
     .request-item.paused {
@@ -1105,23 +1108,27 @@
     /* Aggregated Consecutive Endpoints */
     .request-item.request-group-header {
       background: var(--bg-surface);
-      border-left: 3px solid var(--accent);
+      border-left: 1px solid var(--accent);
+      box-shadow: inset 2px 0 0 var(--accent);
     }
     .request-item.request-group-header:hover,
     .request-item.request-group-header.hovered {
       background: var(--bg-surface-elevated);
-      border-left: 3px solid var(--accent) !important;
+      border-left: 1px solid var(--accent) !important;
+      box-shadow: inset 2px 0 0 var(--accent);
     }
     .request-item.request-group-header.selected:not(.expanded) {
       background: var(--primary-subtle) !important;
-      border-left: 3px solid var(--primary) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
     .request-item.request-group-header.expanded {
       background: var(--bg-surface-elevated);
       border-bottom: 1px dashed var(--border-subtle);
     }
     .request-item.request-group-header.expanded.has-child-selected {
-      border-left: 3px solid var(--primary) !important;
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
       background: rgba(99, 102, 241, 0.08) !important;
     }
     .request-item.request-group-header.expanded:hover,
@@ -1162,7 +1169,7 @@
     .request-item.request-child-item {
       padding-left: 28px !important;
       background: var(--bg-base);
-      border-left: 2px dashed var(--border-color);
+      border-left: 1px dashed var(--border-color);
       margin-left: 12px;
       margin-right: 8px;
       border-radius: 0;
@@ -1172,12 +1179,13 @@
     .request-item.request-child-item:hover,
     .request-item.request-child-item.hovered {
       background: var(--bg-surface-elevated) !important;
-      border-left: 2px solid var(--accent) !important;
+      border-left: 1px solid var(--accent) !important;
+      box-shadow: inset 2px 0 0 var(--accent);
     }
     .request-item.request-child-item.selected {
       background: rgba(99, 102, 241, 0.22) !important;
-      border-left: 3px solid var(--primary) !important;
-      box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.4);
+      border-left: 1px solid var(--primary) !important;
+      box-shadow: inset 2px 0 0 var(--primary);
     }
     .request-item.request-child-item:last-child {
       border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -1456,22 +1464,22 @@
     }
 
     .timeline-tooltip {
-      position: absolute;
+      position: fixed;
       pointer-events: none;
-      z-index: 50;
+      z-index: 10000;
       background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-color);
       border-radius: var(--radius-sm);
       padding: 6px 10px;
       font-size: 0.72rem;
       color: var(--text-main);
-      box-shadow: var(--shadow-lg);
-      transform: translate(-50%, -120%);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
       white-space: nowrap;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
       font-family: var(--font-sans);
+      backdrop-filter: blur(8px);
     }
 
     .timeline-tooltip-method {
@@ -2237,9 +2245,71 @@ ws.on('message', (raw) => {
         this.draw();
       }
 
+      showTooltipForRequest(req, customX = null, customY = null) {
+        if (!this.tooltip || !req) return;
+        const relSec = ((req.timestamp - this.minTime) / 1000).toFixed(2);
+        
+        let targetX = customX;
+        let targetY = customY;
+        if (targetX === null || targetY === null) {
+          const reqs = state.requests || [];
+          const idx = reqs.findIndex(r => r.id === req.id);
+          const numLanes = Math.max(3, Math.floor((this.height - 28) / 12));
+          const lane = idx >= 0 ? (idx % numLanes) : 0;
+          const dur = Math.max(req.responseTime || 20, 15);
+          const x1 = this.timeToX(req.timestamp);
+          const x2 = this.timeToX(req.timestamp + dur);
+          const barW = Math.max(x2 - x1, 5);
+          targetX = x1 + barW / 2;
+          targetY = 24 + lane * 12;
+        }
+
+        const rect = this.canvas.getBoundingClientRect();
+        const clientX = rect.left + targetX;
+        const clientY = rect.top + targetY;
+
+        const safeX = Math.min(window.innerWidth - 170, Math.max(170, clientX));
+        this.tooltip.style.left = `${safeX}px`;
+
+        if (targetY < 55) {
+          this.tooltip.style.transform = 'translate(-50%, 14px)';
+          this.tooltip.style.top = `${clientY}px`;
+        } else {
+          this.tooltip.style.transform = 'translate(-50%, -115%)';
+          this.tooltip.style.top = `${clientY}px`;
+        }
+
+        this.tooltip.style.display = 'flex';
+        this.tooltip.innerHTML = `
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="timeline-tooltip-method method-${(req.method||'GET').toLowerCase()}">${req.method||'GET'}</span>
+            <span style="font-weight:700;">${req.statusCode || (req.isPaused ? 'PAUSED' : 'PENDING')}</span>
+            ${req.isMocked ? '<span style="color:var(--accent);font-weight:700;">[MOCKED]</span>' : ''}
+          </div>
+          <div class="timeline-tooltip-url">${escapeHtml(req.url)}</div>
+          <div class="timeline-tooltip-timing">Start: +${relSec}s • Duration: ${req.responseTime ? req.responseTime + 'ms' : 'active'}</div>
+        `;
+      }
+
+      hideTooltip() {
+        if (this.tooltip) {
+          this.tooltip.style.display = 'none';
+        }
+      }
+
+      ensureVisible(timestamp) {
+        if (!timestamp || this.viewTimeStart === null || this.viewTimeEnd === null) return;
+        const span = this.viewTimeEnd - this.viewTimeStart;
+        if (timestamp < this.viewTimeStart || timestamp > this.viewTimeEnd) {
+          this.viewTimeStart = timestamp - span * 0.35;
+          this.viewTimeEnd = this.viewTimeStart + span;
+        }
+      }
+
       setHoveredRequests(ids, syncList = true) {
         if (!ids) {
           this.hoveredRequestIds = null;
+          this.hideTooltip();
         } else if (ids instanceof Set) {
           this.hoveredRequestIds = ids;
         } else if (Array.isArray(ids)) {
@@ -2247,14 +2317,32 @@ ws.on('message', (raw) => {
         } else {
           this.hoveredRequestIds = new Set([ids]);
         }
+
+        const firstId = this.hoveredRequestIds ? this.hoveredRequestIds.values().next().value : null;
+        const firstReq = firstId && state.requests ? state.requests.find(r => r.id === firstId) : null;
+
+        if (firstReq) {
+          this.ensureVisible(firstReq.timestamp);
+          this.showTooltipForRequest(firstReq);
+        } else {
+          this.hideTooltip();
+        }
+
         this.draw();
+
         if (syncList && typeof highlightListItem === 'function') {
-          const firstId = this.hoveredRequestIds ? this.hoveredRequestIds.values().next().value : null;
           highlightListItem(firstId);
         }
       }
 
       highlightRequest(id) {
+        if (id && state.requests) {
+          const req = state.requests.find(r => r.id === id);
+          if (req) {
+            this.ensureVisible(req.timestamp);
+            this.showTooltipForRequest(req);
+          }
+        }
         this.draw();
       }
 
@@ -2352,6 +2440,9 @@ ws.on('message', (raw) => {
         // Draw Waterfall Request Bars
         const reqs = state.requests || [];
         const numLanes = Math.max(3, Math.floor((this.height - 28) / 12));
+        const hasHover = this.hoveredRequestIds && this.hoveredRequestIds.size > 0;
+        const hoveredEntries = [];
+
         for (let i = 0; i < reqs.length; i++) {
           const req = reqs[i];
           const x1 = this.timeToX(req.timestamp);
@@ -2367,44 +2458,84 @@ ws.on('message', (raw) => {
           else if (Number(req.statusCode) >= 400) color = '#ef4444';
           else if (Number(req.statusCode) >= 200) color = '#10b981';
 
-          const isHovered = this.hoveredRequestIds && this.hoveredRequestIds.has(req.id);
+          const isHovered = hasHover && this.hoveredRequestIds.has(req.id);
           const isSelected = req.id === state.selectedRequestId;
 
-          // Vertical indicator guideline across timeline height when hovered
           if (isHovered) {
-            ctx.save();
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(x1, 20);
-            ctx.lineTo(x1, this.height);
-            ctx.stroke();
-            ctx.restore();
+            hoveredEntries.push({ req, x1, y, barW, color, isSelected });
+            continue; // Defer hovered items to draw on top layer!
+          }
+
+          ctx.save();
+          // Dim non-hovered bars when there is an active hover
+          if (hasHover) {
+            ctx.globalAlpha = 0.22;
           }
 
           ctx.fillStyle = color;
           drawRoundRect(ctx, x1, y, barW, 9, 2);
           ctx.fill();
 
-          // Hover highlight outline (linked with traffic list)
-          if (isHovered) {
-            ctx.save();
-            ctx.strokeStyle = '#38bdf8';
-            ctx.lineWidth = 2;
-            ctx.shadowColor = 'rgba(56, 189, 248, 0.55)';
-            ctx.shadowBlur = 6;
-            drawRoundRect(ctx, x1 - 2, y - 2, barW + 4, 13, 3);
-            ctx.stroke();
-            ctx.restore();
-          }
-
-          // Selection highlight
           if (isSelected) {
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 1.5;
             drawRoundRect(ctx, x1 - 1, y - 1, barW + 2, 11, 3);
             ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // Draw Hovered Items On Top Layer
+        if (hoveredEntries.length > 0) {
+          for (const item of hoveredEntries) {
+            const { req, x1, y, barW, color, isSelected } = item;
+
+            // 1. Vertical Guideline from ruler to canvas bottom
+            ctx.save();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.75)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(x1, 20);
+            ctx.lineTo(x1, this.height);
+            ctx.stroke();
+            ctx.restore();
+
+            // 2. Ruler time badge at x1
+            ctx.save();
+            const relMs = req.timestamp - this.minTime;
+            const sec = (relMs / 1000).toFixed(2);
+            const badgeText = `+${sec}s`;
+            ctx.font = 'bold 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+            const badgeW = ctx.measureText(badgeText).width + 8;
+            ctx.fillStyle = '#0284c7';
+            drawRoundRect(ctx, x1 - badgeW / 2, 3, badgeW, 14, 3);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.fillText(badgeText, x1, 13);
+            ctx.restore();
+
+            // 3. Highlighted Waterfall Bar (Glow + Fill + Crisp Ring)
+            ctx.save();
+            ctx.shadowColor = '#38bdf8';
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = color;
+            drawRoundRect(ctx, x1 - 1, y - 2, barW + 2, 13, 3);
+            ctx.fill();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.5;
+            drawRoundRect(ctx, x1 - 2, y - 3, barW + 4, 15, 4);
+            ctx.stroke();
+
+            if (isSelected) {
+              ctx.strokeStyle = '#facc15';
+              ctx.lineWidth = 2;
+              drawRoundRect(ctx, x1 - 3, y - 4, barW + 6, 17, 5);
+              ctx.stroke();
+            }
+            ctx.restore();
           }
         }
 
@@ -2554,24 +2685,10 @@ ws.on('message', (raw) => {
             // Check tooltip hover & linked item highlight
             const reqHit = this.findRequestAt(x, y);
             if (reqHit) {
-              if (this.tooltip) {
-                const relSec = ((reqHit.timestamp - this.minTime) / 1000).toFixed(2);
-                this.tooltip.style.display = 'flex';
-                this.tooltip.style.left = `${Math.min(this.width - 150, Math.max(10, x))}px`;
-                this.tooltip.style.top = `${y}px`;
-                this.tooltip.innerHTML = `
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <span class="timeline-tooltip-method method-${(reqHit.method||'GET').toLowerCase()}">${reqHit.method||'GET'}</span>
-                    <span style="font-weight:700;">${reqHit.statusCode || (reqHit.isPaused ? 'PAUSED' : 'PENDING')}</span>
-                    ${reqHit.isMocked ? '<span style="color:var(--accent);font-weight:700;">[MOCKED]</span>' : ''}
-                  </div>
-                  <div class="timeline-tooltip-url">${escapeHtml(reqHit.url)}</div>
-                  <div class="timeline-tooltip-timing">Start: +${relSec}s • Duration: ${reqHit.responseTime ? reqHit.responseTime + 'ms' : 'active'}</div>
-                `;
-              }
+              this.showTooltipForRequest(reqHit, x, y);
               this.setHoveredRequests(new Set([reqHit.id]), true);
             } else {
-              if (this.tooltip) this.tooltip.style.display = 'none';
+              this.hideTooltip();
               if (this.hoveredRequestIds) {
                 this.setHoveredRequests(null, true);
               }
@@ -3272,6 +3389,26 @@ ws.on('message', (raw) => {
       if (itemEl && typeof itemEl.scrollIntoViewIfNeeded === 'function') {
         itemEl.scrollIntoViewIfNeeded(false);
       }
+    }
+
+    let lastHoverKey = null;
+    if (requestList) {
+      requestList.addEventListener('mouseover', (e) => {
+        const item = e.target.closest('.request-item');
+        if (item) {
+          const id = item.dataset.reqId;
+          const groupIds = item.dataset.groupReqIds ? item.dataset.groupReqIds.split(',') : null;
+          const key = groupIds ? groupIds.join(',') : id;
+          if (key && key !== lastHoverKey) {
+            lastHoverKey = key;
+            setListHover(groupIds || id);
+          }
+        }
+      });
+      requestList.addEventListener('mouseleave', () => {
+        lastHoverKey = null;
+        clearListHover();
+      });
     }
 
     // Render Request List with Consecutive Endpoints Aggregation & Configurable Columns

@@ -1,13 +1,15 @@
 {
   "name": "mucker-chaos-ci",
   "version": "1.0.0",
-  "description": "Chaos network injection in CI/CD for Android testing using Mucker and CDP",
+  "description": "Chaos network injection in CI/CD for Android testing using Mucker, Playwright, and Puppeteer",
   "type": "module",
   "scripts": {
     "chaos": "node chaos-injector.mjs",
+    "chaos:playwright": "node playwright-chaos.mjs",
     "chaos:puppeteer": "node puppeteer-chaos.mjs"
   },
   "dependencies": {
+    "playwright-core": "^1.42.0",
     "puppeteer-core": "^22.0.0",
     "ws": "^8.16.0"
   },
@@ -19,7 +21,8 @@
     "playwright",
     "puppeteer",
     "testing",
-    "ci-cd"
+    "ci-cd",
+    "qa-automation"
   ],
   "author": "Mucker Authors",
   "license": "Apache-2.0"

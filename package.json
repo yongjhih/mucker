@@ -10,6 +10,8 @@
   "scripts": {
     "demo": "./scripts/quickstart.sh",
     "chaos": "node examples/chaos-ci/chaos-injector.mjs",
+    "chaos:playwright": "node examples/chaos-ci/playwright-chaos.mjs",
+    "chaos:puppeteer": "node examples/chaos-ci/puppeteer-chaos.mjs",
     "build:dashboard": "npm run build --workspace=dashboard && npm run copy:dashboard",
     "copy:dashboard": "node -e \"const fs = require('fs'); const path = require('path'); const src = path.join('dashboard', 'dist', 'index.html'); const targets = [path.join('mucker-dashboard', 'src', 'main', 'assets', 'mucker-web'), path.join('mucker', 'src', 'main', 'assets', 'mucker-web'), path.join('docs', 'dashboard')]; targets.forEach(t => { fs.mkdirSync(t, { recursive: true }); fs.copyFileSync(src, path.join(t, 'index.html')); }); console.log('Copied dashboard single-bundle to Android assets & docs!');\"",
     "build:cli": "npm run build --workspace=cli",

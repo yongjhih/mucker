@@ -117,16 +117,80 @@ asyncio.run(run_mucker_test())
 
 ## 4. Playwright & Puppeteer Chaos Engineering in CI/CD
 
-Mucker provides ready-to-run chaos injection scripts (`examples/chaos-ci/`) to test app fault-tolerance directly inside GitHub Actions or GitLab CI.
+Mucker provides ready-to-run chaos injection scripts in `examples/chaos-ci/` tailored specifically for **QA Engineers, SDETs, and Mobile DevOps** to test app fault-tolerance directly inside GitHub Actions, GitLab CI, or local test suites.
 
-### Puppeteer CDP Session Chaos Injection
+### Why QA & Automation Teams Choose Mucker over Traditional Proxies
+
+| Feature | Charles / Proxyman / Mitmproxy | Mucker (CDP OkHttp Engine) |
+|---|---|---|
+| **Root CA Certificate** | Mandatory (Fails on Android 7+ without custom XML) | **Zero CA Certificates Required** |
+| **Network Security Config** | Requires modifying `res/xml/network_security_config.xml` | **Zero App XML Changes** |
+| **SSL Pinning Conflict** | Breaks pinning or requires risky bypasses | **Preserves native SSL verification** |
+| **Automation Protocol** | Proprietary CLI or separate proxy daemon | **Standard Chrome DevTools Protocol (CDP)** |
+| **Scripting Ecosystem** | Custom addons / Python proxies | **Playwright, Puppeteer, Node.js, Python** |
+| **CI/CD Flakiness** | High (Proxy port collisions, cert trust failures) | **Zero (Runs embedded inside debug APK)** |
+
+---
+
+### Playwright CDP Chaos Injection (`playwright-chaos.mjs`)
+
+QA teams can use Playwright's `chromium.connectOverCDP` or `CDPSession` to intercept Android OkHttp calls in automated test pipelines:
 
 ```javascript
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright-core';
+
+// Connect Playwright directly to Mucker on the Android device
+const browser = await chromium.connectOverCDP('http://127.0.0.1:8080');
+const context = browser.contexts()[0];
+const page = context.pages()[0] || (await context.newPage());
+const client = await context.newCDPSession(page);
+
+// Enable CDP Fetch domain for all network routes
+await client.send('Fetch.enable', {
+  patterns: [{ urlPattern: '*' }]
+});
+
+// Intercept requests and randomly inject 500s or simulated timeouts
+client.on('Fetch.requestPaused', async (event) => {
+  const { requestId, request } = event;
+  const isChaos500 = Math.random() < 0.25; // 25% HTTP 500
+  const isTimeout = Math.random() < 0.15;  // 15% Gateway Timeout
+
+  if (isChaos500) {
+    console.log(`[Playwright Chaos] Injected 500 into ${request.method} ${request.url}`);
+    await client.send('Fetch.fulfillRequest', {
+      requestId,
+      responseCode: 500,
+      responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+      body: Buffer.from(JSON.stringify({ error: 'Playwright Injected Server Error' })).toString('base64')
+    });
+  } else if (isTimeout) {
+    console.log(`[Playwright Chaos] Delaying ${request.url} by 4000ms (Simulated Timeout)`);
+    setTimeout(async () => {
+      await client.send('Fetch.fulfillRequest', {
+        requestId,
+        responseCode: 504,
+        responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+        body: Buffer.from(JSON.stringify({ error: 'Gateway Timeout' })).toString('base64')
+      }).catch(() => {});
+    }, 4000);
+  } else {
+    // Normal pass-through
+    await client.send('Fetch.continueRequest', { requestId });
+  }
+});
+```
+
+---
+
+### Puppeteer CDP Chaos Injection (`puppeteer-chaos.mjs`)
+
+```javascript
+import puppeteer from 'puppeteer-core';
 
 // Connect Puppeteer directly to Mucker's CDP WebSocket on the Android device
 const browser = await puppeteer.connect({
-  browserWSEndpoint: 'ws://localhost:8080/devtools/page'
+  browserWSEndpoint: 'ws://127.0.0.1:8080/devtools/page'
 });
 
 const pages = await browser.pages();
@@ -134,34 +198,32 @@ const client = await pages[0].target().createCDPSession();
 
 // Enable network interception
 await client.send('Fetch.enable', {
-  patterns: [{ urlPattern: '*' }]
+  patterns: [{ urlPattern: '*/checkout*' }]
 });
 
-// Randomly inject 500 errors and artificial latency
+// Intercept checkout request and mock failure
 client.on('Fetch.requestPaused', async (event) => {
-  const isChaos = Math.random() < 0.35; // 35% error rate
-
-  if (isChaos) {
-    console.log(`[Chaos] Injecting HTTP 500 into ${event.request.url}`);
-    await client.send('Fetch.fulfillRequest', {
-      requestId: event.requestId,
-      responseCode: 500,
-      responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
-      body: Buffer.from(JSON.stringify({ error: 'Chaos Injected Failure' })).toString('base64')
-    });
-  } else {
-    await client.send('Fetch.continueRequest', { requestId: event.requestId });
-  }
+  console.log(`[Puppeteer Chaos] Simulating payment gateway outage for ${event.request.url}`);
+  await client.send('Fetch.fulfillRequest', {
+    requestId: event.requestId,
+    responseCode: 500,
+    responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+    body: Buffer.from(JSON.stringify({ error: 'Payment Gateway Down', retryable: false })).toString('base64')
+  });
 });
 ```
 
-### One-Command Chaos Execution
-Run the zero-dependency built-in chaos injector against your connected Android app or emulator:
+### Running Chaos Scripts
 
 ```bash
-npm run chaos
-# or
-node examples/chaos-ci/chaos-injector.mjs
+# Playwright Chaos Runner
+npm run chaos:playwright
+
+# Puppeteer Chaos Runner
+npm run chaos:puppeteer
+
+# Zero-dependency Built-in Chaos Injector (pure WebSocket)
+npm run chaos -- --rate=0.35 --timeout=4000
 ```
 
 ---
