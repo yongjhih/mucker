@@ -869,48 +869,65 @@
       }
     }
 
-    /* Timeline Component - Dedicated Controls Header Row Above Scale Ruler */
+    /* Timeline Component - Floating Controls in Bottom-Left Corner (Clear of Top Scale Ruler) */
     .timeline-container {
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-color);
       position: relative;
       user-select: none;
-      display: flex;
-      flex-direction: column;
+      height: 84px;
+      overflow: hidden;
       flex-shrink: 0;
+      transition: height 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .timeline-container.collapsed .timeline-canvas-wrapper {
-      display: none !important;
+    .timeline-container.collapsed {
+      height: 28px !important;
     }
 
     .timeline-container.hidden {
       display: none !important;
     }
 
-    .timeline-header-bar {
-      height: 28px;
-      min-height: 28px;
-      max-height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 10px;
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border-subtle);
-      font-size: 0.74rem;
-      user-select: none;
-      flex-shrink: 0;
-    }
-
     .timeline-canvas-wrapper {
       position: relative;
-      height: 66px;
+      height: 100%;
       width: 100%;
       background: var(--bg-base);
       cursor: crosshair;
       overflow: hidden;
+    }
+
+    /* Floating Toolbar anchored on Canvas Bottom-Left (Older Time Direction, Below Scale Ruler) */
+    .timeline-floating-bar {
+      position: absolute;
+      bottom: 5px;
+      left: 8px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 8px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      font-size: 0.74rem;
+      pointer-events: auto;
+      max-width: calc(100% - 16px);
+    }
+
+    [data-theme="light"] .timeline-floating-bar {
+      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .timeline-container.collapsed .timeline-floating-bar {
+      bottom: 2px;
+      padding: 1px 6px;
     }
 
     .timeline-meta {
@@ -1541,27 +1558,30 @@
     </div>
   </header>
 
-  <!-- Timeline Component with Dedicated Controls Row Above Canvas Ruler -->
+  <!-- Timeline Component with Floating Controls in Bottom-Left Corner (Clear of Top Scale Ruler) -->
   <div class="timeline-container" id="timelineContainer">
-    <div class="timeline-header-bar" id="timelineHeaderBar">
-      <div class="timeline-meta">
-        <span class="timeline-title">⏱ Waterfall</span>
-        <span class="timeline-stats" id="timelineStats">0 requests</span>
-        <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
-          <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
-          <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
-        </div>
-      </div>
-      <div class="timeline-controls">
-        <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
-        <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
-        <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
-        <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit</button>
-        <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
-      </div>
-    </div>
     <div class="timeline-canvas-wrapper" id="timelineCanvasWrapper">
       <canvas id="timelineCanvas"></canvas>
+
+      <!-- Floating Controls Anchored at Bottom-Left Corner -->
+      <div class="timeline-floating-bar" id="timelineFloatingBar">
+        <div class="timeline-meta">
+          <span class="timeline-title">⏱ Waterfall</span>
+          <span class="timeline-stats" id="timelineStats">0 requests</span>
+          <div class="timeline-selection-pill" id="timelineSelectionPill" style="display:none;">
+            <span id="timelineSelectionText">Range: 0.00s – 0.00s</span>
+            <button class="btn-clear-selection" id="btnClearTimeSelection" title="Clear time interval filter">✕</button>
+          </div>
+        </div>
+        <div class="timeline-controls">
+          <button class="timeline-ctrl-btn" id="btnZoomOut" title="Zoom Out (or mouse wheel down)">−</button>
+          <span class="zoom-display" id="zoomDisplay" title="Current Zoom Scale">1.0x</span>
+          <button class="timeline-ctrl-btn" id="btnZoomIn" title="Zoom In (or mouse wheel up)">+</button>
+          <button class="timeline-ctrl-btn" id="btnFitTimeline" title="Fit all requests in view">Fit</button>
+          <button class="timeline-ctrl-btn" id="btnCollapseTimeline" title="Collapse / Expand timeline">▲</button>
+        </div>
+      </div>
+
       <div id="timelineTooltip" class="timeline-tooltip" style="display:none;"></div>
     </div>
   </div>
@@ -2015,7 +2035,7 @@ ws.on('message', (raw) => {
         if (!this.wrapper) return;
         const rect = this.wrapper.getBoundingClientRect();
         this.width = rect.width;
-        this.height = rect.height || 66;
+        this.height = rect.height || 84;
         this.canvas.width = this.width * this.dpr;
         this.canvas.height = this.height * this.dpr;
         this.draw();
@@ -2148,7 +2168,8 @@ ws.on('message', (raw) => {
           const dur = Math.max(req.responseTime || 20, 20);
           const x2 = this.timeToX(req.timestamp + dur);
           const barW = Math.max(x2 - x1, 6);
-          const lane = i % 5;
+          const numLanes = Math.max(3, Math.floor((this.height - 28) / 12));
+          const lane = i % numLanes;
           const barY = 24 + lane * 12;
           if (x >= x1 - 3 && x <= x1 + barW + 3 && y >= barY && y <= barY + 11) {
             return req;
@@ -3906,16 +3927,16 @@ ws.on('message', (raw) => {
     function initPaneResizers() {
       // 1. Horizontal Splitter: Timeline height
       const resizerTimeline = document.getElementById('resizerTimeline');
-      const timelineCanvasWrapper = document.getElementById('timelineCanvasWrapper');
-      const savedTimelineHeight = localStorage.getItem('mucker_timeline_canvas_height');
-      if (savedTimelineHeight && timelineCanvasWrapper) {
-        timelineCanvasWrapper.style.height = `${savedTimelineHeight}px`;
+      const timelineContainer = document.getElementById('timelineContainer');
+      const savedTimelineHeight = localStorage.getItem('mucker_timeline_container_height');
+      if (savedTimelineHeight && timelineContainer) {
+        timelineContainer.style.height = `${savedTimelineHeight}px`;
         if (window.timeline) {
           setTimeout(() => timeline.resize(), 50);
         }
       }
 
-      if (resizerTimeline && timelineCanvasWrapper) {
+      if (resizerTimeline && timelineContainer) {
         let isDraggingH = false;
         let startY = 0;
         let startH = 0;
@@ -3923,7 +3944,7 @@ ws.on('message', (raw) => {
         const onStartH = (clientY) => {
           isDraggingH = true;
           startY = clientY;
-          startH = timelineCanvasWrapper.getBoundingClientRect().height;
+          startH = timelineContainer.getBoundingClientRect().height;
           resizerTimeline.classList.add('dragging');
           document.body.style.cursor = 'row-resize';
           document.body.style.userSelect = 'none';
@@ -3932,8 +3953,8 @@ ws.on('message', (raw) => {
         const onMoveH = (clientY) => {
           if (!isDraggingH) return;
           const delta = clientY - startY;
-          const newHeight = Math.max(36, Math.min(320, Math.round(startH + delta)));
-          timelineCanvasWrapper.style.height = `${newHeight}px`;
+          const newHeight = Math.max(50, Math.min(360, Math.round(startH + delta)));
+          timelineContainer.style.height = `${newHeight}px`;
           if (window.timeline) timeline.resize();
         };
 
@@ -3943,8 +3964,8 @@ ws.on('message', (raw) => {
           resizerTimeline.classList.remove('dragging');
           document.body.style.cursor = '';
           document.body.style.userSelect = '';
-          const finalH = timelineCanvasWrapper.getBoundingClientRect().height;
-          localStorage.setItem('mucker_timeline_canvas_height', Math.round(finalH));
+          const finalH = timelineContainer.getBoundingClientRect().height;
+          localStorage.setItem('mucker_timeline_container_height', Math.round(finalH));
           if (window.timeline) timeline.resize();
         };
 
