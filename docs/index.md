@@ -9,7 +9,9 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
   <div class="hero-tag">
     <span>⚡ Zero CA Certs Required</span>
     <span>•</span>
-    <span>Chrome DevTools Protocol (CDP)</span>
+    <span>One-Line Instant Demo</span>
+    <span>•</span>
+    <span>Cloud DevContainer Ready</span>
   </div>
 
   <h1>
@@ -22,15 +24,19 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
   </p>
 
   <div class="hero-cta">
-    <a href="{{ '/getting-started' | relative_url }}" class="btn btn-primary">
-      <span>Get Started</span>
+    <a href="#quickstart" class="btn btn-primary" style="font-weight: 700;">
+      <span>⚡ Instant Demo</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
     <a href="{{ '/dashboard/' | relative_url }}" class="btn btn-secondary" style="border-color: #6366f1; color: #818cf8; font-weight: 600;">
       <span>⚡ Live Dashboard</span>
     </a>
-    <a href="{{ '/cdp-history' | relative_url }}" class="btn btn-secondary">
-      <span>CDP Evolution & History</span>
+    <a href="https://codespaces.new/yongjhih/mucker" class="btn btn-secondary" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;" title="Open in GitHub Codespaces with zero local setup">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+      <span>Cloud DevContainer</span>
+    </a>
+    <a href="{{ '/getting-started' | relative_url }}" class="btn btn-secondary">
+      <span>Quickstart Docs</span>
     </a>
     <a href="https://github.com/yongjhih/mucker" class="btn btn-github" target="_blank" rel="noopener">
       <span>View on GitHub</span>
@@ -43,24 +49,122 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
       <span class="term-dot red"></span>
       <span class="term-dot yellow"></span>
       <span class="term-dot green"></span>
-      <span class="terminal-title">bash — mucker cli & cdp inspector</span>
+      <span class="terminal-title">bash — one-command automated demo &amp; dashboard</span>
     </div>
     <div class="terminal-body">
-      <div><span class="prompt">$</span> <span class="cmd">mucker forward</span></div>
-      <div class="res-green">✔ Detected 1 device: Pixel_8_Pro</div>
-      <div class="res-green">✔ Successfully forwarded tcp:8080 -> tcp:8080</div>
-      <div class="res-dim">Open Dashboard: http://localhost:8080</div>
+      <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/yongjhih/mucker.git &amp;&amp; cd mucker &amp;&amp; npm run demo</span></div>
       <br>
-      <div><span class="prompt">$</span> <span class="cmd">mucker rules add "/api/v1/user/profile" --status 200 --body '{"name":"Alex Mercer","role":"Lead"}'</span></div>
-      <div class="res-green">✔ Added mock rule [rule_user]: GET /api/v1/user/profile -> 200 OK</div>
-      <br>
-      <div><span class="prompt">$</span> <span class="cmd">mucker listen</span></div>
-      <div class="res-dim">Connecting to Mucker live event stream at ws://localhost:8080/devtools/page...</div>
-      <div><span class="res-purple">[MOCKED]</span> <span class="res-green">200</span> https://dummyjson.com/api/v1/user/profile <span class="res-dim">(2ms)</span></div>
-      <div><span class="res-yellow">[PAUSED]</span> POST https://dummyjson.com/api/v1/checkout <span class="res-dim">(Waiting for dev action...)</span></div>
+      <div class="res-dim">[1/5] Checking connected Android devices...</div>
+      <div class="res-green">✔ Found active Android device/emulator: Pixel_8_Pro (API 34)</div>
+      <div class="res-dim">[2/5] Compiling and installing Mucker Demo App (:app:installDebug)...</div>
+      <div class="res-green">✔ BUILD SUCCESSFUL in 2.6s (APK installed on device)</div>
+      <div class="res-dim">[3/5] Forwarding ADB port 8080 (tcp:8080 -> tcp:8080)...</div>
+      <div class="res-green">✔ Port forward active: localhost:8080 -> device:8080</div>
+      <div class="res-dim">[4/5] Launching Demo Application on device (io.github.mucker.demo)...</div>
+      <div class="res-dim">[5/5] Launching Mucker Web Dashboard in your browser...</div>
+      <div class="res-green" style="font-weight:700;">✔ Mucker is now live at http://localhost:8080!</div>
+      <div class="res-dim">Press endpoint buttons in the Android app to watch requests stream live onto the timeline!</div>
     </div>
   </div>
 </div>
+
+<!-- Quickstart Instant Experience Section -->
+<section id="quickstart" class="quickstart-section">
+  <div class="section-header">
+    <h2>🚀 60-Second Instant Experience</h2>
+    <p>Zero configuration, zero certificate installation. Run the demo locally in one command, or launch entirely in your browser with GitHub Codespaces.</p>
+  </div>
+
+  <div class="quickstart-grid">
+    <!-- Card 1: 1-Line Local Runner -->
+    <div class="quickstart-card featured">
+      <div class="quickstart-card-header">
+        <span class="quickstart-badge">⚡ Instant One-Liner</span>
+        <span style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">macOS / Linux</span>
+      </div>
+      <h3>One-Line Automated Demo</h3>
+      <p>No manual ADB configuration or Gradle wrangling required. One single command boots the emulator, installs the demo APK, forwards port 8080, and opens the Web Dashboard in your browser.</p>
+      
+      <div class="quickstart-code-box">
+        <code>npm run demo</code>
+        <button class="btn btn-sm" onclick="navigator.clipboard.writeText('npm run demo')" title="Copy command">Copy</button>
+      </div>
+
+      <ul class="quickstart-features-list">
+        <li><span class="bullet">✓</span> Auto-detects connected phone or starts local AVD emulator</li>
+        <li><span class="bullet">✓</span> Builds &amp; installs <code>:app:installDebug</code> in seconds</li>
+        <li><span class="bullet">✓</span> Auto-wires <code>adb forward tcp:8080 tcp:8080</code></li>
+        <li><span class="bullet">✓</span> Automatically opens <code>http://localhost:8080</code> in your browser</li>
+      </ul>
+    </div>
+
+    <!-- Card 2: Cloud DevContainer -->
+    <div class="quickstart-card">
+      <div class="quickstart-card-header">
+        <span class="quickstart-badge purple">☁️ Zero-Install Cloud</span>
+        <span style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">1-Click Browser</span>
+      </div>
+      <h3>GitHub Codespaces / Dev Container</h3>
+      <p>Don't have Android Studio, JDK 17, or Android SDK installed on your machine? Run everything inside a pre-built cloud container with zero local dependencies.</p>
+      
+      <div style="margin: 4px 0 8px;">
+        <a href="https://codespaces.new/yongjhih/mucker" target="_blank" rel="noopener">
+          <img src="https://github.com/codespaces/badge.svg" alt="Open in GitHub Codespaces" style="height: 32px;">
+        </a>
+      </div>
+
+      <ul class="quickstart-features-list">
+        <li><span class="bullet">✓</span> Pre-configured with Ubuntu 24.04, OpenJDK 17, Android SDK 34, Node 22</li>
+        <li><span class="bullet">✓</span> Auto-runs <code>./gradlew :app:assembleDebug</code> on container creation</li>
+        <li><span class="bullet">✓</span> Automatically forwards port 8080 for web dashboard preview</li>
+        <li><span class="bullet">✓</span> Also supports VS Code <em>Remote - Containers</em> locally</li>
+      </ul>
+    </div>
+
+    <!-- Card 3: Playwright & Puppeteer Chaos CI -->
+    <div class="quickstart-card">
+      <div class="quickstart-card-header">
+        <span class="quickstart-badge green">🎭 QA &amp; CI/CD Chaos</span>
+        <span style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">Automated Testing</span>
+      </div>
+      <h3>Playwright / Puppeteer Chaos</h3>
+      <p>Randomly inject HTTP 500 errors and 504 timeouts into native Android OkHttp in CI/CD using standard Node.js scripts without root or CA certificates.</p>
+      
+      <div class="quickstart-code-box">
+        <code>npm run chaos:playwright</code>
+        <button class="btn btn-sm" onclick="navigator.clipboard.writeText('npm run chaos:playwright')" title="Copy command">Copy</button>
+      </div>
+
+      <ul class="quickstart-features-list">
+        <li><span class="bullet">✓</span> Connects over CDP (<code>chromium.connectOverCDP</code>)</li>
+        <li><span class="bullet">✓</span> Random fault injection: HTTP 500, 504 Timeout, 429 Rate Limit</li>
+        <li><span class="bullet">✓</span> Verifies app recovery, retry buttons, and error UI in CI/CD</li>
+        <li><span class="bullet">✓</span> Zero certificates or proxy servers to maintain</li>
+      </ul>
+    </div>
+
+    <!-- Card 4: Zero-Friction Live Response Mocking -->
+    <div class="quickstart-card">
+      <div class="quickstart-card-header">
+        <span class="quickstart-badge">✏️ Direct In-Place Editing</span>
+        <span style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">Impeccable UX</span>
+      </div>
+      <h3>Zero-Friction Live Mocking</h3>
+      <p>No extra "Enter Edit Mode" button barrier. Select any network request from the list and immediately edit its JSON response payload in-place.</p>
+      
+      <div class="quickstart-code-box">
+        <code>⌘S / Ctrl+Enter to Save Mock Rule</code>
+      </div>
+
+      <ul class="quickstart-features-list">
+        <li><span class="bullet">✓</span> Embedded CodeMirror editor with syntax highlighting &amp; code folding</li>
+        <li><span class="bullet">✓</span> Direct click-to-edit with instant <code>● Unsaved</code> state tracking</li>
+        <li><span class="bullet">✓</span> Bi-directional hover link: highlights waterfall bar &amp; guide timeline</li>
+        <li><span class="bullet">✓</span> One-click JSON formatting, copying, and reverting</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <!-- Features Section -->
 <section class="features-section">
