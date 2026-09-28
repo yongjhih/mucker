@@ -153,31 +153,20 @@
       gap: 8px;
     }
 
-    .status-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-    }
-
     .target-host-group {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 3px 10px;
-      transition: border-color 0.2s ease;
+      padding: 2px 4px 2px 10px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .target-host-group:focus-within {
       border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-subtle);
     }
 
     .target-label {
@@ -186,6 +175,8 @@
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
+      user-select: none;
+      white-space: nowrap;
     }
 
     .target-input {
@@ -195,45 +186,96 @@
       font-family: var(--font-mono);
       font-size: 0.8rem;
       font-weight: 500;
-      width: 145px;
+      width: 140px;
       outline: none;
+      padding: 2px 0;
     }
 
-    .btn-connect {
-      padding: 2px 8px;
-      font-size: 0.72rem;
-      background: var(--primary);
-      color: #fff;
-      border: none;
+    .target-status-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 2px 9px;
       border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.15s ease;
+      font-size: 0.72rem;
+      font-weight: 500;
+      height: 22px;
+      line-height: 1;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      cursor: default;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
+      user-select: none;
+      font-family: inherit;
     }
 
-    .btn-connect:hover {
+    .target-status-action .status-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .target-status-action .action-view {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .target-status-action.can-reconnect {
+      cursor: pointer;
+    }
+
+    .target-status-action.can-reconnect:hover {
+      background: var(--bg-subtle);
+      border-color: var(--border-color);
+    }
+
+    /* When target input is modified by user */
+    .target-host-group.is-modified {
+      border-color: var(--primary);
+    }
+
+    .target-host-group.is-modified .target-status-action {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(99, 102, 241, 0.35);
+    }
+
+    .target-host-group.is-modified .target-status-action:hover {
       background: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-0.5px);
+    }
+
+    .target-host-group.is-modified .target-status-action:active {
+      transform: translateY(0);
+    }
+
+    .target-host-group.is-modified .status-view {
+      display: none;
+    }
+
+    .target-host-group.is-modified .action-view {
+      display: inline-flex;
     }
 
     .pulsing-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--success);
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulse 1.8s infinite;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
     }
 
     .pulsing-dot.disconnected {
       background: var(--danger);
-      box-shadow: none;
-      animation: none;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
     .btn {
@@ -1622,16 +1664,17 @@
     </div>
 
     <div class="header-actions">
-      <!-- Target Device Host/Socket Selector -->
-      <div class="target-host-group" title="Specify Target Android Device Host:Port or IP:Socket (e.g. 127.0.0.1:8080 or phone-ip:8080)">
+      <!-- Target Device Host/Socket Selector with Fused Status & Action -->
+      <div class="target-host-group" id="targetHostGroup" title="Target Android Device Host:Port or IP:Socket (e.g. 127.0.0.1:8080 or phone-ip:8080)">
         <span class="target-label">Target:</span>
-        <input type="text" id="targetHostInput" class="target-input" placeholder="127.0.0.1:8080" />
-        <button class="btn-connect" id="btnConnectTarget" title="Connect to target socket">Connect</button>
-      </div>
-
-      <div class="status-pill" id="connPill">
-        <span class="pulsing-dot" id="pulsingDot"></span>
-        <span id="connStatusText">Connecting...</span>
+        <input type="text" id="targetHostInput" class="target-input" placeholder="127.0.0.1:8080" spellcheck="false" autocomplete="off" />
+        <button class="target-status-action" id="btnConnectTarget" type="button" title="Target connection status">
+          <span class="status-view">
+            <span class="pulsing-dot" id="pulsingDot"></span>
+            <span id="connStatusText">Connecting...</span>
+          </span>
+          <span class="action-view">Connect</span>
+        </button>
       </div>
 
       <button class="btn btn-sm" id="btnToggleTimeline" title="Toggle Network Timeline Overview">
@@ -1993,9 +2036,10 @@ ws.on('message', (raw) => {
     let wsUrl = getBaseWsUrl();
 
     // DOM Elements
+    const targetHostGroup = document.getElementById('targetHostGroup');
     const targetHostInput = document.getElementById('targetHostInput');
     const btnConnectTarget = document.getElementById('btnConnectTarget');
-    const connPill = document.getElementById('connPill');
+    const connPill = document.getElementById('targetHostGroup');
     const pulsingDot = document.getElementById('pulsingDot');
     const connStatusText = document.getElementById('connStatusText');
     const btnToggleTimeline = document.getElementById('btnToggleTimeline');
@@ -2020,13 +2064,31 @@ ws.on('message', (raw) => {
     const btnImportRules = document.getElementById('btnImportRules');
     const importFileInput = document.getElementById('importFileInput');
 
+    // Fused Target Status / Action State Management
+    function updateTargetActionState() {
+      if (!targetHostInput || !targetHostGroup || !btnConnectTarget) return;
+      const currentVal = targetHostInput.value.trim();
+      const isModified = currentVal !== targetHost && currentVal !== '';
+      targetHostGroup.classList.toggle('is-modified', isModified);
+      if (isModified) {
+        btnConnectTarget.title = `Connect to ${currentVal}`;
+        btnConnectTarget.classList.remove('can-reconnect');
+      } else {
+        const isConn = !!state.connected;
+        btnConnectTarget.title = isConn ? `Connected to ${targetHost}` : `Disconnected from ${targetHost} (click to reconnect)`;
+        btnConnectTarget.classList.toggle('can-reconnect', !isConn);
+      }
+    }
+
     // Init Target Input
     targetHostInput.value = targetHost;
+    updateTargetActionState();
 
     function changeTarget(newTarget) {
       if (!newTarget) return;
       targetHost = newTarget.trim();
       targetHostInput.value = targetHost;
+      updateTargetActionState();
       localStorage.setItem('mucker_target_host', targetHost);
 
       try {
@@ -2049,9 +2111,31 @@ ws.on('message', (raw) => {
       connectWs();
     }
 
-    btnConnectTarget.addEventListener('click', () => changeTarget(targetHostInput.value));
+    targetHostInput.addEventListener('input', updateTargetActionState);
     targetHostInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') changeTarget(targetHostInput.value);
+      if (e.key === 'Enter') {
+        changeTarget(targetHostInput.value);
+      } else if (e.key === 'Escape') {
+        targetHostInput.value = targetHost;
+        updateTargetActionState();
+        targetHostInput.blur();
+      }
+    });
+
+    btnConnectTarget.addEventListener('click', () => {
+      const isModified = targetHostGroup && targetHostGroup.classList.contains('is-modified');
+      if (isModified) {
+        changeTarget(targetHostInput.value);
+      } else if (!state.connected) {
+        showToast(`Reconnecting to ${targetHost}...`, 'info');
+        if (ws) {
+          ws.onclose = null;
+          ws.close();
+        }
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+        connectWs();
+      }
     });
 
     function updateDiscoveryUrls() {
@@ -2826,6 +2910,7 @@ ws.on('message', (raw) => {
       try {
         pulsingDot.classList.add('disconnected');
         connStatusText.innerText = 'Connecting...';
+        updateTargetActionState();
 
         ws = new WebSocket(wsUrl);
 
@@ -2833,6 +2918,7 @@ ws.on('message', (raw) => {
           state.connected = true;
           pulsingDot.classList.remove('disconnected');
           connStatusText.innerText = 'Connected';
+          updateTargetActionState();
           showToast(`Connected to Mucker at ${targetHost}!`, 'success');
           // Enable CDP Fetch Domain
           ws.send(JSON.stringify({
@@ -2856,6 +2942,7 @@ ws.on('message', (raw) => {
           state.connected = false;
           pulsingDot.classList.add('disconnected');
           connStatusText.innerText = 'Disconnected';
+          updateTargetActionState();
           if (!reconnectTimer) {
             reconnectTimer = setTimeout(() => {
               reconnectTimer = null;
@@ -2871,6 +2958,7 @@ ws.on('message', (raw) => {
         state.connected = false;
         pulsingDot.classList.add('disconnected');
         connStatusText.innerText = 'Error';
+        updateTargetActionState();
       }
     }
 
@@ -4540,8 +4628,24 @@ ws.on('message', (raw) => {
     const testHoverList = testUrlParams.get('test_hover_list');
     const testHoverTimeline = testUrlParams.get('test_hover_timeline');
     const testTheme = testUrlParams.get('theme');
+    const testTargetModified = testUrlParams.get('test_target_modified');
+    const testConnected = testUrlParams.get('test_connected');
     if (testTheme) {
       document.documentElement.setAttribute('data-theme', testTheme);
+    }
+    if (testConnected !== null) {
+      setTimeout(() => {
+        if (ws) { ws.onclose = null; ws.onerror = null; }
+        clearTimeout(reconnectTimer);
+        state.connected = true;
+        pulsingDot.classList.remove('disconnected');
+        connStatusText.innerText = 'Connected';
+        updateTargetActionState();
+      }, 100);
+    }
+    if (testTargetModified !== null) {
+      targetHostInput.value = testTargetModified || '192.168.1.100:8080';
+      updateTargetActionState();
     }
     if (testHoverList !== null || testHoverTimeline !== null) {
       setTimeout(() => {
