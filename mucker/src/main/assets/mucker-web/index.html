@@ -314,10 +314,10 @@
     }
 
     #btnToggleGroup.active {
-      background: rgba(56, 189, 248, 0.14);
-      border-color: rgba(56, 189, 248, 0.55);
+      background: var(--accent-subtle);
+      border-color: var(--accent);
       color: var(--accent);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 8px rgba(56, 189, 248, 0.2);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
     }
 
     #btnToggleGroup.active:hover {
@@ -393,22 +393,83 @@
 
     .search-row {
       display: flex;
+      align-items: center;
       gap: 6px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 4px 0 10px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-width: 0;
+    }
+
+    .search-input-wrapper:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-subtle);
     }
 
     .search-input {
       flex: 1;
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 6px 10px;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      padding: 6px 4px 6px 0;
       color: var(--text-main);
       font-size: 0.82rem;
       outline: none;
     }
 
-    .search-input:focus {
+    .btn-search-scope {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1.4;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-subtle);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-search-scope:hover {
+      color: var(--text-main);
+      background: var(--bg-subtle);
+      border-color: var(--border-color);
+    }
+
+    .btn-search-scope.active {
+      background: var(--primary-subtle);
       border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .body-match-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      white-space: nowrap;
     }
 
     .filter-chips {
@@ -1732,8 +1793,13 @@
     <div class="sidebar" id="sidebarPane">
       <div class="sidebar-header">
         <div class="search-row">
-          <input type="text" class="search-input" id="searchFilter" placeholder="Filter URL (e.g. /api/v1/user)...">
-          <button class="btn btn-sm active" id="btnToggleGroup" title="Consecutive endpoint grouping is ON (Click to ungroup)" aria-pressed="true"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:4px;box-shadow:0 0 6px var(--accent);"></span>⊞ Grouped</button>
+          <div class="search-input-wrapper">
+            <input type="text" class="search-input" id="searchFilter" placeholder="Filter URL or Body (e.g. /api or json key)..." spellcheck="false" autocomplete="off">
+            <button class="btn-search-scope active" id="btnToggleSearchBody" title="Search in Response Body & Payload is ON (Click to toggle)" aria-pressed="true">
+              <span>{ } Body</span>
+            </button>
+          </div>
+          <button class="btn btn-sm active" id="btnToggleGroup" title="Consecutive endpoint grouping is ON (Click to ungroup)" aria-pressed="true">⊞ Grouped</button>
           <button class="btn btn-sm" id="btnClearHistory" title="Clear request logs">Clear</button>
         </div>
         <div class="filter-chips">
@@ -1979,6 +2045,10 @@ ws.on('message', (raw) => {
       hoveredRequestIds: null,
       filter: 'ALL',
       search: '',
+      searchInBody: (() => {
+        const saved = localStorage.getItem('mucker_search_in_body');
+        return saved !== null ? saved === 'true' : true;
+      })(),
       editingRuleId: null,
       timeFilter: null,
       groupByConsecutive: true,
@@ -2051,6 +2121,7 @@ ws.on('message', (raw) => {
     const rulesTableBody = document.getElementById('rulesTableBody');
     const ruleCountBadge = document.getElementById('ruleCountBadge');
     const searchFilter = document.getElementById('searchFilter');
+    const btnToggleSearchBody = document.getElementById('btnToggleSearchBody');
     const btnToggleGroup = document.getElementById('btnToggleGroup');
     const ruleModal = document.getElementById('ruleModal');
     const btnNewRule = document.getElementById('btnNewRule');
@@ -3169,9 +3240,7 @@ ws.on('message', (raw) => {
       const isGrouped = !!state.groupByConsecutive;
       btnToggleGroup.classList.toggle('active', isGrouped);
       btnToggleGroup.setAttribute('aria-pressed', isGrouped ? 'true' : 'false');
-      btnToggleGroup.innerHTML = isGrouped 
-        ? '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:4px;box-shadow:0 0 6px var(--accent);"></span>⊞ Grouped' 
-        : '⊞ Group';
+      btnToggleGroup.innerHTML = isGrouped ? '⊞ Grouped' : '⊞ Group';
       btnToggleGroup.title = isGrouped 
         ? 'Consecutive endpoint grouping is ON (Click to ungroup calls)' 
         : 'Consecutive endpoint grouping is OFF (Click to group consecutive calls)';
@@ -3185,6 +3254,33 @@ ws.on('message', (raw) => {
         renderRequestList();
       });
       updateGroupButton();
+    }
+
+    // Response Body Search Scope Toggle
+    function updateSearchScopeUI() {
+      if (!btnToggleSearchBody) return;
+      const active = state.searchInBody !== false;
+      btnToggleSearchBody.classList.toggle('active', active);
+      btnToggleSearchBody.setAttribute('aria-pressed', String(active));
+      btnToggleSearchBody.title = active 
+        ? 'Search in Response Body & Payload is ON (Click to search URL only)' 
+        : 'Search in Response Body & Payload is OFF (Click to include Body)';
+      if (searchFilter) {
+        searchFilter.placeholder = active 
+          ? 'Filter URL or Body (e.g. /api or json key)...' 
+          : 'Filter URL only (e.g. /api/v1/user)...';
+      }
+    }
+
+    if (btnToggleSearchBody) {
+      btnToggleSearchBody.addEventListener('click', () => {
+        state.searchInBody = !state.searchInBody;
+        localStorage.setItem('mucker_search_in_body', String(state.searchInBody));
+        updateSearchScopeUI();
+        renderRequestList();
+        showToast(`Response Body search ${state.searchInBody ? 'enabled' : 'disabled'}`, 'info');
+      });
+      updateSearchScopeUI();
     }
 
     // JSON Helper Utilities & Tree Renderer
@@ -3528,13 +3624,83 @@ ws.on('message', (raw) => {
       });
     }
 
+    // Helper to safely extract string content from response body
+    function getRecordBodyText(record) {
+      if (!record || record.responseBody == null) return '';
+      const b = record.responseBody;
+      if (typeof b === 'string') return b;
+      try {
+        return JSON.stringify(b);
+      } catch (_) {
+        return String(b);
+      }
+    }
+
+    // Helper to safely extract string content from post data payload
+    function getRecordPayloadText(record) {
+      if (!record || record.postData == null) return '';
+      const p = record.postData;
+      if (typeof p === 'string') return p;
+      try {
+        return JSON.stringify(p);
+      } catch (_) {
+        return String(p);
+      }
+    }
+
+    // Comprehensive search matcher: supports URL, Response Body, Request Payload & field prefixes (e.g. body:foo or url:bar)
+    function matchesSearch(record, query, searchInBody = true) {
+      if (!query) return { matches: true, inBody: false, inUrl: false };
+      const q = query.trim().toLowerCase();
+      if (!q) return { matches: true, inBody: false, inUrl: false };
+
+      // Explicit prefix: body: or b: (forces body/payload search)
+      if (q.startsWith('body:') || q.startsWith('b:')) {
+        const term = q.replace(/^(body|b):/, '').trim();
+        if (!term) return { matches: true, inBody: false, inUrl: false };
+        const bText = getRecordBodyText(record).toLowerCase();
+        const pText = getRecordPayloadText(record).toLowerCase();
+        const inBody = bText.includes(term) || pText.includes(term);
+        return { matches: inBody, inBody: true, inUrl: false };
+      }
+
+      // Explicit prefix: url: or u: (forces url search)
+      if (q.startsWith('url:') || q.startsWith('u:')) {
+        const term = q.replace(/^(url|u):/, '').trim();
+        if (!term) return { matches: true, inBody: false, inUrl: false };
+        const inUrl = (record.url || '').toLowerCase().includes(term);
+        return { matches: inUrl, inBody: false, inUrl: true };
+      }
+
+      // Check URL match
+      const inUrl = (record.url || '').toLowerCase().includes(q);
+      if (inUrl) return { matches: true, inBody: false, inUrl: true };
+
+      // Check Response Body and Request Payload if searchInBody is active
+      if (searchInBody) {
+        const bText = getRecordBodyText(record).toLowerCase();
+        const pText = getRecordPayloadText(record).toLowerCase();
+        const inBody = bText.includes(q) || pText.includes(q);
+        if (inBody) return { matches: true, inBody: true, inUrl: false };
+      }
+
+      return { matches: false, inBody: false, inUrl: false };
+    }
+
     // Render Request List with Consecutive Endpoints Aggregation & Configurable Columns
     function renderRequestList() {
+      const searchInBody = state.searchInBody !== false;
       const filtered = state.requests.filter(r => {
         if (state.filter === 'MOCKED' && !r.isMocked) return false;
         if (state.filter === 'PAUSED' && !r.isPaused) return false;
         if (['GET','POST','PUT','DELETE'].includes(state.filter) && r.method !== state.filter) return false;
-        if (state.search && !r.url.toLowerCase().includes(state.search)) return false;
+        if (state.search) {
+          const matchRes = matchesSearch(r, state.search, searchInBody);
+          if (!matchRes.matches) return false;
+          r._searchMatchInBody = matchRes.inBody;
+        } else {
+          r._searchMatchInBody = false;
+        }
         if (state.timeFilter) {
           const rStart = r.timestamp || 0;
           const rEnd = rStart + Math.max(r.responseTime || 20, 20);
@@ -3565,6 +3731,7 @@ ws.on('message', (raw) => {
             if (req.id === state.selectedRequestId) current.hasSelected = true;
             if (req.isPaused) current.hasPaused = true;
             if (req.isMocked) current.hasMocked = true;
+            if (req._searchMatchInBody) current.hasBodyMatch = true;
           } else {
             current = {
               isGroup: true,
@@ -3577,7 +3744,8 @@ ws.on('message', (raw) => {
               items: [req],
               hasSelected: req.id === state.selectedRequestId,
               hasPaused: !!req.isPaused,
-              hasMocked: !!req.isMocked
+              hasMocked: !!req.isMocked,
+              hasBodyMatch: !!req._searchMatchInBody
             };
             groups.push(current);
           }
@@ -3605,6 +3773,7 @@ ws.on('message', (raw) => {
               <span class="method-badge method-${(req.method||'GET').toLowerCase()}">${req.method||'GET'}</span>
               <span class="url-path" title="${escapeHtml(req.url)}">${escapeHtml(getUrlPath(req.url))}</span>
               <div class="item-tags">
+                ${req._searchMatchInBody ? '<span class="body-match-tag" title="Matched search term in Response Body or Payload">{ } Body</span>' : ''}
                 ${req.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
                 ${req.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
                 ${req.statusCode ? `<span class="status-code ${statusClass}">${req.statusCode}</span>` : ''}
@@ -3648,6 +3817,7 @@ ws.on('message', (raw) => {
               <span class="url-path" title="${escapeHtml(group.url)}">${escapeHtml(group.path)}</span>
               <div class="item-tags">
                 <span class="group-count-badge" title="${group.items.length} consecutive calls">×${group.items.length}</span>
+                ${group.hasBodyMatch ? '<span class="body-match-tag" title="Matched search term in Response Body or Payload">{ } Body</span>' : ''}
                 ${group.hasPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
                 ${group.hasMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
                 ${latestReq.statusCode ? `<span class="status-code ${statusClass}">${latestReq.statusCode}</span>` : ''}
@@ -3704,6 +3874,7 @@ ws.on('message', (raw) => {
                     ${renderTimingCols(childReq, sessionBaseTime)}
                   </div>
                   <div class="item-tags">
+                    ${childReq._searchMatchInBody ? '<span class="body-match-tag" title="Matched search term in Response Body or Payload">{ } Body</span>' : ''}
                     ${childReq.isPaused ? '<span class="paused-tag">PAUSED</span>' : ''}
                     ${childReq.isMocked ? '<span class="mock-tag">MOCKED</span>' : ''}
                     ${childReq.statusCode ? `<span class="status-code ${childStatusClass}">${childReq.statusCode}</span>` : ''}
@@ -3928,6 +4099,9 @@ ws.on('message', (raw) => {
                   <span class="badge" style="font-size:0.7rem;background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3);">🌐 Live</span>
                 `}
                 <span id="editorModifiedBadge" class="badge" style="display:none;font-size:0.68rem;background:rgba(239,68,68,0.2);color:#f87171;">● Unsaved</span>
+                ${req._searchMatchInBody && state.search ? `
+                  <span class="badge" style="font-size:0.68rem;background:rgba(99,102,241,0.18);color:var(--primary);border:1px solid rgba(99,102,241,0.35);font-family:var(--font-mono);">🔍 "${escapeHtml(state.search)}"</span>
+                ` : ''}
               </div>
               <div style="display:flex;gap:6px;align-items:center;">
                 <button class="btn btn-sm ${isAlreadyMocked ? 'btn-primary' : 'btn-warning'}" id="saveMockBtn" onclick="saveLiveMockData('${req.id}')" title="Save as mock rule (⌘S)">
@@ -4082,6 +4256,21 @@ ws.on('message', (raw) => {
         const btnCopy = document.getElementById("btnCopyJson");
         if (btnCopy) {
           btnCopy.onclick = () => copyResponseBody(req.id);
+        }
+
+        // Auto-select and scroll to query match in Response Body editor
+        if (state.search && req._searchMatchInBody) {
+          try {
+            const rawDoc = state.activeCmEditor.getValue();
+            const cleanQ = state.search.replace(/^(body|b):/, '').trim().toLowerCase();
+            const matchIdx = rawDoc.toLowerCase().indexOf(cleanQ);
+            if (matchIdx >= 0) {
+              const from = state.activeCmEditor.posFromIndex(matchIdx);
+              const to = state.activeCmEditor.posFromIndex(matchIdx + cleanQ.length);
+              state.activeCmEditor.setSelection(from, to);
+              state.activeCmEditor.scrollIntoView(from, 80);
+            }
+          } catch (_) {}
         }
       }
 
@@ -4646,6 +4835,48 @@ ws.on('message', (raw) => {
     if (testTargetModified !== null) {
       targetHostInput.value = testTargetModified || '192.168.1.100:8080';
       updateTargetActionState();
+    }
+    const testSearchBody = testUrlParams.get('test_search_body');
+    if (testSearchBody !== null) {
+      setTimeout(() => {
+        const now = Date.now();
+        state.requests = [
+          { 
+            id: 'req_1', 
+            method: 'GET', 
+            url: 'https://api.example.com/v1/user/profile', 
+            statusCode: 200, 
+            responseTime: 85, 
+            timestamp: now - 3500,
+            responseBody: JSON.stringify({ userId: 42, role: "admin", email: "user@example.com" }, null, 2)
+          },
+          { 
+            id: 'req_2', 
+            method: 'POST', 
+            url: 'https://api.example.com/v1/orders/checkout', 
+            statusCode: 200, 
+            responseTime: 240, 
+            timestamp: now - 2800,
+            responseBody: JSON.stringify({ orderId: "ord_9872", status: "confirmed", amount: 99.9 }, null, 2)
+          },
+          { 
+            id: 'req_3', 
+            method: 'GET', 
+            url: 'https://api.example.com/v1/feed', 
+            statusCode: 200, 
+            responseTime: 45, 
+            timestamp: now - 1900,
+            responseBody: JSON.stringify({ items: [{ id: 1, text: "hello world" }] }, null, 2)
+          }
+        ];
+        const query = testSearchBody || 'ord_9872';
+        searchFilter.value = query;
+        state.search = query.toLowerCase();
+        renderRequestList();
+        if (state.requests[1]) {
+          selectRequest(state.requests[1].id);
+        }
+      }, 300);
     }
     if (testHoverList !== null || testHoverTimeline !== null) {
       setTimeout(() => {
