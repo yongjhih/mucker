@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 447 20" width="447" height="20" role="img" aria-label="coverage&amp;mucker-interceptor/src/main/java/io/github/mucker: 36.6%">
+  <title>coverage&amp;mucker-interceptor/src/main/java/io/github/mucker: 36.6%</title>
+  <linearGradient id="covpages-grad" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="covpages-r">
+    <rect width="447" height="20" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#covpages-r)">
+    <rect width="393" height="20" fill="#555"/>
+    <rect x="393" width="54" height="20" fill="#cf222e"/>
+    <rect width="447" height="20" fill="url(#covpages-grad)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="1965" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)">coverage&amp;mucker-interceptor/src/main/java/io/github/mucker</text>
+    <text x="1965" y="140" transform="scale(.1)" fill="#fff">coverage&amp;mucker-interceptor/src/main/java/io/github/mucker</text>
+    <text aria-hidden="true" x="4200" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)">36.6%</text>
+    <text x="4200" y="140" transform="scale(.1)" fill="#fff">36.6%</text>
+  </g>
+</svg>
