@@ -61,6 +61,10 @@ class RestHandler(
                 json.put("breakpointMode", engine.breakpointMode)
                 json.put("activeRulesCount", engine.rules.getAllRules().size)
                 json.put("pausedRequestsCount", engine.getPendingPausedCount())
+                val mcp = JSONObject()
+                mcp.put("http", "/mcp")
+                mcp.put("sse", "/sse")
+                json.put("mcp", mcp)
                 HttpResponse(200, "application/json", json.toString())
             }
 

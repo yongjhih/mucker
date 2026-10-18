@@ -182,3 +182,22 @@ npx ai-proxy doctor --dir docs
 3. 執行 `npx ai-proxy doctor --dir docs`，確認三項檢查（mcp_page_exists, vendored_web_modules, mcp_page_wiring）全部 pass（ok: true）。
 4. 提交 commit 並發布 PR，使 GitHub Pages 在 https://yongjhih.github.io/mucker/mcp 提供即時 WebMCP 工具。
 ```
+
+
+---
+
+## 4. 完成狀態紀錄 (Completed Implementations)
+
+1. **Docs WebMCP 端點 (`docs/mcp.html`)**：
+   - 實作 5 個 WebMCP 工具：`get_mock_rule_template`, `get_cli_command`, `get_cdp_spec`, `consult_integration`, `search_docs`。
+   - 通過 `npx ai-proxy doctor --dir docs` 全數檢核。
+
+2. **Dashboard WebMCP 端點與 AI 助手 (`dashboard/mcp.html`, `docs/dashboard/mcp.html`)**：
+   - 實作 9 個 WebMCP 工具：`dashboard_get_status`, `dashboard_list_rules`, `dashboard_add_rule`, `dashboard_remove_rule`, `dashboard_clear_rules`, `dashboard_set_breakpoint_mode`, `dashboard_list_history`, `dashboard_fulfill_request`, `dashboard_continue_request`。
+   - Dashboard 介面整合 Copilot Drawer 與 `/v1/chat/completions` 本機 LLM / OpenAI Relay。
+   - 通過 `npx ai-proxy doctor --dir docs/dashboard` 全數檢核。
+
+3. **Android In-App 原生 MCP 伺服器 (`mucker-interceptor`)**：
+   - 嵌入式輕量 HTTP 伺服器原生支援 **Streamable HTTP** (`POST /mcp`, `POST /api/mcp`) 與 **Server-Sent Events** (`GET /sse`, `POST /message?sessionId=...`)。
+   - 實作 `McpHandler` 與 `SseConnection`，支援 11 個原生 MCP 工具，可直接連線控制 Android 裝置或模擬器中運行的 OkHttp 攔截與 Mock 引擎。
+   - 單元測試 `McpHandlerTest` 與 `MuckerHttpServerMcpTest` 全數通過。

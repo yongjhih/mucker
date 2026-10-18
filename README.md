@@ -271,6 +271,31 @@ npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker
 | `consult_integration` | Provides Gradle KTS/Groovy, OkHttp, Retrofit, and Ktor integration setup guidance and Zero-CA explanations. |
 | `search_docs` | Fast keyword search across all Mucker documentation topics. |
 
+### 3. Native In-App Interceptor MCP Server (`/mcp`, `/sse`)
+Compiled directly into your debug APK via `mucker-interceptor`. Exposes JSON-RPC 2.0 / MCP over **Streamable HTTP** (`POST /mcp`) and **Server-Sent Events** (`GET /sse`) without opening a browser:
+
+```bash
+# Forward Android port to host machine
+adb forward tcp:8080 tcp:8080
+
+# Connect via ai-proxy or Claude Desktop / Cursor
+npx ai-proxy add http://127.0.0.1:8080/sse --name mucker-device
+```
+
+| Tool | Description |
+| :--- | :--- |
+| `get_status` | Get live server status, active mock rules count, and breakpoint state. |
+| `list_rules` | List all registered mock rules currently active in memory. |
+| `add_rule` | Add or update a dynamic mock rule (`urlPattern`, `method`, `statusCode`, `delayMs`, `responseBody`). |
+| `remove_rule` | Delete a mock rule by ID. |
+| `clear_rules` | Clear all mock rules in memory. |
+| `toggle_rule` | Enable or disable a mock rule. |
+| `set_breakpoint_mode` | Toggle global breakpoint interception on or off. |
+| `list_history` | Query recorded network requests with URL/body filters. |
+| `fulfill_request` | Fulfill a paused in-flight OkHttp request with a mocked payload. |
+| `continue_request` | Resume a paused request to hit the real network. |
+| `get_mock_rule_template` | Generate ready-to-run curl and REST payload templates. |
+
 ---
 
 ## 🌐 Cross-Platform Client Interceptors
