@@ -7,3 +7,4 @@ library mucker;
 export 'src/mock_rule.dart';
 export 'src/dio_interceptor.dart';
 export 'src/http_client.dart';
+export 'src/mcp_server.dart';

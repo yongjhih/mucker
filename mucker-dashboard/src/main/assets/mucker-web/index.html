@@ -2903,8 +2903,10 @@ ws.on('message', (raw) => {
           this.stats.innerText = `${count} req${count === 1 ? '' : 's'} (${spanSec}s total)`;
         }
 
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
         // Background
-        ctx.fillStyle = '#090d16';
+        ctx.fillStyle = isLight ? '#f8fafc' : '#090d16';
         ctx.fillRect(0, 0, this.width, this.height);
 
         // Calculate dynamic tick step
@@ -2914,9 +2916,9 @@ ws.on('message', (raw) => {
         let stepMs = standardSteps.find(s => s >= targetStep) || 60000;
 
         // Ruler bar background
-        ctx.fillStyle = '#111827';
+        ctx.fillStyle = isLight ? '#f1f5f9' : '#111827';
         ctx.fillRect(0, 0, this.width, 20);
-        ctx.strokeStyle = '#1f293d';
+        ctx.strokeStyle = isLight ? '#e2e8f0' : '#1f293d';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(0, 20);
@@ -2926,7 +2928,7 @@ ws.on('message', (raw) => {
         // Draw Ticks & Vertical Grid Lines
         const firstTick = Math.floor(this.viewTimeStart / stepMs) * stepMs;
         ctx.font = '10px ui-monospace, SFMono-Regular, Menlo, monospace';
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = isLight ? '#64748b' : '#94a3b8';
         ctx.textAlign = 'center';
 
         for (let t = firstTick; t <= this.viewTimeEnd + stepMs; t += stepMs) {
@@ -2934,14 +2936,14 @@ ws.on('message', (raw) => {
           if (x < -20 || x > this.width + 20) continue;
 
           // Vertical grid line
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.04)';
           ctx.beginPath();
           ctx.moveTo(x, 20);
           ctx.lineTo(x, this.height);
           ctx.stroke();
 
           // Tick line on ruler
-          ctx.strokeStyle = '#374151';
+          ctx.strokeStyle = isLight ? '#cbd5e1' : '#374151';
           ctx.beginPath();
           ctx.moveTo(x, 14);
           ctx.lineTo(x, 20);
@@ -3076,12 +3078,12 @@ ws.on('message', (raw) => {
           const sx2 = Math.min(this.width, this.timeToX(s2));
 
           // Dim masks
-          ctx.fillStyle = 'rgba(7, 10, 18, 0.68)';
+          ctx.fillStyle = isLight ? 'rgba(15, 23, 42, 0.15)' : 'rgba(7, 10, 18, 0.68)';
           ctx.fillRect(0, 0, sx1, this.height);
           ctx.fillRect(sx2, 0, this.width - sx2, this.height);
 
           // Selection window
-          ctx.fillStyle = 'rgba(99, 102, 241, 0.09)';
+          ctx.fillStyle = isLight ? 'rgba(79, 70, 229, 0.08)' : 'rgba(99, 102, 241, 0.09)';
           ctx.fillRect(sx1, 0, sx2 - sx1, this.height);
 
           ctx.strokeStyle = 'rgba(99, 102, 241, 0.6)';
@@ -3328,6 +3330,9 @@ ws.on('message', (raw) => {
       const current = document.documentElement.getAttribute('data-theme') || 'dark';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
+      if (window.timeline) {
+        window.timeline.draw();
+      }
     });
 
     // WebSocket Management

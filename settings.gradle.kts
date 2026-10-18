@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "mucker"
 include(":mucker-interceptor")
+include(":mucker-mcp")
 include(":mucker-dashboard")
 include(":mucker")
 include(":mucker-noop")

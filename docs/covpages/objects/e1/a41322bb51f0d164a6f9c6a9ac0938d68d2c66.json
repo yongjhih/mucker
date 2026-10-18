@@ -1,0 +1,214 @@
+{
+  "commit": {
+    "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+    "shortSha": "e1a4132",
+    "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+    "author": "Yongjhih Chen",
+    "date": "2026-10-18T13:11:12.000Z",
+    "branch": "main"
+  },
+  "summary": {
+    "lines": {
+      "total": 516,
+      "covered": 354,
+      "skipped": 162,
+      "pct": 68.6
+    },
+    "functions": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "folderSummaries": {
+    "": {
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart": {
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker": {
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker/lib": {
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker/lib/src": {
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    }
+  },
+  "fileSummaries": {
+    "dart/mucker/lib/src/mock_rule.dart": {
+      "lines": {
+        "total": 33,
+        "covered": 32,
+        "skipped": 1,
+        "pct": 96.97
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker/lib/src/dio_interceptor.dart": {
+      "lines": {
+        "total": 166,
+        "covered": 101,
+        "skipped": 65,
+        "pct": 60.84
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker/lib/src/http_client.dart": {
+      "lines": {
+        "total": 24,
+        "covered": 17,
+        "skipped": 7,
+        "pct": 70.83
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "dart/mucker/lib/src/mcp_server.dart": {
+      "lines": {
+        "total": 293,
+        "covered": 204,
+        "skipped": 89,
+        "pct": 69.62
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    }
+  }
+}

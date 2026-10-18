@@ -1,7 +1,6 @@
 package io.github.mucker.server
 
 import android.content.Context
-import android.util.Base64
 import io.github.mucker.core.MockEngine
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -10,12 +9,31 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
-import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import org.json.JSONObject
+
+/**
+ * Route plugin interface allowing optional modules (e.g. :mucker-mcp) to handle custom HTTP endpoints.
+ */
+fun interface HttpRoutePlugin {
+    fun handle(
+        method: String,
+        uri: String,
+        cleanPath: String,
+        headers: Map<String, String>,
+        body: String,
+        socket: Socket,
+        outStream: OutputStream
+    ): Boolean
+}
+
+/**
+ * Extended plugin interface with lifecycle notifications.
+ */
+interface MuckerServerPlugin : HttpRoutePlugin {
+    fun onServerStop() {}
+}
 
 /**
  * Lightweight, zero-dependency HTTP & WebSocket server running inside the Android application.
@@ -29,16 +47,23 @@ class MuckerHttpServer(
     @Volatile private var isRunning = false
     private val executor: ExecutorService = Executors.newCachedThreadPool()
     private val activeWebSockets = CopyOnWriteArrayList<WebSocketConnection>()
-    private val activeSseSessions = ConcurrentHashMap<String, SseConnection>()
     private val cdpHandler = CdpHandler(engine)
     private val restHandler = RestHandler(engine, port, context)
-    val mcpHandler = McpHandler(engine, port, context)
+    val plugins = CopyOnWriteArrayList<HttpRoutePlugin>()
 
     init {
         // Wire engine broadcast to all active WebSocket clients
         engine.eventBroadcaster = { jsonString ->
             broadcastWebSocket(jsonString)
         }
+    }
+
+    fun registerPlugin(plugin: HttpRoutePlugin) {
+        plugins.add(plugin)
+    }
+
+    fun unregisterPlugin(plugin: HttpRoutePlugin) {
+        plugins.remove(plugin)
     }
 
     @Synchronized
@@ -72,10 +97,9 @@ class MuckerHttpServer(
         if (!isRunning) return
         isRunning = false
         try {
+            plugins.forEach { (it as? MuckerServerPlugin)?.onServerStop() }
             activeWebSockets.forEach { it.close() }
             activeWebSockets.clear()
-            activeSseSessions.values.forEach { it.close() }
-            activeSseSessions.clear()
             serverSocket?.close()
             serverSocket = null
         } catch (_: Exception) {}
@@ -143,38 +167,11 @@ class MuckerHttpServer(
 
             val cleanPath = uri.split("?")[0].trimEnd('/')
 
-            // Handle MCP Streamable HTTP POST/GET (/mcp, /api/mcp)
-            if (cleanPath == "/mcp" || cleanPath == "/api/mcp") {
-                if (method == "POST") {
-                    val response = mcpHandler.handleMessage(body)
-                    sendHttpResponse(outStream, 200, "application/json; charset=utf-8", response)
-                } else {
-                    val info = JSONObject().apply {
-                        put("service", "mucker-mcp-server")
-                        put("version", "1.0.0")
-                        put("transport", org.json.JSONArray(listOf("streamable-http", "sse")))
-                        put("endpoints", JSONObject().apply {
-                            put("http", "/mcp")
-                            put("sse", "/sse")
-                            put("message", "/message")
-                        })
-                    }
-                    sendHttpResponse(outStream, 200, "application/json; charset=utf-8", info.toString(2))
+            // Dispatch to registered plugins (e.g. :mucker-mcp)
+            for (plugin in plugins) {
+                if (plugin.handle(method, uri, cleanPath, headers, body, socket, outStream)) {
+                    return
                 }
-                socket.close()
-                return
-            }
-
-            // Handle MCP SSE Streaming (/sse, /mcp/sse)
-            if (method == "GET" && (cleanPath == "/sse" || cleanPath == "/mcp/sse")) {
-                handleSseConnection(socket, outStream)
-                return
-            }
-
-            // Handle MCP SSE Client Messages (/message, /messages)
-            if (method == "POST" && (cleanPath == "/message" || cleanPath == "/messages")) {
-                handleSseMessage(socket, uri, body, outStream)
-                return
             }
 
             // Serve Dashboard Web Assets
@@ -249,74 +246,12 @@ class MuckerHttpServer(
         }
     }
 
-    private fun handleSseConnection(socket: Socket, outStream: OutputStream) {
-        val sessionId = UUID.randomUUID().toString()
-        val sseConn = SseConnection(sessionId, socket, outStream)
-        activeSseSessions[sessionId] = sseConn
-
-        val header = "HTTP/1.1 200 OK\r\n" +
-                "Content-Type: text/event-stream\r\n" +
-                "Cache-Control: no-cache\r\n" +
-                "Connection: keep-alive\r\n" +
-                "Access-Control-Allow-Origin: *\r\n" +
-                "Access-Control-Allow-Headers: *\r\n\r\n"
-        outStream.write(header.toByteArray(StandardCharsets.UTF_8))
-        outStream.flush()
-
-        // Announce message endpoint with sessionId for incoming client JSON-RPC calls
-        sseConn.sendEvent("endpoint", "/message?sessionId=$sessionId")
-
-        try {
-            val inStream = socket.getInputStream()
-            val buf = ByteArray(128)
-            while (isRunning && !socket.isClosed) {
-                val read = inStream.read(buf)
-                if (read == -1) break
-            }
-        } catch (_: Exception) {
-        } finally {
-            activeSseSessions.remove(sessionId)
-            sseConn.close()
-        }
+    fun sendResponse(out: OutputStream, statusCode: Int, contentType: String, body: String) {
+        sendHttpResponse(out, statusCode, contentType, body)
     }
 
-    private fun handleSseMessage(socket: Socket, uri: String, body: String, outStream: OutputStream) {
-        val queryParams = parseQueryParams(uri)
-        val sessionId = queryParams["sessionId"]
-        val sseConn = sessionId?.let { activeSseSessions[it] }
-
-        val result = mcpHandler.handleMessage(body)
-
-        if (sseConn != null && !sseConn.isClosed) {
-            if (result.isNotEmpty()) {
-                sseConn.sendEvent("message", result)
-            }
-            sendHttpResponse(outStream, 202, "text/plain; charset=utf-8", "Accepted")
-        } else {
-            if (result.isNotEmpty()) {
-                sendHttpResponse(outStream, 200, "application/json; charset=utf-8", result)
-            } else {
-                sendHttpResponse(outStream, 204, "text/plain", "")
-            }
-        }
-        socket.close()
-    }
-
-    private fun parseQueryParams(uri: String): Map<String, String> {
-        val map = mutableMapOf<String, String>()
-        val qIdx = uri.indexOf('?')
-        if (qIdx != -1 && qIdx < uri.length - 1) {
-            val query = uri.substring(qIdx + 1)
-            query.split("&").forEach { pair ->
-                val kv = pair.split("=", limit = 2)
-                if (kv.isNotEmpty()) {
-                    val key = kv[0]
-                    val value = if (kv.size > 1) kv[1] else ""
-                    map[key] = value
-                }
-            }
-        }
-        return map
+    fun sendPreflight(out: OutputStream) {
+        sendCorsPreflight(out)
     }
 
     private fun sendHttpResponse(out: OutputStream, statusCode: Int, contentType: String, body: String) {

@@ -17,6 +17,8 @@
     "build:cli": "npm run build --workspace=cli",
     "build:all": "npm run build:dashboard && npm run build:cli",
     "dev:dashboard": "npm run dev --workspace=dashboard",
+    "test": "./gradlew test && cd dart/mucker && dart test",
+    "covpages": "cd dart/mucker && dart test --coverage=coverage && dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib && cd ../.. && npx covpages generate --input dart/mucker/coverage/lcov.info --output docs/covpages --title 'Mucker Test Coverage' --base-url '/mucker/covpages/' --mcp",
     "mucker": "node cli/bin/mucker.mjs",
     "docs:serve": "python3 -m http.server 4000 --directory docs"
   },

@@ -12,6 +12,7 @@
   <a href="#zero-ca-certificates"><img src="https://img.shields.io/badge/Certificates-Zero%20CA%20Required-success.svg" alt="Zero CA Required"/></a>
   <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp"><img src="https://img.shields.io/badge/MCP%20Pages-Connect-238636?logo=github&logoColor=white" alt="MCP Pages Connect"/></a>
   <a href="https://github.com/yongjhih/ai-proxy"><img src="https://img.shields.io/badge/ai--proxy-MCP%20ready-blueviolet?logo=anthropic&logoColor=white" alt="ai-proxy MCP ready"/></a>
+  <a href="https://yongjhih.github.io/mucker/covpages/"><img src="https://yongjhih.github.io/mucker/covpages/badge.svg" alt="Coverage"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-purple.svg" alt="License MIT"/></a>
 </p>
 
@@ -113,13 +114,16 @@ Pick the artifact configuration that fits your project needs:
 
 ```kotlin
 dependencies {
-    // Option A: Complete Bundle (Headless Interceptor + In-App WebView Dashboard)
+    // Option A: Complete Bundle (Headless Interceptor + In-App Dashboard + MCP Server)
     debugImplementation("com.github.yongjhih.mucker:mucker:1.0.0")
 
-    // Option B: Headless Interceptor (Pure OkHttp Interceptor + Embedded CDP/REST Server, Zero UI)
+    // Option B: Core Interceptor (Pure OkHttp Interceptor + Embedded CDP/REST Server, Zero UI, Zero MCP)
     // debugImplementation("com.github.yongjhih.mucker:mucker-interceptor:1.0.0")
 
-    // Option C: In-App Dashboard (MuckerActivity, Notification Drawer, and Web Assets)
+    // Option C: MCP Server for AI Coding Agents (Streamable HTTP & SSE MCP for Claude / Cursor / local LLMs)
+    // debugImplementation("com.github.yongjhih.mucker:mucker-mcp:1.0.0")
+
+    // Option D: In-App Dashboard (MuckerActivity, Notification Drawer, and Web Assets)
     // debugImplementation("com.github.yongjhih.mucker:mucker-dashboard:1.0.0")
 
     // Release: Zero-overhead no-op stubs
@@ -302,13 +306,17 @@ npx ai-proxy add http://127.0.0.1:8080/sse --name mucker-device
 
 Mucker is not limited to OkHttp. Any platform or HTTP client can connect to Mucker's local mock engine:
 
-### 1. Flutter / Dart (`dio` & `package:http`)
+### 1. Flutter / Dart (`dio`, `package:http`, & Native MCP Server)
 ```dart
 import 'package:dio/dio.dart';
 import 'package:mucker/mucker.dart';
 
+// 1. Intercept Dio network traffic
 final dio = Dio();
-dio.interceptors.add(MuckerDioInterceptor()); // Evaluates Mucker mock rules & streams traffic!
+dio.interceptors.add(MuckerDioInterceptor());
+
+// 2. Start native in-app MCP Streamable HTTP & SSE server
+final mcpServer = await MuckerMcpServer.bind(port: 8080);
 ```
 
 ### 2. iOS Swift (`URLSession`)
@@ -344,18 +352,20 @@ For a deep dive into the history of CDP mock responses (from 2017 `Network.conti
 
 ## 📦 Monorepo Structure
 
-* [`mucker-interceptor/`](mucker-interceptor): Headless Android library containing the OkHttp interceptor, embedded HTTP/CDP mock engine server (zero UI dependencies).
+* [`mucker-interceptor/`](mucker-interceptor): Headless Android library containing the OkHttp interceptor, embedded HTTP/CDP mock engine server (zero UI, zero MCP dependencies).
+* [`mucker-mcp/`](mucker-mcp): Dedicated Model Context Protocol (MCP) server module powered by Kotlin Coroutines, providing Streamable HTTP and SSE transports for AI coding agents.
 * [`mucker-dashboard/`](mucker-dashboard): In-app Android WebView activity (`MuckerActivity`), persistent status notification, and bundled web assets.
-* [`mucker/`](mucker): Complete umbrella artifact combining `:mucker-interceptor` and `:mucker-dashboard` for 1-line integration.
+* [`mucker/`](mucker): Complete umbrella artifact combining `:mucker-interceptor`, `:mucker-mcp`, and `:mucker-dashboard` for 1-line integration.
 * [`mucker-noop/`](mucker-noop): Empty stubs for release builds ensuring zero APK overhead.
 * [`app/`](app): Demo Android application showing real-time OkHttp request mocking.
 * [`examples/chaos-ci/`](examples/chaos-ci): Playwright & Puppeteer chaos fault-injection test scripts for CI/CD pipelines.
-* [`dart/mucker/`](dart/mucker): Dart & Flutter client package supporting **Dio** (`package:mucker/dio.dart`) and **package:http** with live breakpoints, chaos fault injection, and dynamic mock rules.
+* [`dart/mucker/`](dart/mucker): Dart & Flutter client package supporting **Dio** (`package:mucker/dio.dart`), **package:http**, and native in-app **MCP Streamable HTTP & SSE Server** (`MuckerMcpServer`).
 * [`dashboard/`](dashboard): Impeccable single-page application (SPA) dashboard.
 * [`cli/`](cli): Zero-dependency Node.js CLI tool (`mucker`).
 * [`skills/mucker/`](skills/mucker): Agent skill definition for AI coding assistants.
 * [`skills/mucker-dashboard/`](skills/mucker-dashboard): Agent skill for modular dashboard plugin development.
 * [`docs/`](docs): GitHub Pages Jekyll documentation website adhering to [Web Craftsmanship Standards](https://yongjhih.github.io/mucker/web-craftsmanship).
+* [`docs/covpages/`](docs/covpages): GitHub Pages unit test coverage report and dynamic SVG coverage badge powered by [covpages](https://yongjhih.github.io/covpages/).
 * [`.devcontainer/`](.devcontainer): Containerized development environment with pre-installed Android SDK 34 and auto-compilation.
 
 ---

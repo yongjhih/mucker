@@ -58,11 +58,16 @@ object Mucker {
         }
     }
 
+    val currentServer: MuckerHttpServer?
+        get() = server
+
     @Synchronized
     fun start() {
         val ctx = appContext
         if (server == null) {
-            server = MuckerHttpServer(port = port, engine = engine, context = ctx)
+            val s = MuckerHttpServer(port = port, engine = engine, context = ctx)
+            server = s
+            triggerMcpInit(s)
         }
         server?.start()
     }
@@ -72,6 +77,16 @@ object Mucker {
         server?.stop()
         server = null
         appContext?.let { triggerNotificationHide(it) }
+    }
+
+    private fun triggerMcpInit(server: MuckerHttpServer) {
+        try {
+            val clazz = Class.forName("io.github.mucker.mcp.MuckerMcp")
+            val method = clazz.getMethod("install", MuckerHttpServer::class.java, MockEngine::class.java, Context::class.java)
+            method.invoke(null, server, engine, appContext)
+        } catch (_: Throwable) {
+            // Headless / Core mode: MCP module not on classpath
+        }
     }
 
     private fun triggerNotificationShow(context: Context, url: String) {

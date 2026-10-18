@@ -1,4 +1,4 @@
-package io.github.mucker
+package io.github.mucker.mcp
 
 import io.github.mucker.core.MockEngine
 import io.github.mucker.server.MuckerHttpServer
@@ -17,11 +17,12 @@ import java.net.Socket
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class MuckerHttpServerMcpTest {
+class MuckerMcpServerTest {
 
     private var serverPort: Int = 0
     private lateinit var engine: MockEngine
     private lateinit var server: MuckerHttpServer
+    private lateinit var plugin: MuckerMcpPlugin
 
     @Before
     fun setUp() {
@@ -31,8 +32,9 @@ class MuckerHttpServerMcpTest {
 
         engine = MockEngine()
         server = MuckerHttpServer(port = serverPort, engine = engine, context = null)
+        plugin = MuckerMcp.install(server, engine, null)
         server.start()
-        Thread.sleep(100) // Brief pause to ensure listening
+        Thread.sleep(100)
     }
 
     @After
@@ -50,7 +52,7 @@ class MuckerHttpServerMcpTest {
 
         val payload = JSONObject().apply {
             put("jsonrpc", "2.0")
-            put("id", "http-test-1")
+            put("id", "mcp-test-1")
             put("method", "tools/list")
         }.toString()
 
@@ -62,7 +64,7 @@ class MuckerHttpServerMcpTest {
         assertEquals(200, conn.responseCode)
         val responseBody = conn.inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
         val json = JSONObject(responseBody)
-        assertEquals("http-test-1", json.getString("id"))
+        assertEquals("mcp-test-1", json.getString("id"))
         assertTrue(json.has("result"))
         assertTrue(json.getJSONObject("result").getJSONArray("tools").length() >= 11)
     }
@@ -82,7 +84,7 @@ class MuckerHttpServerMcpTest {
 
     @Test
     fun testSseEndpointAndClientMessageFlow() {
-        // 1. Connect to GET /sse via raw socket
+        // 1. Connect to GET /sse via socket
         val sseSocket = Socket("127.0.0.1", serverPort)
         val sseOut = OutputStreamWriter(sseSocket.getOutputStream(), StandardCharsets.UTF_8)
         val sseIn = BufferedReader(InputStreamReader(sseSocket.getInputStream(), StandardCharsets.UTF_8))
@@ -91,7 +93,7 @@ class MuckerHttpServerMcpTest {
         sseOut.flush()
 
         // Read headers
-        var statusLine = sseIn.readLine()
+        val statusLine = sseIn.readLine()
         assertTrue(statusLine.contains("200 OK"))
 
         var line: String?
@@ -122,7 +124,7 @@ class MuckerHttpServerMcpTest {
 
         val rpcPayload = JSONObject().apply {
             put("jsonrpc", "2.0")
-            put("id", 42)
+            put("id", 88)
             put("method", "ping")
         }.toString()
 
@@ -131,7 +133,6 @@ class MuckerHttpServerMcpTest {
             os.flush()
         }
 
-        // MCP SSE spec returns 202 Accepted on POST
         assertEquals(202, msgConn.responseCode)
 
         // 3. Verify event is delivered asynchronously to the open SSE stream
@@ -140,7 +141,7 @@ class MuckerHttpServerMcpTest {
         val sseMessageData = sseIn.readLine()
         assertTrue(sseMessageData.startsWith("data: {"))
         val rpcResult = JSONObject(sseMessageData.removePrefix("data: ").trim())
-        assertEquals(42, rpcResult.getInt("id"))
+        assertEquals(88, rpcResult.getInt("id"))
         assertTrue(rpcResult.has("result"))
 
         sseSocket.close()

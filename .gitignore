@@ -29,6 +29,7 @@ _site/
 # Dart & Flutter
 .dart_tool/
 .packages
+coverage/
 
 # OS & Editor
 .DS_Store

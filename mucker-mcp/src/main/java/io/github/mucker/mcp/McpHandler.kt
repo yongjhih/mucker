@@ -1,4 +1,4 @@
-package io.github.mucker.server
+package io.github.mucker.mcp
 
 import android.content.Context
 import io.github.mucker.core.MockEngine
@@ -63,6 +63,7 @@ class McpHandler(
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun handleInitialize(id: Any?, params: JSONObject): String {
         val result = JSONObject()
         result.put("protocolVersion", "2024-11-05")
@@ -98,37 +99,37 @@ class McpHandler(
 
         toolsArray.put(createToolDefinition(
             name = "add_rule",
-            description = "Add or update a mock rule on the connected Mucker instance.",
+            description = "Add or update a dynamic mock rule with custom URL pattern, method, HTTP status code, delay, and response body.",
             inputProperties = mapOf(
-                "urlPattern" to mapOf("type" to "string", "description" to "URL pattern (glob or regex, e.g. *://api.example.com/v1/user*)"),
-                "method" to mapOf("type" to "string", "description" to "HTTP method: ALL, GET, POST, PUT, DELETE, PATCH"),
-                "statusCode" to mapOf("type" to "integer", "description" to "HTTP status code (default: 200)"),
-                "responseBody" to mapOf("type" to "string", "description" to "Mocked JSON/text response body"),
-                "delayMs" to mapOf("type" to "integer", "description" to "Artificial response delay in milliseconds")
+                "urlPattern" to mapOf("type" to "string", "description" to "Regex or substring URL pattern to match, e.g. .*/api/v1/user.*"),
+                "method" to mapOf("type" to "string", "description" to "HTTP Method (GET, POST, PUT, DELETE, or ALL). Default: ALL"),
+                "statusCode" to mapOf("type" to "integer", "description" to "HTTP Status code to return (e.g. 200, 404, 500). Default: 200"),
+                "delayMs" to mapOf("type" to "integer", "description" to "Simulated network latency in milliseconds. Default: 0"),
+                "responseBody" to mapOf("type" to "string", "description" to "JSON response body string. Default: {\"mocked\":true}")
             ),
             required = listOf("urlPattern")
         ))
 
         toolsArray.put(createToolDefinition(
             name = "remove_rule",
-            description = "Delete a mock rule by ID from Mucker memory.",
+            description = "Delete a mock rule by its unique ID from Mucker memory.",
             inputProperties = mapOf(
-                "id" to mapOf("type" to "string", "description" to "ID of the mock rule to remove")
+                "id" to mapOf("type" to "string", "description" to "The rule ID to delete")
             ),
             required = listOf("id")
         ))
 
         toolsArray.put(createToolDefinition(
             name = "clear_rules",
-            description = "Clear all registered mock rules in Mucker memory.",
+            description = "Clear all mock rules from Mucker engine memory.",
             inputProperties = mapOf()
         ))
 
         toolsArray.put(createToolDefinition(
             name = "toggle_rule",
-            description = "Enable or disable a specific mock rule by ID.",
+            description = "Enable or disable a mock rule without deleting it.",
             inputProperties = mapOf(
-                "id" to mapOf("type" to "string", "description" to "ID of the rule"),
+                "id" to mapOf("type" to "string", "description" to "The rule ID to toggle"),
                 "isEnabled" to mapOf("type" to "boolean", "description" to "true to enable, false to disable")
             ),
             required = listOf("id", "isEnabled")
@@ -136,50 +137,50 @@ class McpHandler(
 
         toolsArray.put(createToolDefinition(
             name = "set_breakpoint_mode",
-            description = "Toggle global breakpoint interception mode on Mucker (pauses all matching requests).",
+            description = "Toggle global breakpoint interception on or off. When enabled, matching requests pause in-flight.",
             inputProperties = mapOf(
-                "breakpointMode" to mapOf("type" to "boolean", "description" to "true to enable breakpoint pauses, false to resume")
+                "breakpointMode" to mapOf("type" to "boolean", "description" to "true to enable global request pausing, false to disable")
             ),
             required = listOf("breakpointMode")
         ))
 
         toolsArray.put(createToolDefinition(
             name = "list_history",
-            description = "Query recorded network request history from Mucker memory buffer, with optional keyword or method filtering.",
+            description = "Query recorded network request history with optional URL/body search filter.",
             inputProperties = mapOf(
-                "query" to mapOf("type" to "string", "description" to "Optional keyword filter matching URL or response body"),
-                "method" to mapOf("type" to "string", "description" to "Optional HTTP method filter (GET, POST, etc.)"),
-                "limit" to mapOf("type" to "integer", "description" to "Maximum number of records to return (default: 20)")
+                "query" to mapOf("type" to "string", "description" to "Search keyword in request URL or response body"),
+                "method" to mapOf("type" to "string", "description" to "Filter by HTTP method (GET, POST, etc.)"),
+                "limit" to mapOf("type" to "integer", "description" to "Maximum number of records to return. Default: 20")
             )
         ))
 
         toolsArray.put(createToolDefinition(
             name = "fulfill_request",
-            description = "Fulfill an in-flight paused OkHttp request with a mocked response.",
+            description = "Fulfill an in-flight paused OkHttp request with a mocked status code, response headers, and response body.",
             inputProperties = mapOf(
-                "requestId" to mapOf("type" to "string", "description" to "ID of the paused request"),
-                "statusCode" to mapOf("type" to "integer", "description" to "HTTP status code (default: 200)"),
-                "responseBody" to mapOf("type" to "string", "description" to "Mocked JSON/text response body")
+                "requestId" to mapOf("type" to "string", "description" to "The paused request ID (e.g. req_12345)"),
+                "statusCode" to mapOf("type" to "integer", "description" to "HTTP status code. Default: 200"),
+                "responseBody" to mapOf("type" to "string", "description" to "Mocked response body string")
             ),
             required = listOf("requestId")
         ))
 
         toolsArray.put(createToolDefinition(
             name = "continue_request",
-            description = "Resume a paused OkHttp request without modification, allowing it to proceed to real network.",
+            description = "Resume a paused OkHttp request to hit the real network without modification.",
             inputProperties = mapOf(
-                "requestId" to mapOf("type" to "string", "description" to "ID of the paused request")
+                "requestId" to mapOf("type" to "string", "description" to "The paused request ID to continue")
             ),
             required = listOf("requestId")
         ))
 
         toolsArray.put(createToolDefinition(
             name = "get_mock_rule_template",
-            description = "Generate mock rule templates and ready-to-run curl/CLI commands for a URL pattern.",
+            description = "Generate a ready-to-run curl or REST API payload template for Mucker.",
             inputProperties = mapOf(
                 "urlPattern" to mapOf("type" to "string", "description" to "Target URL pattern"),
-                "statusCode" to mapOf("type" to "integer", "description" to "Status code to mock (default: 200)"),
-                "responseBody" to mapOf("type" to "string", "description" to "JSON response body")
+                "statusCode" to mapOf("type" to "integer", "description" to "Status code. Default: 200"),
+                "responseBody" to mapOf("type" to "string", "description" to "Sample response body")
             ),
             required = listOf("urlPattern")
         ))

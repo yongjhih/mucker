@@ -1,0 +1,2229 @@
+{
+  "title": "Mucker Test Coverage",
+  "repoName": "mucker",
+  "baseUrl": "/mucker/covpages/",
+  "defaultBranch": "main",
+  "generatedAt": "2026-10-18T13:22:25.989Z",
+  "currentCommit": {
+    "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+    "shortSha": "e1a4132",
+    "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+    "author": "Yongjhih Chen",
+    "date": "2026-10-18T13:11:12.000Z",
+    "branch": "main"
+  },
+  "previousCommit": {
+    "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+    "shortSha": "e1a4132",
+    "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+    "author": "Yongjhih Chen",
+    "date": "2026-10-18T13:11:12.000Z",
+    "branch": "main"
+  },
+  "delta": {
+    "linesPct": 1.34,
+    "functionsPct": 0,
+    "branchesPct": 0
+  },
+  "summary": {
+    "lines": {
+      "total": 516,
+      "covered": 354,
+      "skipped": 162,
+      "pct": 68.6
+    },
+    "functions": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    },
+    "branches": {
+      "total": 0,
+      "covered": 0,
+      "skipped": 0,
+      "pct": 100
+    }
+  },
+  "folders": {
+    "": {
+      "path": "",
+      "name": "root",
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "filesCount": 4,
+      "foldersCount": 1
+    },
+    "dart": {
+      "path": "dart",
+      "name": "dart",
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "filesCount": 4,
+      "foldersCount": 1
+    },
+    "dart/mucker": {
+      "path": "dart/mucker",
+      "name": "mucker",
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "filesCount": 4,
+      "foldersCount": 1
+    },
+    "dart/mucker/lib": {
+      "path": "dart/mucker/lib",
+      "name": "lib",
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "filesCount": 4,
+      "foldersCount": 1
+    },
+    "dart/mucker/lib/src": {
+      "path": "dart/mucker/lib/src",
+      "name": "src",
+      "lines": {
+        "total": 516,
+        "covered": 354,
+        "skipped": 162,
+        "pct": 68.6
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "filesCount": 4,
+      "foldersCount": 0
+    }
+  },
+  "files": {
+    "dart/mucker/lib/src/mock_rule.dart": {
+      "path": "dart/mucker/lib/src/mock_rule.dart",
+      "lines": {
+        "total": 33,
+        "covered": 32,
+        "skipped": 1,
+        "pct": 96.97
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lineDetails": {
+        "15": {
+          "hits": 2
+        },
+        "28": {
+          "hits": 1
+        },
+        "29": {
+          "hits": 1
+        },
+        "32": {
+          "hits": 3
+        },
+        "33": {
+          "hits": 4
+        },
+        "39": {
+          "hits": 2
+        },
+        "40": {
+          "hits": 1
+        },
+        "43": {
+          "hits": 0
+        },
+        "49": {
+          "hits": 1
+        },
+        "50": {
+          "hits": 1
+        },
+        "51": {
+          "hits": 2
+        },
+        "52": {
+          "hits": 3
+        },
+        "53": {
+          "hits": 3
+        },
+        "57": {
+          "hits": 1
+        },
+        "58": {
+          "hits": 2
+        },
+        "59": {
+          "hits": 2
+        },
+        "60": {
+          "hits": 2
+        },
+        "61": {
+          "hits": 3
+        },
+        "62": {
+          "hits": 3
+        },
+        "63": {
+          "hits": 2
+        },
+        "65": {
+          "hits": 3
+        },
+        "66": {
+          "hits": 2
+        },
+        "70": {
+          "hits": 2
+        },
+        "71": {
+          "hits": 2
+        },
+        "72": {
+          "hits": 4
+        },
+        "73": {
+          "hits": 4
+        },
+        "74": {
+          "hits": 4
+        },
+        "75": {
+          "hits": 4
+        },
+        "76": {
+          "hits": 4
+        },
+        "77": {
+          "hits": 4
+        },
+        "78": {
+          "hits": 4
+        },
+        "79": {
+          "hits": 4
+        },
+        "80": {
+          "hits": 4
+        }
+      },
+      "sourceCode": "import 'dart:convert';\n\n/// Represents a dynamic network mock rule.\nclass MockRule {\n  final String id;\n  final String urlPattern;\n  final String method;\n  final int statusCode;\n  final int delayMs;\n  final String responseBody;\n  final Map<String, String> responseHeaders;\n  final bool isEnabled;\n  final String? faultType; // 'timeout', 'connection_error', or null\n\n  MockRule({\n    required this.id,\n    required this.urlPattern,\n    this.method = 'ALL',\n    this.statusCode = 200,\n    this.delayMs = 0,\n    this.responseBody = '{}',\n    this.responseHeaders = const {'Content-Type': 'application/json'},\n    this.isEnabled = true,\n    this.faultType,\n  });\n\n  /// Check if an incoming request matches this rule\n  bool matches(String requestUrl, String requestMethod) {\n    if (!isEnabled) return false;\n\n    // Check HTTP Method\n    if (method.toUpperCase() != 'ALL' &&\n        method.toUpperCase() != requestMethod.toUpperCase()) {\n      return false;\n    }\n\n    // Check URL pattern (supports regex and substring/glob)\n    try {\n      final regex = RegExp(urlPattern);\n      if (regex.hasMatch(requestUrl)) return true;\n    } catch (_) {\n      // Fallback to substring matching if not a valid regex\n      if (requestUrl.contains(urlPattern)) return true;\n    }\n\n    return false;\n  }\n\n  factory MockRule.fromJson(Map<String, dynamic> json) {\n    Map<String, String> headers = {};\n    if (json['responseHeaders'] is Map) {\n      json['responseHeaders'].forEach((k, v) {\n        headers[k.toString()] = v.toString();\n      });\n    }\n\n    return MockRule(\n      id: json['id']?.toString() ?? 'rule_${DateTime.now().millisecondsSinceEpoch}',\n      urlPattern: json['urlPattern']?.toString() ?? '.*',\n      method: json['method']?.toString() ?? 'ALL',\n      statusCode: json['statusCode'] is int ? json['statusCode'] : 200,\n      delayMs: json['delayMs'] is int ? json['delayMs'] : 0,\n      responseBody: json['responseBody']?.toString() ?? '{}',\n      responseHeaders: headers,\n      isEnabled: json['isEnabled'] == null ? true : json['isEnabled'] == true,\n      faultType: json['faultType']?.toString(),\n    );\n  }\n\n  Map<String, dynamic> toJson() {\n    return {\n      'id': id,\n      'urlPattern': urlPattern,\n      'method': method,\n      'statusCode': statusCode,\n      'delayMs': delayMs,\n      'responseBody': responseBody,\n      'responseHeaders': responseHeaders,\n      'isEnabled': isEnabled,\n      if (faultType != null) 'faultType': faultType,\n    };\n  }\n}\n"
+    },
+    "dart/mucker/lib/src/dio_interceptor.dart": {
+      "path": "dart/mucker/lib/src/dio_interceptor.dart",
+      "lines": {
+        "total": 166,
+        "covered": 101,
+        "skipped": 65,
+        "pct": 60.84
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lineDetails": {
+        "21": {
+          "hits": 2
+        },
+        "23": {
+          "hits": 1
+        },
+        "31": {
+          "hits": 1
+        },
+        "32": {
+          "hits": 2
+        },
+        "36": {
+          "hits": 1
+        },
+        "38": {
+          "hits": 1
+        },
+        "48": {
+          "hits": 1
+        },
+        "49": {
+          "hits": 6
+        },
+        "50": {
+          "hits": 2
+        },
+        "54": {
+          "hits": 1
+        },
+        "55": {
+          "hits": 5
+        },
+        "59": {
+          "hits": 1
+        },
+        "60": {
+          "hits": 2
+        },
+        "63": {
+          "hits": 1
+        },
+        "65": {
+          "hits": 2
+        },
+        "66": {
+          "hits": 5
+        },
+        "67": {
+          "hits": 2
+        },
+        "68": {
+          "hits": 2
+        },
+        "71": {
+          "hits": 1
+        },
+        "72": {
+          "hits": 3
+        },
+        "73": {
+          "hits": 2
+        },
+        "75": {
+          "hits": 2
+        },
+        "78": {
+          "hits": 1
+        },
+        "80": {
+          "hits": 2
+        },
+        "81": {
+          "hits": 0
+        },
+        "82": {
+          "hits": 2
+        },
+        "83": {
+          "hits": 2
+        },
+        "84": {
+          "hits": 0
+        },
+        "85": {
+          "hits": 0
+        },
+        "86": {
+          "hits": 0
+        },
+        "87": {
+          "hits": 0
+        },
+        "89": {
+          "hits": 0
+        },
+        "92": {
+          "hits": 0
+        },
+        "95": {
+          "hits": 2
+        },
+        "98": {
+          "hits": 1
+        },
+        "99": {
+          "hits": 0
+        },
+        "102": {
+          "hits": 2
+        },
+        "103": {
+          "hits": 2
+        },
+        "106": {
+          "hits": 1
+        },
+        "107": {
+          "hits": 1
+        },
+        "109": {
+          "hits": 2
+        },
+        "110": {
+          "hits": 1
+        },
+        "111": {
+          "hits": 2
+        },
+        "112": {
+          "hits": 1
+        },
+        "113": {
+          "hits": 2
+        },
+        "114": {
+          "hits": 3
+        },
+        "115": {
+          "hits": 3
+        },
+        "119": {
+          "hits": 1
+        },
+        "122": {
+          "hits": 1
+        },
+        "123": {
+          "hits": 1
+        },
+        "124": {
+          "hits": 5
+        },
+        "128": {
+          "hits": 1
+        },
+        "129": {
+          "hits": 0
+        },
+        "136": {
+          "hits": 0
+        },
+        "139": {
+          "hits": 0
+        },
+        "143": {
+          "hits": 1
+        },
+        "151": {
+          "hits": 2
+        },
+        "152": {
+          "hits": 1
+        },
+        "160": {
+          "hits": 2
+        },
+        "161": {
+          "hits": 3
+        },
+        "165": {
+          "hits": 2
+        },
+        "166": {
+          "hits": 1
+        },
+        "167": {
+          "hits": 2
+        },
+        "170": {
+          "hits": 1
+        },
+        "171": {
+          "hits": 0
+        },
+        "178": {
+          "hits": 0
+        },
+        "181": {
+          "hits": 0
+        },
+        "184": {
+          "hits": 1
+        },
+        "185": {
+          "hits": 2
+        },
+        "186": {
+          "hits": 1
+        },
+        "190": {
+          "hits": 1
+        },
+        "191": {
+          "hits": 0
+        },
+        "198": {
+          "hits": 0
+        },
+        "201": {
+          "hits": 0
+        },
+        "204": {
+          "hits": 1
+        },
+        "207": {
+          "hits": 2
+        },
+        "208": {
+          "hits": 1
+        },
+        "210": {
+          "hits": 1
+        },
+        "212": {
+          "hits": 1
+        },
+        "213": {
+          "hits": 2
+        },
+        "214": {
+          "hits": 1
+        },
+        "215": {
+          "hits": 5
+        },
+        "220": {
+          "hits": 1
+        },
+        "221": {
+          "hits": 1
+        },
+        "227": {
+          "hits": 1
+        },
+        "228": {
+          "hits": 1
+        },
+        "230": {
+          "hits": 1
+        },
+        "231": {
+          "hits": 1
+        },
+        "235": {
+          "hits": 1
+        },
+        "239": {
+          "hits": 0
+        },
+        "242": {
+          "hits": 0
+        },
+        "244": {
+          "hits": 0
+        },
+        "245": {
+          "hits": 0
+        },
+        "246": {
+          "hits": 0
+        },
+        "247": {
+          "hits": 0
+        },
+        "248": {
+          "hits": 0
+        },
+        "249": {
+          "hits": 0
+        },
+        "251": {
+          "hits": 0
+        },
+        "252": {
+          "hits": 0
+        },
+        "253": {
+          "hits": 0
+        },
+        "255": {
+          "hits": 0
+        },
+        "257": {
+          "hits": 0
+        },
+        "258": {
+          "hits": 0
+        },
+        "261": {
+          "hits": 0
+        },
+        "263": {
+          "hits": 0
+        },
+        "268": {
+          "hits": 0
+        },
+        "271": {
+          "hits": 0
+        },
+        "273": {
+          "hits": 0
+        },
+        "274": {
+          "hits": 0
+        },
+        "275": {
+          "hits": 0
+        },
+        "276": {
+          "hits": 0
+        },
+        "277": {
+          "hits": 0
+        },
+        "278": {
+          "hits": 0
+        },
+        "280": {
+          "hits": 0
+        },
+        "281": {
+          "hits": 0
+        },
+        "283": {
+          "hits": 0
+        },
+        "285": {
+          "hits": 0
+        },
+        "286": {
+          "hits": 0
+        },
+        "289": {
+          "hits": 0
+        },
+        "292": {
+          "hits": 0
+        },
+        "296": {
+          "hits": 0
+        },
+        "299": {
+          "hits": 0
+        },
+        "300": {
+          "hits": 0
+        },
+        "301": {
+          "hits": 0
+        },
+        "304": {
+          "hits": 0
+        },
+        "307": {
+          "hits": 0
+        },
+        "308": {
+          "hits": 0
+        },
+        "309": {
+          "hits": 0
+        },
+        "310": {
+          "hits": 0
+        },
+        "311": {
+          "hits": 0
+        },
+        "312": {
+          "hits": 0
+        },
+        "313": {
+          "hits": 0
+        },
+        "314": {
+          "hits": 0
+        },
+        "323": {
+          "hits": 1
+        },
+        "333": {
+          "hits": 3
+        },
+        "334": {
+          "hits": 2
+        },
+        "336": {
+          "hits": 1
+        },
+        "337": {
+          "hits": 2
+        },
+        "343": {
+          "hits": 2
+        },
+        "346": {
+          "hits": 1
+        },
+        "349": {
+          "hits": 3
+        },
+        "350": {
+          "hits": 3
+        },
+        "352": {
+          "hits": 2
+        },
+        "353": {
+          "hits": 1
+        },
+        "354": {
+          "hits": 3
+        },
+        "355": {
+          "hits": 2
+        },
+        "356": {
+          "hits": 2
+        },
+        "357": {
+          "hits": 1
+        },
+        "358": {
+          "hits": 2
+        },
+        "359": {
+          "hits": 1
+        },
+        "361": {
+          "hits": 1
+        },
+        "362": {
+          "hits": 1
+        },
+        "363": {
+          "hits": 1
+        },
+        "365": {
+          "hits": 0
+        },
+        "366": {
+          "hits": 0
+        },
+        "369": {
+          "hits": 0
+        },
+        "376": {
+          "hits": 0
+        },
+        "379": {
+          "hits": 1
+        },
+        "381": {
+          "hits": 1
+        },
+        "387": {
+          "hits": 1
+        },
+        "400": {
+          "hits": 2
+        },
+        "401": {
+          "hits": 3
+        },
+        "402": {
+          "hits": 1
+        },
+        "403": {
+          "hits": 2
+        },
+        "414": {
+          "hits": 2
+        },
+        "416": {
+          "hits": 1
+        }
+      },
+      "sourceCode": "import 'dart:async';\nimport 'dart:convert';\nimport 'dart:io' show Platform;\nimport 'package:dio/dio.dart';\nimport 'package:http/http.dart' as http;\nimport 'mock_rule.dart';\n\n/// Dio Interceptor that hooks into Mucker to inspect, mock, and manipulate\n/// HTTP network traffic without certificates in Flutter & Dart applications.\nclass MuckerDioInterceptor extends Interceptor {\n  final String serverUrl;\n  final bool autoSyncRules;\n  final List<MockRule> localRules;\n  final bool reportTelemetry;\n  final bool breakpointMode;\n  final Duration breakpointTimeout;\n\n  DateTime? _lastSync;\n  http.Client? _httpClient;\n\n  http.Client get _client => _httpClient ??= http.Client();\n\n  MuckerDioInterceptor({\n    String? serverUrl,\n    this.autoSyncRules = true,\n    List<MockRule>? initialRules,\n    this.reportTelemetry = true,\n    this.breakpointMode = false,\n    this.breakpointTimeout = const Duration(seconds: 30),\n    http.Client? httpClient,\n  })  : serverUrl = serverUrl ?? defaultServerUrl(),\n        localRules = List<MockRule>.from(initialRules ?? []),\n        _httpClient = httpClient;\n\n  /// Determines default server host, auto-resolving 10.0.2.2 for Android emulators\n  static String defaultServerUrl() {\n    try {\n      if (Platform.isAndroid) {\n        return 'http://10.0.2.2:8080';\n      }\n    } catch (_) {\n      // Platform may throw on web or environments where dart:io is unavailable\n    }\n    return 'http://127.0.0.1:8080';\n  }\n\n  /// Add a mock rule dynamically\n  void addRule(MockRule rule) {\n    localRules.removeWhere((r) => r.id == rule.id);\n    localRules.add(rule);\n  }\n\n  /// Remove a rule by ID\n  void removeRule(String id) {\n    localRules.removeWhere((r) => r.id == id);\n  }\n\n  /// Clear all rules\n  void clearRules() {\n    localRules.clear();\n  }\n\n  @override\n  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {\n    final startTime = DateTime.now().millisecondsSinceEpoch;\n    final reqId = 'req_${startTime}_${(options.uri.hashCode & 0xffff).toRadixString(16)}';\n    options.extra['_mucker_id'] = reqId;\n    options.extra['_mucker_start_time'] = startTime;\n\n    // 1. Capture request headers and body for telemetry\n    final requestHeaders = <String, String>{};\n    options.headers.forEach((k, v) {\n      if (v != null) requestHeaders[k] = v.toString();\n    });\n    options.extra['_mucker_headers'] = requestHeaders;\n\n    String? postData;\n    if (options.data != null) {\n      try {\n        if (options.data is String) {\n          postData = options.data as String;\n        } else if (options.data is Map || options.data is List) {\n          postData = jsonEncode(options.data);\n        } else if (options.data is FormData) {\n          final fd = options.data as FormData;\n          final fields = fd.fields.map((e) => '${e.key}=${e.value}').join('&');\n          postData = fields.isNotEmpty ? fields : '[FormData]';\n        } else {\n          postData = options.data.toString();\n        }\n      } catch (_) {\n        postData = options.data.toString();\n      }\n    }\n    options.extra['_mucker_post_data'] = postData;\n\n    // 2. Sync rules from Mucker Server if autoSync enabled (rate-limited to every 2 seconds)\n    if (autoSyncRules) {\n      await _syncRulesIfDue();\n    }\n\n    final url = options.uri.toString();\n    final method = options.method.toUpperCase();\n\n    // 3. Breakpoint evaluation\n    if (breakpointMode) {\n      final pausedResult = await _handleBreakpoint(reqId, url, method, requestHeaders, postData, options);\n      if (pausedResult != null) {\n        if (pausedResult['action'] == 'fulfill') {\n          final status = (pausedResult['statusCode'] as int?) ?? 200;\n          final bodyStr = (pausedResult['responseBody']?.toString()) ?? '{}';\n          final headersMap = <String, dynamic>{'X-Mocked-By': 'Mucker-Breakpoint'};\n          if (pausedResult['responseHeaders'] is Map) {\n            (pausedResult['responseHeaders'] as Map).forEach((k, v) {\n              headersMap[k.toString()] = v.toString();\n            });\n          }\n\n          final mockResponse = Response(\n            requestOptions: options,\n            statusCode: status,\n            data: _parseResponseBody(bodyStr),\n            headers: Headers.fromMap(\n              headersMap.map((k, v) => MapEntry(k, [v.toString()])),\n            ),\n          );\n\n          if (reportTelemetry) {\n            await _sendTelemetry(\n              id: reqId,\n              url: url,\n              method: method,\n              headers: requestHeaders,\n              postData: postData,\n              statusCode: status,\n              responseHeaders: headersMap.map((k, v) => MapEntry(k, v.toString())),\n              isMocked: true,\n              responseBody: bodyStr,\n              durationMs: DateTime.now().millisecondsSinceEpoch - startTime,\n            );\n          }\n\n          return handler.resolve(mockResponse);\n        }\n        // If continue action, fall through to evaluate rules or real network\n      }\n    }\n\n    // 4. Evaluate static/dynamic mock rules\n    MockRule? matchedRule;\n    for (final rule in localRules) {\n      if (rule.matches(url, method)) {\n        matchedRule = rule;\n        break;\n      }\n    }\n\n    // 5. If matched, handle mock response or fault injection\n    if (matchedRule != null) {\n      if (matchedRule.delayMs > 0) {\n        await Future.delayed(Duration(milliseconds: matchedRule.delayMs));\n      }\n\n      // Check fault injection\n      if (matchedRule.faultType == 'timeout') {\n        final err = DioException.connectionTimeout(\n          timeout: Duration(milliseconds: matchedRule.delayMs),\n          requestOptions: options,\n        );\n        if (reportTelemetry) {\n          await _sendTelemetry(\n            id: reqId,\n            url: url,\n            method: method,\n            headers: requestHeaders,\n            postData: postData,\n            statusCode: 0,\n            responseHeaders: {},\n            isMocked: true,\n            responseBody: 'Connection Timeout (Simulated by Mucker)',\n            durationMs: matchedRule.delayMs,\n          );\n        }\n        return handler.reject(err);\n      } else if (matchedRule.faultType == 'connection_error') {\n        final err = DioException.connectionError(\n          requestOptions: options,\n          reason: 'Network Unreachable (Simulated by Mucker)',\n        );\n        if (reportTelemetry) {\n          await _sendTelemetry(\n            id: reqId,\n            url: url,\n            method: method,\n            headers: requestHeaders,\n            postData: postData,\n            statusCode: 0,\n            responseHeaders: {},\n            isMocked: true,\n            responseBody: 'Connection Error (Simulated by Mucker)',\n            durationMs: matchedRule.delayMs,\n          );\n        }\n        return handler.reject(err);\n      }\n\n      final headersMap = Map<String, dynamic>.from(matchedRule.responseHeaders);\n      headersMap['X-Mocked-By'] = 'MuckerDioInterceptor';\n\n      final mockResponse = Response(\n        requestOptions: options,\n        statusCode: matchedRule.statusCode,\n        data: _parseResponseBody(matchedRule.responseBody),\n        headers: Headers.fromMap(\n          headersMap.map((k, v) => MapEntry(k, [v.toString()])),\n        ),\n      );\n\n      // Report telemetry\n      if (reportTelemetry) {\n        await _sendTelemetry(\n          id: reqId,\n          url: url,\n          method: method,\n          headers: requestHeaders,\n          postData: postData,\n          statusCode: matchedRule.statusCode,\n          responseHeaders: matchedRule.responseHeaders,\n          isMocked: true,\n          responseBody: matchedRule.responseBody,\n          durationMs: matchedRule.delayMs,\n        );\n      }\n\n      return handler.resolve(mockResponse);\n    }\n\n    // 6. Pass through to real network\n    return handler.next(options);\n  }\n\n  @override\n  void onResponse(Response response, ResponseInterceptorHandler handler) {\n    if (reportTelemetry) {\n      final reqId = response.requestOptions.extra['_mucker_id'] as String? ?? 'req_${DateTime.now().millisecondsSinceEpoch}';\n      final start = response.requestOptions.extra['_mucker_start_time'] as int?;\n      final duration = start != null ? DateTime.now().millisecondsSinceEpoch - start : 0;\n      final headers = (response.requestOptions.extra['_mucker_headers'] as Map<String, String>?) ?? {};\n      final postData = response.requestOptions.extra['_mucker_post_data'] as String?;\n\n      final bodyStr = response.data is String ? response.data as String : jsonEncode(response.data);\n      final resHeaders = <String, String>{};\n      response.headers.map.forEach((k, v) => resHeaders[k] = v.join(', '));\n\n      _sendTelemetry(\n        id: reqId,\n        url: response.requestOptions.uri.toString(),\n        method: response.requestOptions.method.toUpperCase(),\n        headers: headers,\n        postData: postData,\n        statusCode: response.statusCode ?? 200,\n        responseHeaders: resHeaders,\n        isMocked: response.headers['X-Mocked-By'] != null,\n        responseBody: bodyStr,\n        durationMs: duration,\n      );\n    }\n    return handler.next(response);\n  }\n\n  @override\n  void onError(DioException err, ErrorInterceptorHandler handler) {\n    if (reportTelemetry) {\n      final reqId = err.requestOptions.extra['_mucker_id'] as String? ?? 'req_${DateTime.now().millisecondsSinceEpoch}';\n      final start = err.requestOptions.extra['_mucker_start_time'] as int?;\n      final duration = start != null ? DateTime.now().millisecondsSinceEpoch - start : 0;\n      final headers = (err.requestOptions.extra['_mucker_headers'] as Map<String, String>?) ?? {};\n      final postData = err.requestOptions.extra['_mucker_post_data'] as String?;\n\n      final resHeaders = <String, String>{};\n      err.response?.headers.map.forEach((k, v) => resHeaders[k] = v.join(', '));\n\n      _sendTelemetry(\n        id: reqId,\n        url: err.requestOptions.uri.toString(),\n        method: err.requestOptions.method.toUpperCase(),\n        headers: headers,\n        postData: postData,\n        statusCode: err.response?.statusCode ?? 0,\n        responseHeaders: resHeaders,\n        isMocked: false,\n        responseBody: err.response?.data?.toString() ?? err.message ?? 'Network Error',\n        durationMs: duration,\n      );\n    }\n    return handler.next(err);\n  }\n\n  Future<void> _syncRulesIfDue() async {\n    final now = DateTime.now();\n    if (_lastSync != null && now.difference(_lastSync!).inSeconds < 2) {\n      return;\n    }\n    _lastSync = now;\n\n    try {\n      final uri = Uri.parse('$serverUrl/api/rules');\n      final res = await _client.get(uri).timeout(const Duration(milliseconds: 350));\n      if (res.statusCode == 200) {\n        final List list = jsonDecode(res.body);\n        localRules.clear();\n        for (final item in list) {\n          if (item is Map<String, dynamic>) {\n            localRules.add(MockRule.fromJson(item));\n          }\n        }\n      }\n    } catch (_) {\n      // Server unreachable; keep using local rules\n    }\n  }\n\n  Future<Map<String, dynamic>?> _handleBreakpoint(\n    String reqId,\n    String url,\n    String method,\n    Map<String, String> headers,\n    String? postData,\n    RequestOptions options,\n  ) async {\n    try {\n      // 1. Notify server about paused request\n      final pauseUri = Uri.parse('$serverUrl/api/paused');\n      await _client.post(\n        pauseUri,\n        headers: {'Content-Type': 'application/json'},\n        body: jsonEncode({\n          'id': reqId,\n          'url': url,\n          'method': method,\n          'headers': headers,\n          'postData': postData,\n          'timestamp': DateTime.now().millisecondsSinceEpoch,\n          'isPaused': true,\n        }),\n      ).timeout(const Duration(milliseconds: 500));\n\n      // 2. Poll for developer action in Mucker Dashboard\n      final deadline = DateTime.now().add(breakpointTimeout);\n      final pollUri = Uri.parse('$serverUrl/api/paused/$reqId');\n\n      while (DateTime.now().isBefore(deadline)) {\n        await Future.delayed(const Duration(milliseconds: 250));\n        final res = await _client.get(pollUri).timeout(const Duration(milliseconds: 400));\n        if (res.statusCode == 200) {\n          final data = jsonDecode(res.body);\n          if (data is Map<String, dynamic>) {\n            if (data['status'] == 'fulfilled') {\n              return {\n                'action': 'fulfill',\n                'statusCode': data['statusCode'] ?? 200,\n                'responseBody': data['responseBody'] ?? '{}',\n                'responseHeaders': data['responseHeaders'] ?? {},\n              };\n            } else if (data['status'] == 'continue') {\n              return {'action': 'continue'};\n            }\n          }\n        } else if (res.statusCode == 404) {\n          break;\n        }\n      }\n    } catch (_) {\n      // Fallback on network or timeout error\n    }\n    return {'action': 'continue'};\n  }\n\n  dynamic _parseResponseBody(String rawBody) {\n    try {\n      return jsonDecode(rawBody);\n    } catch (_) {\n      return rawBody;\n    }\n  }\n\n  Future<void> _sendTelemetry({\n    required String id,\n    required String url,\n    required String method,\n    required Map<String, String> headers,\n    String? postData,\n    required int statusCode,\n    required Map<String, String> responseHeaders,\n    required bool isMocked,\n    required String responseBody,\n    required int durationMs,\n  }) async {\n    try {\n      await _client.post(\n        Uri.parse('$serverUrl/api/traffic'),\n        headers: {'Content-Type': 'application/json'},\n        body: jsonEncode({\n          'id': id,\n          'url': url,\n          'method': method,\n          'headers': headers,\n          'postData': postData,\n          'statusCode': statusCode,\n          'responseHeaders': responseHeaders,\n          'isMocked': isMocked,\n          'responseBody': responseBody,\n          'responseTime': durationMs,\n          'timestamp': DateTime.now().millisecondsSinceEpoch,\n        }),\n      ).timeout(const Duration(milliseconds: 400));\n    } catch (_) {}\n  }\n}\n"
+    },
+    "dart/mucker/lib/src/http_client.dart": {
+      "path": "dart/mucker/lib/src/http_client.dart",
+      "lines": {
+        "total": 24,
+        "covered": 17,
+        "skipped": 7,
+        "pct": 70.83
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lineDetails": {
+        "12": {
+          "hits": 1
+        },
+        "16": {
+          "hits": 0
+        },
+        "17": {
+          "hits": 1
+        },
+        "19": {
+          "hits": 0
+        },
+        "20": {
+          "hits": 0
+        },
+        "21": {
+          "hits": 0
+        },
+        "24": {
+          "hits": 1
+        },
+        "26": {
+          "hits": 2
+        },
+        "27": {
+          "hits": 2
+        },
+        "31": {
+          "hits": 2
+        },
+        "32": {
+          "hits": 1
+        },
+        "39": {
+          "hits": 2
+        },
+        "40": {
+          "hits": 0
+        },
+        "43": {
+          "hits": 2
+        },
+        "44": {
+          "hits": 2
+        },
+        "45": {
+          "hits": 1
+        },
+        "46": {
+          "hits": 1
+        },
+        "48": {
+          "hits": 1
+        },
+        "49": {
+          "hits": 1
+        },
+        "50": {
+          "hits": 1
+        },
+        "51": {
+          "hits": 1
+        },
+        "57": {
+          "hits": 2
+        },
+        "60": {
+          "hits": 0
+        },
+        "62": {
+          "hits": 0
+        }
+      },
+      "sourceCode": "import 'dart:convert';\nimport 'package:http/http.dart' as http;\nimport 'mock_rule.dart';\n\n/// An HTTP Client wrapper implementing `http.BaseClient` that intercepts\n/// requests and provides zero-cert mocking with Mucker.\nclass MuckerHttpClient extends http.BaseClient {\n  final http.Client _inner;\n  final String serverUrl;\n  final List<MockRule> rules;\n\n  MuckerHttpClient({\n    http.Client? innerClient,\n    this.serverUrl = 'http://127.0.0.1:8080',\n    List<MockRule>? initialRules,\n  })  : _inner = innerClient ?? http.Client(),\n        rules = List<MockRule>.from(initialRules ?? []);\n\n  void addRule(MockRule rule) {\n    rules.removeWhere((r) => r.id == rule.id);\n    rules.add(rule);\n  }\n\n  @override\n  Future<http.StreamedResponse> send(http.BaseRequest request) async {\n    final url = request.url.toString();\n    final method = request.method.toUpperCase();\n\n    // Check if matched\n    MockRule? matched;\n    for (final r in rules) {\n      if (r.matches(url, method)) {\n        matched = r;\n        break;\n      }\n    }\n\n    if (matched != null) {\n      if (matched.delayMs > 0) {\n        await Future.delayed(Duration(milliseconds: matched.delayMs));\n      }\n\n      final bodyBytes = utf8.encode(matched.responseBody);\n      final headers = Map<String, String>.from(matched.responseHeaders);\n      headers['x-mocked-by'] = 'MuckerHttpClient';\n      headers['X-Mocked-By'] = 'MuckerHttpClient';\n\n      return http.StreamedResponse(\n        Stream.value(bodyBytes),\n        matched.statusCode,\n        contentLength: bodyBytes.length,\n        headers: headers,\n        request: request,\n      );\n    }\n\n    return _inner.send(request);\n  }\n\n  @override\n  void close() {\n    _inner.close();\n  }\n}\n"
+    },
+    "dart/mucker/lib/src/mcp_server.dart": {
+      "path": "dart/mucker/lib/src/mcp_server.dart",
+      "lines": {
+        "total": 293,
+        "covered": 204,
+        "skipped": 89,
+        "pct": 69.62
+      },
+      "functions": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lineDetails": {
+        "12": {
+          "hits": 1
+        },
+        "14": {
+          "hits": 1
+        },
+        "16": {
+          "hits": 3
+        },
+        "17": {
+          "hits": 2
+        },
+        "32": {
+          "hits": 1
+        },
+        "37": {
+          "hits": 1
+        },
+        "38": {
+          "hits": 1
+        },
+        "39": {
+          "hits": 1
+        },
+        "40": {
+          "hits": 1
+        },
+        "43": {
+          "hits": 3
+        },
+        "44": {
+          "hits": 0
+        },
+        "47": {
+          "hits": 1
+        },
+        "54": {
+          "hits": 0
+        },
+        "55": {
+          "hits": 1
+        },
+        "56": {
+          "hits": 1
+        },
+        "65": {
+          "hits": 1
+        },
+        "66": {
+          "hits": 3
+        },
+        "67": {
+          "hits": 2
+        },
+        "68": {
+          "hits": 2
+        },
+        "70": {
+          "hits": 2
+        },
+        "71": {
+          "hits": 2
+        },
+        "74": {
+          "hits": 2
+        },
+        "77": {
+          "hits": 1
+        },
+        "78": {
+          "hits": 3
+        },
+        "80": {
+          "hits": 2
+        },
+        "83": {
+          "hits": 2
+        },
+        "84": {
+          "hits": 0
+        },
+        "85": {
+          "hits": 0
+        },
+        "89": {
+          "hits": 4
+        },
+        "92": {
+          "hits": 4
+        },
+        "93": {
+          "hits": 3
+        },
+        "94": {
+          "hits": 1
+        },
+        "95": {
+          "hits": 2
+        },
+        "96": {
+          "hits": 4
+        },
+        "97": {
+          "hits": 2
+        },
+        "98": {
+          "hits": 2
+        },
+        "103": {
+          "hits": 4
+        },
+        "104": {
+          "hits": 1
+        },
+        "107": {
+          "hits": 1
+        },
+        "108": {
+          "hits": 1
+        },
+        "114": {
+          "hits": 2
+        },
+        "115": {
+          "hits": 4
+        },
+        "116": {
+          "hits": 3
+        },
+        "117": {
+          "hits": 2
+        },
+        "122": {
+          "hits": 3
+        },
+        "123": {
+          "hits": 1
+        },
+        "128": {
+          "hits": 3
+        },
+        "129": {
+          "hits": 3
+        },
+        "130": {
+          "hits": 1
+        },
+        "135": {
+          "hits": 0
+        },
+        "136": {
+          "hits": 0
+        },
+        "138": {
+          "hits": 0
+        },
+        "139": {
+          "hits": 0
+        },
+        "140": {
+          "hits": 0
+        },
+        "141": {
+          "hits": 0
+        },
+        "142": {
+          "hits": 0
+        },
+        "144": {
+          "hits": 0
+        },
+        "145": {
+          "hits": 0
+        },
+        "146": {
+          "hits": 0
+        },
+        "147": {
+          "hits": 0
+        },
+        "151": {
+          "hits": 0
+        },
+        "152": {
+          "hits": 0
+        },
+        "153": {
+          "hits": 0
+        },
+        "156": {
+          "hits": 0
+        },
+        "157": {
+          "hits": 0
+        },
+        "163": {
+          "hits": 1
+        },
+        "164": {
+          "hits": 6
+        },
+        "165": {
+          "hits": 1
+        },
+        "167": {
+          "hits": 1
+        },
+        "168": {
+          "hits": 1
+        },
+        "169": {
+          "hits": 2
+        },
+        "170": {
+          "hits": 2
+        },
+        "171": {
+          "hits": 2
+        },
+        "173": {
+          "hits": 1
+        },
+        "174": {
+          "hits": 1
+        },
+        "175": {
+          "hits": 2
+        },
+        "178": {
+          "hits": 2
+        },
+        "180": {
+          "hits": 2
+        },
+        "181": {
+          "hits": 1
+        },
+        "182": {
+          "hits": 1
+        },
+        "184": {
+          "hits": 1
+        },
+        "185": {
+          "hits": 2
+        },
+        "186": {
+          "hits": 1
+        },
+        "188": {
+          "hits": 0
+        },
+        "189": {
+          "hits": 0
+        },
+        "190": {
+          "hits": 0
+        },
+        "195": {
+          "hits": 1
+        },
+        "196": {
+          "hits": 3
+        },
+        "197": {
+          "hits": 2
+        },
+        "199": {
+          "hits": 1
+        },
+        "202": {
+          "hits": 1
+        },
+        "203": {
+          "hits": 2
+        },
+        "205": {
+          "hits": 2
+        },
+        "206": {
+          "hits": 2
+        },
+        "207": {
+          "hits": 2
+        },
+        "209": {
+          "hits": 0
+        },
+        "210": {
+          "hits": 0
+        },
+        "211": {
+          "hits": 0
+        },
+        "212": {
+          "hits": 0
+        },
+        "214": {
+          "hits": 0
+        },
+        "216": {
+          "hits": 0
+        },
+        "220": {
+          "hits": 1
+        },
+        "221": {
+          "hits": 2
+        },
+        "222": {
+          "hits": 2
+        },
+        "223": {
+          "hits": 2
+        },
+        "227": {
+          "hits": 1
+        },
+        "229": {
+          "hits": 1
+        },
+        "230": {
+          "hits": 1
+        },
+        "232": {
+          "hits": 1
+        },
+        "233": {
+          "hits": 0
+        },
+        "234": {
+          "hits": 0
+        },
+        "235": {
+          "hits": 0
+        },
+        "236": {
+          "hits": 0
+        },
+        "237": {
+          "hits": 0
+        },
+        "239": {
+          "hits": 0
+        },
+        "241": {
+          "hits": 1
+        },
+        "242": {
+          "hits": 1
+        },
+        "245": {
+          "hits": 0
+        },
+        "249": {
+          "hits": 1
+        },
+        "250": {
+          "hits": 1
+        },
+        "251": {
+          "hits": 2
+        },
+        "252": {
+          "hits": 4
+        },
+        "255": {
+          "hits": 1
+        },
+        "256": {
+          "hits": 1
+        },
+        "257": {
+          "hits": 1
+        },
+        "258": {
+          "hits": 0
+        },
+        "259": {
+          "hits": 1
+        },
+        "260": {
+          "hits": 2
+        },
+        "261": {
+          "hits": 1
+        },
+        "262": {
+          "hits": 1
+        },
+        "263": {
+          "hits": 1
+        },
+        "264": {
+          "hits": 1
+        },
+        "266": {
+          "hits": 0
+        },
+        "270": {
+          "hits": 1
+        },
+        "271": {
+          "hits": 1
+        },
+        "273": {
+          "hits": 1
+        },
+        "274": {
+          "hits": 1
+        },
+        "276": {
+          "hits": 1
+        },
+        "281": {
+          "hits": 1
+        },
+        "284": {
+          "hits": 1
+        },
+        "285": {
+          "hits": 1
+        },
+        "286": {
+          "hits": 1
+        },
+        "289": {
+          "hits": 1
+        },
+        "291": {
+          "hits": 1
+        },
+        "294": {
+          "hits": 1
+        },
+        "296": {
+          "hits": 1
+        },
+        "299": {
+          "hits": 1
+        },
+        "300": {
+          "hits": 1
+        },
+        "301": {
+          "hits": 1
+        },
+        "302": {
+          "hits": 1
+        },
+        "303": {
+          "hits": 1
+        },
+        "304": {
+          "hits": 1
+        },
+        "306": {
+          "hits": 1
+        },
+        "308": {
+          "hits": 1
+        },
+        "311": {
+          "hits": 1
+        },
+        "312": {
+          "hits": 1
+        },
+        "314": {
+          "hits": 1
+        },
+        "316": {
+          "hits": 1
+        },
+        "319": {
+          "hits": 1
+        },
+        "321": {
+          "hits": 1
+        },
+        "324": {
+          "hits": 1
+        },
+        "325": {
+          "hits": 1
+        },
+        "326": {
+          "hits": 1
+        },
+        "328": {
+          "hits": 1
+        },
+        "330": {
+          "hits": 1
+        },
+        "333": {
+          "hits": 1
+        },
+        "334": {
+          "hits": 1
+        },
+        "336": {
+          "hits": 1
+        },
+        "338": {
+          "hits": 1
+        },
+        "341": {
+          "hits": 1
+        },
+        "342": {
+          "hits": 1
+        },
+        "343": {
+          "hits": 1
+        },
+        "346": {
+          "hits": 1
+        },
+        "349": {
+          "hits": 1
+        },
+        "350": {
+          "hits": 1
+        },
+        "351": {
+          "hits": 1
+        },
+        "352": {
+          "hits": 1
+        },
+        "354": {
+          "hits": 1
+        },
+        "356": {
+          "hits": 1
+        },
+        "359": {
+          "hits": 1
+        },
+        "360": {
+          "hits": 1
+        },
+        "362": {
+          "hits": 1
+        },
+        "364": {
+          "hits": 1
+        },
+        "367": {
+          "hits": 1
+        },
+        "368": {
+          "hits": 1
+        },
+        "369": {
+          "hits": 1
+        },
+        "370": {
+          "hits": 1
+        },
+        "372": {
+          "hits": 1
+        },
+        "376": {
+          "hits": 2
+        },
+        "379": {
+          "hits": 1
+        },
+        "380": {
+          "hits": 2
+        },
+        "381": {
+          "hits": 3
+        },
+        "386": {
+          "hits": 1
+        },
+        "387": {
+          "hits": 0
+        },
+        "389": {
+          "hits": 0
+        },
+        "390": {
+          "hits": 0
+        },
+        "391": {
+          "hits": 0
+        },
+        "392": {
+          "hits": 0
+        },
+        "396": {
+          "hits": 1
+        },
+        "397": {
+          "hits": 0
+        },
+        "400": {
+          "hits": 1
+        },
+        "401": {
+          "hits": 1
+        },
+        "402": {
+          "hits": 3
+        },
+        "403": {
+          "hits": 2
+        },
+        "404": {
+          "hits": 1
+        },
+        "405": {
+          "hits": 3
+        },
+        "406": {
+          "hits": 2
+        },
+        "407": {
+          "hits": 2
+        },
+        "409": {
+          "hits": 2
+        },
+        "410": {
+          "hits": 2
+        },
+        "411": {
+          "hits": 3
+        },
+        "414": {
+          "hits": 1
+        },
+        "415": {
+          "hits": 2
+        },
+        "416": {
+          "hits": 2
+        },
+        "417": {
+          "hits": 5
+        },
+        "418": {
+          "hits": 3
+        },
+        "420": {
+          "hits": 1
+        },
+        "423": {
+          "hits": 1
+        },
+        "424": {
+          "hits": 0
+        },
+        "425": {
+          "hits": 0
+        },
+        "426": {
+          "hits": 0
+        },
+        "429": {
+          "hits": 1
+        },
+        "430": {
+          "hits": 2
+        },
+        "431": {
+          "hits": 2
+        },
+        "432": {
+          "hits": 5
+        },
+        "433": {
+          "hits": 2
+        },
+        "434": {
+          "hits": 2
+        },
+        "435": {
+          "hits": 3
+        },
+        "436": {
+          "hits": 1
+        },
+        "437": {
+          "hits": 1
+        },
+        "438": {
+          "hits": 1
+        },
+        "439": {
+          "hits": 1
+        },
+        "440": {
+          "hits": 1
+        },
+        "441": {
+          "hits": 1
+        },
+        "442": {
+          "hits": 1
+        },
+        "444": {
+          "hits": 1
+        },
+        "446": {
+          "hits": 1
+        },
+        "448": {
+          "hits": 0
+        },
+        "452": {
+          "hits": 0
+        },
+        "453": {
+          "hits": 0
+        },
+        "454": {
+          "hits": 0
+        },
+        "455": {
+          "hits": 0
+        },
+        "458": {
+          "hits": 0
+        },
+        "459": {
+          "hits": 0
+        },
+        "460": {
+          "hits": 0
+        },
+        "461": {
+          "hits": 0
+        },
+        "462": {
+          "hits": 0
+        },
+        "463": {
+          "hits": 0
+        },
+        "464": {
+          "hits": 0
+        },
+        "465": {
+          "hits": 0
+        },
+        "466": {
+          "hits": 0
+        },
+        "467": {
+          "hits": 0
+        },
+        "470": {
+          "hits": 0
+        },
+        "471": {
+          "hits": 0
+        },
+        "472": {
+          "hits": 0
+        },
+        "473": {
+          "hits": 0
+        },
+        "474": {
+          "hits": 0
+        },
+        "475": {
+          "hits": 0
+        },
+        "476": {
+          "hits": 0
+        },
+        "477": {
+          "hits": 0
+        },
+        "479": {
+          "hits": 0
+        },
+        "483": {
+          "hits": 0
+        },
+        "484": {
+          "hits": 0
+        },
+        "485": {
+          "hits": 0
+        },
+        "486": {
+          "hits": 0
+        },
+        "487": {
+          "hits": 0
+        },
+        "488": {
+          "hits": 0
+        },
+        "490": {
+          "hits": 0
+        },
+        "494": {
+          "hits": 0
+        },
+        "495": {
+          "hits": 0
+        },
+        "496": {
+          "hits": 0
+        },
+        "497": {
+          "hits": 0
+        },
+        "498": {
+          "hits": 0
+        },
+        "499": {
+          "hits": 0
+        },
+        "503": {
+          "hits": 0
+        },
+        "506": {
+          "hits": 1
+        },
+        "508": {
+          "hits": 0
+        },
+        "512": {
+          "hits": 1
+        },
+        "518": {
+          "hits": 1
+        },
+        "521": {
+          "hits": 1
+        },
+        "522": {
+          "hits": 1
+        },
+        "523": {
+          "hits": 1
+        },
+        "524": {
+          "hits": 2
+        },
+        "529": {
+          "hits": 1
+        },
+        "530": {
+          "hits": 1
+        },
+        "531": {
+          "hits": 1
+        },
+        "532": {
+          "hits": 1
+        },
+        "536": {
+          "hits": 1
+        },
+        "539": {
+          "hits": 1
+        },
+        "540": {
+          "hits": 2
+        },
+        "547": {
+          "hits": 0
+        },
+        "548": {
+          "hits": 0
+        },
+        "551": {
+          "hits": 0
+        }
+      },
+      "sourceCode": "import 'dart:async';\nimport 'dart:convert';\nimport 'dart:io';\nimport 'mock_rule.dart';\n\n/// Active SSE client session for streaming MCP messages\nclass _SseSession {\n  final String sessionId;\n  final HttpResponse response;\n  final StreamController<String> controller;\n\n  _SseSession(this.sessionId, this.response, this.controller);\n\n  void sendEvent(String event, String data) {\n    try {\n      response.write('event: $event\\r\\ndata: $data\\r\\n\\r\\n');\n      response.flush();\n    } catch (_) {}\n  }\n}\n\n/// Lightweight, zero-dependency Dart & Flutter Model Context Protocol (MCP) server.\n/// Exposes JSON-RPC 2.0 / MCP over Streamable HTTP (`POST /mcp`) and Server-Sent Events (`GET /sse`).\nclass MuckerMcpServer {\n  final HttpServer _server;\n  final List<MockRule> rules;\n  final List<Map<String, dynamic>> history;\n  bool breakpointMode;\n  final Map<String, Completer<Map<String, dynamic>>> _pendingPaused;\n  final Map<String, _SseSession> _activeSseSessions = {};\n\n  MuckerMcpServer._(\n    this._server, {\n    List<MockRule>? initialRules,\n    List<Map<String, dynamic>>? initialHistory,\n    this.breakpointMode = false,\n  })  : rules = initialRules ?? [],\n        history = initialHistory ?? [],\n        _pendingPaused = {} {\n    _listen();\n  }\n\n  int get port => _server.port;\n  String get address => _server.address.address;\n\n  /// Binds and starts the MCP HTTP and SSE server\n  static Future<MuckerMcpServer> bind({\n    dynamic address,\n    int port = 8080,\n    List<MockRule>? initialRules,\n    List<Map<String, dynamic>>? initialHistory,\n    bool breakpointMode = false,\n  }) async {\n    final addr = address ?? InternetAddress.anyIPv4;\n    final server = await HttpServer.bind(addr, port, shared: true);\n    return MuckerMcpServer._(\n      server,\n      initialRules: initialRules,\n      initialHistory: initialHistory,\n      breakpointMode: breakpointMode,\n    );\n  }\n\n  /// Stops the MCP server and closes all active SSE sessions\n  Future<void> close({bool force = false}) async {\n    final sessions = _activeSseSessions.values.toList();\n    _activeSseSessions.clear();\n    for (final session in sessions) {\n      try {\n        await session.controller.close();\n        await session.response.close();\n      } catch (_) {}\n    }\n    await _server.close(force: force);\n  }\n\n  void _listen() {\n    _server.listen((HttpRequest request) async {\n      try {\n        _setCorsHeaders(request.response);\n\n        // Handle CORS Preflight\n        if (request.method == 'OPTIONS') {\n          request.response.statusCode = HttpStatus.noContent;\n          await request.response.close();\n          return;\n        }\n\n        final cleanPath = request.uri.path.replaceAll(RegExp(r'/+$'), '');\n\n        // 1. Streamable HTTP: POST /mcp or POST /api/mcp\n        if (request.method == 'POST' && (cleanPath == '/mcp' || cleanPath == '/api/mcp')) {\n          final body = await utf8.decoder.bind(request).join();\n          final response = handleMessage(body);\n          request.response.statusCode = HttpStatus.ok;\n          request.response.headers.contentType = ContentType('application', 'json', charset: 'utf-8');\n          request.response.write(response);\n          await request.response.close();\n          return;\n        }\n\n        // 2. Discovery: GET /mcp or GET /api/mcp\n        if (request.method == 'GET' && (cleanPath == '/mcp' || cleanPath == '/api/mcp')) {\n          final discovery = {\n            'service': 'mucker-dart-mcp-server',\n            'version': '1.0.0',\n            'transports': ['streamable-http', 'sse'],\n            'endpoints': {\n              'http': '/mcp',\n              'sse': '/sse',\n              'message': '/message',\n            }\n          };\n          request.response.statusCode = HttpStatus.ok;\n          request.response.headers.contentType = ContentType('application', 'json', charset: 'utf-8');\n          request.response.write(jsonEncode(discovery));\n          await request.response.close();\n          return;\n        }\n\n        // 3. SSE Stream: GET /sse or GET /mcp/sse\n        if (request.method == 'GET' && (cleanPath == '/sse' || cleanPath == '/mcp/sse')) {\n          await _handleSseConnect(request);\n          return;\n        }\n\n        // 4. SSE Client Message: POST /message or POST /messages\n        if (request.method == 'POST' && (cleanPath == '/message' || cleanPath == '/messages')) {\n          final body = await utf8.decoder.bind(request).join();\n          await _handleSsePostMessage(request, body);\n          return;\n        }\n\n        // 5. Fallback REST API\n        if (cleanPath == '/api/status' && request.method == 'GET') {\n          final status = {\n            'status': 'running',\n            'port': port,\n            'breakpointMode': breakpointMode,\n            'activeRulesCount': rules.length,\n            'historyCount': history.length,\n            'mcp': {'http': '/mcp', 'sse': '/sse'}\n          };\n          request.response.statusCode = HttpStatus.ok;\n          request.response.headers.contentType = ContentType('application', 'json', charset: 'utf-8');\n          request.response.write(jsonEncode(status));\n          await request.response.close();\n          return;\n        }\n\n        request.response.statusCode = HttpStatus.notFound;\n        request.response.write('Not Found');\n        await request.response.close();\n      } catch (_) {\n        try {\n          request.response.statusCode = HttpStatus.internalServerError;\n          await request.response.close();\n        } catch (_) {}\n      }\n    });\n  }\n\n  Future<void> _handleSseConnect(HttpRequest request) async {\n    final sessionId = 'sse_${DateTime.now().millisecondsSinceEpoch}_${request.uri.hashCode.toRadixString(16)}';\n    final response = request.response;\n\n    response.statusCode = HttpStatus.ok;\n    response.bufferOutput = false;\n    response.headers.set('Content-Type', 'text/event-stream; charset=utf-8');\n    response.headers.set('Cache-Control', 'no-cache');\n    response.headers.set('Connection', 'keep-alive');\n\n    final controller = StreamController<String>();\n    final session = _SseSession(sessionId, response, controller);\n    _activeSseSessions[sessionId] = session;\n\n    // Send initial endpoint event\n    session.sendEvent('endpoint', '/message?sessionId=$sessionId');\n\n    controller.stream.listen(\n      (data) {\n        session.sendEvent('message', data);\n      },\n      onDone: () {\n        _activeSseSessions.remove(sessionId);\n        response.close();\n      },\n      onError: (_) {\n        _activeSseSessions.remove(sessionId);\n        response.close();\n      },\n    );\n  }\n\n  Future<void> _handleSsePostMessage(HttpRequest request, String body) async {\n    final sessionId = request.uri.queryParameters['sessionId'];\n    final session = sessionId != null ? _activeSseSessions[sessionId] : null;\n\n    final result = handleMessage(body);\n\n    if (session != null) {\n      if (result.isNotEmpty) {\n        session.controller.add(result);\n      }\n      request.response.statusCode = HttpStatus.accepted;\n      request.response.write('Accepted');\n      await request.response.close();\n    } else {\n      if (result.isNotEmpty) {\n        request.response.statusCode = HttpStatus.ok;\n        request.response.headers.contentType = ContentType('application', 'json', charset: 'utf-8');\n        request.response.write(result);\n      } else {\n        request.response.statusCode = HttpStatus.noContent;\n      }\n      await request.response.close();\n    }\n  }\n\n  void _setCorsHeaders(HttpResponse response) {\n    response.headers.set('Access-Control-Allow-Origin', '*');\n    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');\n    response.headers.set('Access-Control-Allow-Headers', '*');\n  }\n\n  /// Processes an MCP JSON-RPC 2.0 message string and returns the response string\n  String handleMessage(String rawMessage) {\n    try {\n      final trimmed = rawMessage.trim();\n      if (trimmed.isEmpty) return _createError(null, -32700, 'Empty payload');\n\n      if (trimmed.startsWith('[')) {\n        final list = jsonDecode(trimmed) as List;\n        final results = [];\n        for (final item in list) {\n          final res = _processSingleRequest(item as Map<String, dynamic>);\n          if (res != null) results.add(jsonDecode(res));\n        }\n        return jsonEncode(results);\n      } else {\n        final map = jsonDecode(trimmed) as Map<String, dynamic>;\n        return _processSingleRequest(map) ?? '';\n      }\n    } catch (e) {\n      return _createError(null, -32700, 'Parse error: $e');\n    }\n  }\n\n  String? _processSingleRequest(Map<String, dynamic> json) {\n    final id = json['id'];\n    final method = json['method']?.toString() ?? '';\n    final params = (json['params'] is Map) ? (json['params'] as Map<String, dynamic>) : <String, dynamic>{};\n\n    switch (method) {\n      case 'initialize':\n        return _handleInitialize(id, params);\n      case 'notifications/initialized':\n        return id != null ? _createResult(id, {}) : null;\n      case 'ping':\n        return _createResult(id, {});\n      case 'tools/list':\n        return _handleToolsList(id);\n      case 'tools/call':\n        return _handleToolsCall(id, params);\n      default:\n        return _createError(id, -32601, 'Method not found: $method');\n    }\n  }\n\n  String _handleInitialize(dynamic id, Map<String, dynamic> params) {\n    final result = {\n      'protocolVersion': '2024-11-05',\n      'capabilities': {\n        'tools': {'listChanged': false}\n      },\n      'serverInfo': {\n        'name': 'mucker-dart-mcp-server',\n        'version': '1.0.0',\n      }\n    };\n    return _createResult(id, result);\n  }\n\n  String _handleToolsList(dynamic id) {\n    final tools = [\n      _createToolDefinition(\n        name: 'get_status',\n        description: 'Get live Mucker server status, active mock rules count, and breakpoint state.',\n        inputProperties: {},\n      ),\n      _createToolDefinition(\n        name: 'list_rules',\n        description: 'List all registered mock rules currently active in Mucker memory.',\n        inputProperties: {},\n      ),\n      _createToolDefinition(\n        name: 'add_rule',\n        description: 'Add or update a dynamic mock rule with custom URL pattern, method, and response body.',\n        inputProperties: {\n          'urlPattern': {'type': 'string', 'description': 'Regex or substring pattern to match'},\n          'method': {'type': 'string', 'description': 'HTTP Method (GET, POST, ALL). Default: ALL'},\n          'statusCode': {'type': 'integer', 'description': 'Status code. Default: 200'},\n          'delayMs': {'type': 'integer', 'description': 'Latency in ms. Default: 0'},\n          'responseBody': {'type': 'string', 'description': 'Response body. Default: {\"mocked\":true}'},\n        },\n        required: ['urlPattern'],\n      ),\n      _createToolDefinition(\n        name: 'remove_rule',\n        description: 'Delete a mock rule by ID.',\n        inputProperties: {\n          'id': {'type': 'string', 'description': 'The rule ID to delete'}\n        },\n        required: ['id'],\n      ),\n      _createToolDefinition(\n        name: 'clear_rules',\n        description: 'Clear all mock rules from Mucker engine memory.',\n        inputProperties: {},\n      ),\n      _createToolDefinition(\n        name: 'toggle_rule',\n        description: 'Enable or disable a mock rule without deleting it.',\n        inputProperties: {\n          'id': {'type': 'string', 'description': 'Rule ID'},\n          'isEnabled': {'type': 'boolean', 'description': 'true to enable, false to disable'}\n        },\n        required: ['id', 'isEnabled'],\n      ),\n      _createToolDefinition(\n        name: 'set_breakpoint_mode',\n        description: 'Toggle global breakpoint interception on or off.',\n        inputProperties: {\n          'breakpointMode': {'type': 'boolean', 'description': 'true to enable, false to disable'}\n        },\n        required: ['breakpointMode'],\n      ),\n      _createToolDefinition(\n        name: 'list_history',\n        description: 'Query recorded network requests history.',\n        inputProperties: {\n          'query': {'type': 'string', 'description': 'Search keyword'},\n          'limit': {'type': 'integer', 'description': 'Maximum records. Default: 20'}\n        },\n      ),\n      _createToolDefinition(\n        name: 'fulfill_request',\n        description: 'Fulfill an in-flight paused OkHttp/Dio request with a mocked payload.',\n        inputProperties: {\n          'requestId': {'type': 'string', 'description': 'Paused request ID'},\n          'statusCode': {'type': 'integer', 'description': 'Status code. Default: 200'},\n          'responseBody': {'type': 'string', 'description': 'Mocked response body'}\n        },\n        required: ['requestId'],\n      ),\n      _createToolDefinition(\n        name: 'continue_request',\n        description: 'Resume a paused request without modification.',\n        inputProperties: {\n          'requestId': {'type': 'string', 'description': 'Paused request ID'}\n        },\n        required: ['requestId'],\n      ),\n      _createToolDefinition(\n        name: 'get_mock_rule_template',\n        description: 'Generate a ready-to-run curl or REST API payload template for Mucker.',\n        inputProperties: {\n          'urlPattern': {'type': 'string', 'description': 'Target URL pattern'},\n          'statusCode': {'type': 'integer', 'description': 'Status code. Default: 200'},\n          'responseBody': {'type': 'string', 'description': 'Sample response body'}\n        },\n        required: ['urlPattern'],\n      ),\n    ];\n\n    return _createResult(id, {'tools': tools});\n  }\n\n  String _handleToolsCall(dynamic id, Map<String, dynamic> params) {\n    final name = params['name']?.toString() ?? '';\n    final args = (params['arguments'] is Map) ? (params['arguments'] as Map<String, dynamic>) : <String, dynamic>{};\n\n    try {\n      String contentText;\n      switch (name) {\n        case 'get_status':\n          contentText = const JsonEncoder.withIndent('  ').convert({\n            'status': 'running',\n            'port': port,\n            'breakpointMode': breakpointMode,\n            'activeRulesCount': rules.length,\n            'historyCount': history.length,\n          });\n          break;\n\n        case 'list_rules':\n          contentText = const JsonEncoder.withIndent('  ').convert(rules.map((r) => r.toJson()).toList());\n          break;\n\n        case 'add_rule':\n          final rule = MockRule(\n            id: 'rule_${DateTime.now().millisecondsSinceEpoch}',\n            urlPattern: args['urlPattern']?.toString() ?? '.*',\n            method: args['method']?.toString() ?? 'ALL',\n            statusCode: args['statusCode'] is int ? args['statusCode'] : 200,\n            delayMs: args['delayMs'] is int ? args['delayMs'] : 0,\n            responseBody: args['responseBody']?.toString() ?? '{\"mocked\":true}',\n          );\n          rules.removeWhere((r) => r.id == rule.id);\n          rules.add(rule);\n          contentText = 'Successfully created mock rule:\\n${const JsonEncoder.withIndent('  ').convert(rule.toJson())}';\n          break;\n\n        case 'remove_rule':\n          final ruleId = args['id']?.toString() ?? '';\n          final countBefore = rules.length;\n          rules.removeWhere((r) => r.id == ruleId);\n          contentText = rules.length < countBefore\n              ? 'Successfully removed mock rule: $ruleId'\n              : 'Rule not found: $ruleId';\n          break;\n\n        case 'clear_rules':\n          final count = rules.length;\n          rules.clear();\n          contentText = 'Cleared all $count mock rules from Mucker memory.';\n          break;\n\n        case 'toggle_rule':\n          final ruleId = args['id']?.toString() ?? '';\n          final isEnabled = args['isEnabled'] == true;\n          final idx = rules.indexWhere((r) => r.id == ruleId);\n          if (idx != -1) {\n            final old = rules[idx];\n            rules[idx] = MockRule(\n              id: old.id,\n              urlPattern: old.urlPattern,\n              method: old.method,\n              statusCode: old.statusCode,\n              delayMs: old.delayMs,\n              responseBody: old.responseBody,\n              responseHeaders: old.responseHeaders,\n              isEnabled: isEnabled,\n              faultType: old.faultType,\n            );\n            contentText = 'Rule $ruleId is now ${isEnabled ? \"ENABLED\" : \"DISABLED\"}';\n          } else {\n            contentText = 'Rule not found: $ruleId';\n          }\n          break;\n\n        case 'set_breakpoint_mode':\n          final mode = args['breakpointMode'] == true;\n          breakpointMode = mode;\n          contentText = 'Breakpoint mode is now ${mode ? \"ENABLED\" : \"DISABLED\"}';\n          break;\n\n        case 'list_history':\n          final query = (args['query']?.toString() ?? '').toLowerCase();\n          final limit = args['limit'] is int ? args['limit'] as int : 20;\n          final filtered = history.where((item) {\n            if (query.isEmpty) return true;\n            final url = item['url']?.toString().toLowerCase() ?? '';\n            final body = item['responseBody']?.toString().toLowerCase() ?? '';\n            return url.contains(query) || body.contains(query);\n          }).take(limit).toList();\n          contentText = const JsonEncoder.withIndent('  ').convert(filtered);\n          break;\n\n        case 'fulfill_request':\n          final reqId = args['requestId']?.toString() ?? '';\n          final statusCode = args['statusCode'] is int ? args['statusCode'] as int : 200;\n          final resBody = args['responseBody']?.toString() ?? '{\"mocked\":true}';\n          final future = _pendingPaused[reqId];\n          if (future != null && !future.isCompleted) {\n            future.complete({'statusCode': statusCode, 'responseBody': resBody});\n            contentText = 'Successfully fulfilled request $reqId with status $statusCode';\n          } else {\n            contentText = 'Request $reqId not found or already completed';\n          }\n          break;\n\n        case 'continue_request':\n          final reqId = args['requestId']?.toString() ?? '';\n          final future = _pendingPaused[reqId];\n          if (future != null && !future.isCompleted) {\n            future.complete({'continue': true});\n            contentText = 'Successfully resumed request $reqId';\n          } else {\n            contentText = 'Request $reqId not found or already completed';\n          }\n          break;\n\n        case 'get_mock_rule_template':\n          final urlPattern = args['urlPattern']?.toString() ?? '.*';\n          final statusCode = args['statusCode'] is int ? args['statusCode'] : 200;\n          final body = args['responseBody']?.toString() ?? '{\"mocked\":true}';\n          final curl = 'curl -X POST http://localhost:$port/api/rules -H \"Content-Type: application/json\" -d \\'{\"urlPattern\":\"$urlPattern\",\"statusCode\":$statusCode,\"responseBody\":${jsonEncode(body)}}\\'';\n          contentText = 'Mock Rule Template for $urlPattern (HTTP $statusCode):\\n\\n$curl';\n          break;\n\n        default:\n          throw ArgumentError('Unknown tool: $name');\n      }\n\n      return _createToolCallResult(id, contentText, isError: false);\n    } catch (e) {\n      return _createToolCallResult(id, 'Error executing $name: $e', isError: true);\n    }\n  }\n\n  Map<String, dynamic> _createToolDefinition({\n    required String name,\n    required String description,\n    required Map<String, Map<String, String>> inputProperties,\n    List<String> required = const [],\n  }) {\n    return {\n      'name': name,\n      'description': description,\n      'inputSchema': {\n        'type': 'object',\n        'properties': inputProperties,\n        if (required.isNotEmpty) 'required': required,\n      }\n    };\n  }\n\n  String _createToolCallResult(dynamic id, String text, {required bool isError}) {\n    final result = {\n      'content': [\n        {'type': 'text', 'text': text}\n      ],\n      'isError': isError,\n    };\n    return _createResult(id, result);\n  }\n\n  String _createResult(dynamic id, Map<String, dynamic> result) {\n    return jsonEncode({\n      'jsonrpc': '2.0',\n      'id': id,\n      'result': result,\n    });\n  }\n\n  String _createError(dynamic id, int code, String message) {\n    return jsonEncode({\n      'jsonrpc': '2.0',\n      'id': id,\n      'error': {\n        'code': code,\n        'message': message,\n      }\n    });\n  }\n}\n"
+    }
+  },
+  "folderChildren": {
+    "": {
+      "subfolders": [
+        "dart"
+      ],
+      "files": []
+    },
+    "dart": {
+      "subfolders": [
+        "dart/mucker"
+      ],
+      "files": []
+    },
+    "dart/mucker": {
+      "subfolders": [
+        "dart/mucker/lib"
+      ],
+      "files": []
+    },
+    "dart/mucker/lib": {
+      "subfolders": [
+        "dart/mucker/lib/src"
+      ],
+      "files": []
+    },
+    "dart/mucker/lib/src": {
+      "subfolders": [],
+      "files": [
+        "dart/mucker/lib/src/dio_interceptor.dart",
+        "dart/mucker/lib/src/http_client.dart",
+        "dart/mucker/lib/src/mcp_server.dart",
+        "dart/mucker/lib/src/mock_rule.dart"
+      ]
+    }
+  },
+  "commits": [
+    {
+      "commit": {
+        "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+        "shortSha": "e1a4132",
+        "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+        "author": "Yongjhih Chen",
+        "date": "2026-10-18T13:11:12.000Z",
+        "branch": "main"
+      },
+      "summary": {
+        "lines": {
+          "total": 516,
+          "covered": 354,
+          "skipped": 162,
+          "pct": 68.6
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "folderSummaries": {
+        "": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        }
+      },
+      "fileSummaries": {
+        "dart/mucker/lib/src/mock_rule.dart": {
+          "lines": {
+            "total": 33,
+            "covered": 32,
+            "skipped": 1,
+            "pct": 96.97
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/dio_interceptor.dart": {
+          "lines": {
+            "total": 166,
+            "covered": 101,
+            "skipped": 65,
+            "pct": 60.84
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/http_client.dart": {
+          "lines": {
+            "total": 24,
+            "covered": 17,
+            "skipped": 7,
+            "pct": 70.83
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/mcp_server.dart": {
+          "lines": {
+            "total": 293,
+            "covered": 204,
+            "skipped": 89,
+            "pct": 69.62
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        }
+      }
+    }
+  ],
+  "refs": {
+    "branches": {
+      "main": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66"
+    },
+    "tags": {}
+  },
+  "trends": {
+    "overall": [
+      {
+        "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+        "shortSha": "e1a4132",
+        "date": "2026-10-18T13:11:12.000Z",
+        "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+        "author": "Yongjhih Chen",
+        "branch": "main",
+        "linesPct": 68.6,
+        "functionsPct": 100,
+        "branchesPct": 100,
+        "linesCovered": 354,
+        "linesTotal": 516
+      }
+    ],
+    "folders": {
+      "": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        }
+      ],
+      "dart": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        }
+      ],
+      "dart/mucker": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        }
+      ],
+      "dart/mucker/lib": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        }
+      ],
+      "dart/mucker/lib/src": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        }
+      ]
+    },
+    "files": {
+      "dart/mucker/lib/src/mock_rule.dart": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 96.97,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 32,
+          "linesTotal": 33
+        }
+      ],
+      "dart/mucker/lib/src/dio_interceptor.dart": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 60.84,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 101,
+          "linesTotal": 166
+        }
+      ],
+      "dart/mucker/lib/src/http_client.dart": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 70.83,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 17,
+          "linesTotal": 24
+        }
+      ],
+      "dart/mucker/lib/src/mcp_server.dart": [
+        {
+          "sha": "e1a41322bb51f0d164a6f9c6a9ac0938d68d2c66",
+          "shortSha": "e1a4132",
+          "date": "2026-10-18T13:11:12.000Z",
+          "message": "feat(interceptor): implement native in-app MCP Streamable HTTP and SSE server",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 69.62,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 204,
+          "linesTotal": 293
+        }
+      ]
+    }
+  }
+}

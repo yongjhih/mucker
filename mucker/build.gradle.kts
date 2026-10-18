@@ -36,6 +36,7 @@ android {
 dependencies {
     api(project(":mucker-interceptor"))
     api(project(":mucker-dashboard"))
+    api(project(":mucker-mcp"))
 }
 
 afterEvaluate {
