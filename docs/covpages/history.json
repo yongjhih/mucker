@@ -1166,5 +1166,1119 @@
         }
       }
     }
+  },
+  {
+    "commit": {
+      "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+      "shortSha": "c6e2072",
+      "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+      "author": "Yongjhih Chen",
+      "date": "2026-10-18T14:26:54.000Z",
+      "branch": "main"
+    },
+    "summary": {
+      "lines": {
+        "total": 2355,
+        "covered": 1248,
+        "skipped": 1107,
+        "pct": 52.99
+      },
+      "functions": {
+        "total": 29,
+        "covered": 14,
+        "skipped": 15,
+        "pct": 48.28
+      },
+      "branches": {
+        "total": 43,
+        "covered": 19,
+        "skipped": 24,
+        "pct": 44.19
+      }
+    },
+    "folderSummaries": {
+      "": {
+        "lines": {
+          "total": 2355,
+          "covered": 1248,
+          "skipped": 1107,
+          "pct": 52.99
+        },
+        "functions": {
+          "total": 29,
+          "covered": 14,
+          "skipped": 15,
+          "pct": 48.28
+        },
+        "branches": {
+          "total": 43,
+          "covered": 19,
+          "skipped": 24,
+          "pct": 44.19
+        }
+      },
+      "dart": {
+        "lines": {
+          "total": 516,
+          "covered": 354,
+          "skipped": 162,
+          "pct": 68.6
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker": {
+        "lines": {
+          "total": 516,
+          "covered": 354,
+          "skipped": 162,
+          "pct": 68.6
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker/lib": {
+        "lines": {
+          "total": 516,
+          "covered": 354,
+          "skipped": 162,
+          "pct": 68.6
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker/lib/src": {
+        "lines": {
+          "total": 516,
+          "covered": 354,
+          "skipped": 162,
+          "pct": 68.6
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker": {
+        "lines": {
+          "total": 876,
+          "covered": 321,
+          "skipped": 555,
+          "pct": 36.64
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core": {
+        "lines": {
+          "total": 258,
+          "covered": 211,
+          "skipped": 47,
+          "pct": 81.78
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/models": {
+        "lines": {
+          "total": 155,
+          "covered": 126,
+          "skipped": 29,
+          "pct": 81.29
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/server": {
+        "lines": {
+          "total": 395,
+          "covered": 0,
+          "skipped": 395,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/util": {
+        "lines": {
+          "total": 31,
+          "covered": 0,
+          "skipped": 31,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github/mucker": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github/mucker/mcp": {
+        "lines": {
+          "total": 356,
+          "covered": 303,
+          "skipped": 53,
+          "pct": 85.11
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "cli": {
+        "lines": {
+          "total": 607,
+          "covered": 270,
+          "skipped": 337,
+          "pct": 44.48
+        },
+        "functions": {
+          "total": 29,
+          "covered": 14,
+          "skipped": 15,
+          "pct": 48.28
+        },
+        "branches": {
+          "total": 43,
+          "covered": 19,
+          "skipped": 24,
+          "pct": 44.19
+        }
+      },
+      "cli/bin": {
+        "lines": {
+          "total": 375,
+          "covered": 147,
+          "skipped": 228,
+          "pct": 39.2
+        },
+        "functions": {
+          "total": 12,
+          "covered": 4,
+          "skipped": 8,
+          "pct": 33.33
+        },
+        "branches": {
+          "total": 19,
+          "covered": 5,
+          "skipped": 14,
+          "pct": 26.32
+        }
+      },
+      "cli/lib": {
+        "lines": {
+          "total": 232,
+          "covered": 123,
+          "skipped": 109,
+          "pct": 53.02
+        },
+        "functions": {
+          "total": 17,
+          "covered": 10,
+          "skipped": 7,
+          "pct": 58.82
+        },
+        "branches": {
+          "total": 24,
+          "covered": 14,
+          "skipped": 10,
+          "pct": 58.33
+        }
+      }
+    },
+    "fileSummaries": {
+      "dart/mucker/lib/src/mock_rule.dart": {
+        "lines": {
+          "total": 33,
+          "covered": 32,
+          "skipped": 1,
+          "pct": 96.97
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker/lib/src/dio_interceptor.dart": {
+        "lines": {
+          "total": 166,
+          "covered": 101,
+          "skipped": 65,
+          "pct": 60.84
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker/lib/src/http_client.dart": {
+        "lines": {
+          "total": 24,
+          "covered": 17,
+          "skipped": 7,
+          "pct": 70.83
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "dart/mucker/lib/src/mcp_server.dart": {
+        "lines": {
+          "total": 293,
+          "covered": 204,
+          "skipped": 89,
+          "pct": 69.62
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/models/CdpMessages.kt": {
+        "lines": {
+          "total": 61,
+          "covered": 58,
+          "skipped": 3,
+          "pct": 95.08
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockRule.kt": {
+        "lines": {
+          "total": 52,
+          "covered": 49,
+          "skipped": 3,
+          "pct": 94.23
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockDecision.kt": {
+        "lines": {
+          "total": 8,
+          "covered": 4,
+          "skipped": 4,
+          "pct": 50
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/models/NetworkRecord.kt": {
+        "lines": {
+          "total": 34,
+          "covered": 15,
+          "skipped": 19,
+          "pct": 44.12
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/server/RestHandler.kt": {
+        "lines": {
+          "total": 110,
+          "covered": 0,
+          "skipped": 110,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/server/WebSocketConnection.kt": {
+        "lines": {
+          "total": 79,
+          "covered": 0,
+          "skipped": 79,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/server/CdpHandler.kt": {
+        "lines": {
+          "total": 47,
+          "covered": 0,
+          "skipped": 47,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/server/MuckerHttpServer.kt": {
+        "lines": {
+          "total": 159,
+          "covered": 0,
+          "skipped": 159,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/MuckerInterceptor.kt": {
+        "lines": {
+          "total": 134,
+          "covered": 110,
+          "skipped": 24,
+          "pct": 82.09
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/MuckerConfig.kt": {
+        "lines": {
+          "total": 8,
+          "covered": 0,
+          "skipped": 8,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/Mucker.kt": {
+        "lines": {
+          "total": 50,
+          "covered": 0,
+          "skipped": 50,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/MockEngine.kt": {
+        "lines": {
+          "total": 66,
+          "covered": 55,
+          "skipped": 11,
+          "pct": 83.33
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/RequestHistory.kt": {
+        "lines": {
+          "total": 14,
+          "covered": 8,
+          "skipped": 6,
+          "pct": 57.14
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/core/MockRuleRegistry.kt": {
+        "lines": {
+          "total": 23,
+          "covered": 22,
+          "skipped": 1,
+          "pct": 95.65
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-interceptor/src/main/java/io/github/mucker/util/NetworkUtils.kt": {
+        "lines": {
+          "total": 31,
+          "covered": 0,
+          "skipped": 31,
+          "pct": 0
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github/mucker/mcp/McpHandler.kt": {
+        "lines": {
+          "total": 229,
+          "covered": 196,
+          "skipped": 33,
+          "pct": 85.59
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt": {
+        "lines": {
+          "total": 120,
+          "covered": 104,
+          "skipped": 16,
+          "pct": 86.67
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcp.kt": {
+        "lines": {
+          "total": 7,
+          "covered": 3,
+          "skipped": 4,
+          "pct": 42.86
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "cli/bin/mucker.mjs": {
+        "lines": {
+          "total": 375,
+          "covered": 147,
+          "skipped": 228,
+          "pct": 39.2
+        },
+        "functions": {
+          "total": 12,
+          "covered": 4,
+          "skipped": 8,
+          "pct": 33.33
+        },
+        "branches": {
+          "total": 19,
+          "covered": 5,
+          "skipped": 14,
+          "pct": 26.32
+        }
+      },
+      "cli/lib/adb.mjs": {
+        "lines": {
+          "total": 86,
+          "covered": 29,
+          "skipped": 57,
+          "pct": 33.72
+        },
+        "functions": {
+          "total": 3,
+          "covered": 2,
+          "skipped": 1,
+          "pct": 66.67
+        },
+        "branches": {
+          "total": 7,
+          "covered": 3,
+          "skipped": 4,
+          "pct": 42.86
+        }
+      },
+      "cli/lib/api.mjs": {
+        "lines": {
+          "total": 81,
+          "covered": 57,
+          "skipped": 24,
+          "pct": 70.37
+        },
+        "functions": {
+          "total": 11,
+          "covered": 6,
+          "skipped": 5,
+          "pct": 54.55
+        },
+        "branches": {
+          "total": 12,
+          "covered": 7,
+          "skipped": 5,
+          "pct": 58.33
+        }
+      },
+      "cli/lib/cdp.mjs": {
+        "lines": {
+          "total": 31,
+          "covered": 3,
+          "skipped": 28,
+          "pct": 9.68
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 1,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 1,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      "cli/lib/colors.mjs": {
+        "lines": {
+          "total": 34,
+          "covered": 34,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 2,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 4,
+          "covered": 3,
+          "skipped": 1,
+          "pct": 75
+        }
+      }
+    }
   }
 ]

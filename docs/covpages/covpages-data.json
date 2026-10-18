@@ -3,13 +3,13 @@
   "repoName": "mucker",
   "baseUrl": "/mucker/covpages/",
   "defaultBranch": "main",
-  "generatedAt": "2026-10-18T14:23:51.209Z",
+  "generatedAt": "2026-10-18T14:44:29.251Z",
   "currentCommit": {
-    "sha": "c1cabdcc91b007ca25df272d435350d994a4d048",
-    "shortSha": "c1cabdc",
-    "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+    "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+    "shortSha": "c6e2072",
+    "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
     "author": "Yongjhih Chen",
-    "date": "2026-10-18T13:41:22.000Z",
+    "date": "2026-10-18T14:26:54.000Z",
     "branch": "main"
   },
   "previousCommit": {
@@ -21,28 +21,28 @@
     "branch": "main"
   },
   "delta": {
-    "linesPct": 0,
-    "functionsPct": 0,
-    "branchesPct": 0
+    "linesPct": -2.96,
+    "functionsPct": -51.72,
+    "branchesPct": -55.81
   },
   "summary": {
     "lines": {
-      "total": 1748,
-      "covered": 978,
-      "skipped": 770,
-      "pct": 55.95
+      "total": 2355,
+      "covered": 1248,
+      "skipped": 1107,
+      "pct": 52.99
     },
     "functions": {
-      "total": 0,
-      "covered": 0,
-      "skipped": 0,
-      "pct": 100
+      "total": 29,
+      "covered": 14,
+      "skipped": 15,
+      "pct": 48.28
     },
     "branches": {
-      "total": 0,
-      "covered": 0,
-      "skipped": 0,
-      "pct": 100
+      "total": 43,
+      "covered": 19,
+      "skipped": 24,
+      "pct": 44.19
     }
   },
   "folders": {
@@ -50,25 +50,25 @@
       "path": "",
       "name": "root",
       "lines": {
-        "total": 1748,
-        "covered": 978,
-        "skipped": 770,
-        "pct": 55.95
+        "total": 2355,
+        "covered": 1248,
+        "skipped": 1107,
+        "pct": 52.99
       },
       "functions": {
-        "total": 0,
-        "covered": 0,
-        "skipped": 0,
-        "pct": 100
+        "total": 29,
+        "covered": 14,
+        "skipped": 15,
+        "pct": 48.28
       },
       "branches": {
-        "total": 0,
-        "covered": 0,
-        "skipped": 0,
-        "pct": 100
+        "total": 43,
+        "covered": 19,
+        "skipped": 24,
+        "pct": 44.19
       },
-      "filesCount": 22,
-      "foldersCount": 3
+      "filesCount": 27,
+      "foldersCount": 4
     },
     "dart": {
       "path": "dart",
@@ -620,6 +620,78 @@
         "pct": 100
       },
       "filesCount": 3,
+      "foldersCount": 0
+    },
+    "cli": {
+      "path": "cli",
+      "name": "cli",
+      "lines": {
+        "total": 607,
+        "covered": 270,
+        "skipped": 337,
+        "pct": 44.48
+      },
+      "functions": {
+        "total": 29,
+        "covered": 14,
+        "skipped": 15,
+        "pct": 48.28
+      },
+      "branches": {
+        "total": 43,
+        "covered": 19,
+        "skipped": 24,
+        "pct": 44.19
+      },
+      "filesCount": 5,
+      "foldersCount": 2
+    },
+    "cli/bin": {
+      "path": "cli/bin",
+      "name": "bin",
+      "lines": {
+        "total": 375,
+        "covered": 147,
+        "skipped": 228,
+        "pct": 39.2
+      },
+      "functions": {
+        "total": 12,
+        "covered": 4,
+        "skipped": 8,
+        "pct": 33.33
+      },
+      "branches": {
+        "total": 19,
+        "covered": 5,
+        "skipped": 14,
+        "pct": 26.32
+      },
+      "filesCount": 1,
+      "foldersCount": 0
+    },
+    "cli/lib": {
+      "path": "cli/lib",
+      "name": "lib",
+      "lines": {
+        "total": 232,
+        "covered": 123,
+        "skipped": 109,
+        "pct": 53.02
+      },
+      "functions": {
+        "total": 17,
+        "covered": 10,
+        "skipped": 7,
+        "pct": 58.82
+      },
+      "branches": {
+        "total": 24,
+        "covered": 14,
+        "skipped": 10,
+        "pct": 58.33
+      },
+      "filesCount": 4,
       "foldersCount": 0
     }
   },
@@ -6395,11 +6467,2272 @@
         }
       },
       "sourceCode": "package io.github.mucker.mcp\n\nimport android.content.Context\nimport io.github.mucker.Mucker\nimport io.github.mucker.core.MockEngine\nimport io.github.mucker.server.MuckerHttpServer\n\n/**\n * Entry point to install Model Context Protocol (MCP) support into Mucker.\n */\nobject MuckerMcp {\n\n    @JvmStatic\n    fun install(server: MuckerHttpServer, engine: MockEngine, context: Context?): MuckerMcpPlugin {\n        val plugin = MuckerMcpPlugin(engine, server.port, context)\n        server.registerPlugin(plugin)\n        return plugin\n    }\n}\n\n/**\n * Kotlin extension function to enable MCP on a MuckerHttpServer instance.\n */\nfun MuckerHttpServer.enableMcp(engine: MockEngine, context: Context?): MuckerMcpPlugin {\n    return MuckerMcp.install(this, engine, context)\n}\n\n/**\n * Kotlin extension function to enable MCP on the Mucker singleton.\n */\nfun Mucker.enableMcp(context: Context? = null): MuckerMcpPlugin? {\n    val server = currentServer ?: return null\n    return MuckerMcp.install(server, engine, context)\n}\n"
+    },
+    "cli/bin/mucker.mjs": {
+      "path": "cli/bin/mucker.mjs",
+      "lines": {
+        "total": 375,
+        "covered": 147,
+        "skipped": 228,
+        "pct": 39.2
+      },
+      "functions": {
+        "total": 12,
+        "covered": 4,
+        "skipped": 8,
+        "pct": 33.33
+      },
+      "branches": {
+        "total": 19,
+        "covered": 5,
+        "skipped": 14,
+        "pct": 26.32
+      },
+      "lineDetails": {
+        "1": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "2": {
+          "hits": 3
+        },
+        "3": {
+          "hits": 3
+        },
+        "4": {
+          "hits": 3
+        },
+        "5": {
+          "hits": 3
+        },
+        "6": {
+          "hits": 3
+        },
+        "7": {
+          "hits": 3
+        },
+        "8": {
+          "hits": 3
+        },
+        "9": {
+          "hits": 3
+        },
+        "10": {
+          "hits": 3
+        },
+        "11": {
+          "hits": 3
+        },
+        "12": {
+          "hits": 3
+        },
+        "13": {
+          "hits": 3
+        },
+        "14": {
+          "hits": 3
+        },
+        "15": {
+          "hits": 3
+        },
+        "16": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "17": {
+          "hits": 1
+        },
+        "18": {
+          "hits": 1
+        },
+        "19": {
+          "hits": 1
+        },
+        "20": {
+          "hits": 1
+        },
+        "21": {
+          "hits": 1
+        },
+        "22": {
+          "hits": 1
+        },
+        "23": {
+          "hits": 1
+        },
+        "24": {
+          "hits": 1
+        },
+        "25": {
+          "hits": 1
+        },
+        "26": {
+          "hits": 3
+        },
+        "27": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "28": {
+          "hits": 1
+        },
+        "29": {
+          "hits": 1
+        },
+        "30": {
+          "hits": 1
+        },
+        "31": {
+          "hits": 1
+        },
+        "32": {
+          "hits": 1
+        },
+        "33": {
+          "hits": 1
+        },
+        "34": {
+          "hits": 1
+        },
+        "35": {
+          "hits": 1
+        },
+        "36": {
+          "hits": 1
+        },
+        "37": {
+          "hits": 1
+        },
+        "38": {
+          "hits": 1
+        },
+        "39": {
+          "hits": 1
+        },
+        "40": {
+          "hits": 1
+        },
+        "41": {
+          "hits": 1
+        },
+        "42": {
+          "hits": 1
+        },
+        "43": {
+          "hits": 1
+        },
+        "44": {
+          "hits": 1
+        },
+        "45": {
+          "hits": 1
+        },
+        "46": {
+          "hits": 1
+        },
+        "47": {
+          "hits": 1
+        },
+        "48": {
+          "hits": 1
+        },
+        "49": {
+          "hits": 1
+        },
+        "50": {
+          "hits": 1
+        },
+        "51": {
+          "hits": 1
+        },
+        "52": {
+          "hits": 1
+        },
+        "53": {
+          "hits": 1
+        },
+        "54": {
+          "hits": 1
+        },
+        "55": {
+          "hits": 1
+        },
+        "56": {
+          "hits": 1
+        },
+        "57": {
+          "hits": 1
+        },
+        "58": {
+          "hits": 1
+        },
+        "59": {
+          "hits": 1
+        },
+        "60": {
+          "hits": 1
+        },
+        "61": {
+          "hits": 1
+        },
+        "62": {
+          "hits": 1
+        },
+        "63": {
+          "hits": 1
+        },
+        "64": {
+          "hits": 1
+        },
+        "65": {
+          "hits": 1
+        },
+        "66": {
+          "hits": 3
+        },
+        "67": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "68": {
+          "hits": 3
+        },
+        "69": {
+          "hits": 3
+        },
+        "70": {
+          "hits": 3
+        },
+        "71": {
+          "hits": 3
+        },
+        "72": {
+          "hits": 3
+        },
+        "73": {
+          "hits": 3
+        },
+        "74": {
+          "hits": 3
+        },
+        "75": {
+          "hits": 3
+        },
+        "76": {
+          "hits": 3
+        },
+        "77": {
+          "hits": 3
+        },
+        "78": {
+          "hits": 3
+        },
+        "79": {
+          "hits": 3
+        },
+        "80": {
+          "hits": 3
+        },
+        "81": {
+          "hits": 3,
+          "branches": {
+            "total": 2,
+            "taken": 0
+          }
+        },
+        "82": {
+          "hits": 0
+        },
+        "83": {
+          "hits": 0
+        },
+        "84": {
+          "hits": 0
+        },
+        "85": {
+          "hits": 0
+        },
+        "86": {
+          "hits": 0
+        },
+        "87": {
+          "hits": 0
+        },
+        "88": {
+          "hits": 0
+        },
+        "89": {
+          "hits": 0
+        },
+        "90": {
+          "hits": 0
+        },
+        "91": {
+          "hits": 3
+        },
+        "92": {
+          "hits": 3
+        },
+        "93": {
+          "hits": 3
+        },
+        "94": {
+          "hits": 3
+        },
+        "95": {
+          "hits": 3
+        },
+        "96": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "97": {
+          "hits": 0
+        },
+        "98": {
+          "hits": 0
+        },
+        "99": {
+          "hits": 0
+        },
+        "100": {
+          "hits": 0
+        },
+        "101": {
+          "hits": 3
+        },
+        "102": {
+          "hits": 3
+        },
+        "103": {
+          "hits": 3
+        },
+        "104": {
+          "hits": 3
+        },
+        "105": {
+          "hits": 3
+        },
+        "106": {
+          "hits": 3
+        },
+        "107": {
+          "hits": 3
+        },
+        "108": {
+          "hits": 3
+        },
+        "109": {
+          "hits": 3
+        },
+        "110": {
+          "hits": 0
+        },
+        "111": {
+          "hits": 0
+        },
+        "112": {
+          "hits": 0
+        },
+        "113": {
+          "hits": 0
+        },
+        "114": {
+          "hits": 0
+        },
+        "115": {
+          "hits": 0
+        },
+        "116": {
+          "hits": 0
+        },
+        "117": {
+          "hits": 0
+        },
+        "118": {
+          "hits": 3
+        },
+        "119": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "120": {
+          "hits": 3
+        },
+        "121": {
+          "hits": 3
+        },
+        "122": {
+          "hits": 3
+        },
+        "123": {
+          "hits": 3
+        },
+        "124": {
+          "hits": 3
+        },
+        "125": {
+          "hits": 3
+        },
+        "126": {
+          "hits": 3
+        },
+        "127": {
+          "hits": 3
+        },
+        "128": {
+          "hits": 3
+        },
+        "129": {
+          "hits": 3
+        },
+        "130": {
+          "hits": 3
+        },
+        "131": {
+          "hits": 3
+        },
+        "132": {
+          "hits": 3
+        },
+        "133": {
+          "hits": 3
+        },
+        "134": {
+          "hits": 3
+        },
+        "135": {
+          "hits": 3
+        },
+        "136": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "137": {
+          "hits": 0
+        },
+        "138": {
+          "hits": 0
+        },
+        "139": {
+          "hits": 0
+        },
+        "140": {
+          "hits": 0
+        },
+        "141": {
+          "hits": 0
+        },
+        "142": {
+          "hits": 0
+        },
+        "143": {
+          "hits": 0
+        },
+        "144": {
+          "hits": 0
+        },
+        "145": {
+          "hits": 3
+        },
+        "146": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "147": {
+          "hits": 0
+        },
+        "148": {
+          "hits": 0
+        },
+        "149": {
+          "hits": 0
+        },
+        "150": {
+          "hits": 0
+        },
+        "151": {
+          "hits": 0
+        },
+        "152": {
+          "hits": 0
+        },
+        "153": {
+          "hits": 0
+        },
+        "154": {
+          "hits": 0
+        },
+        "155": {
+          "hits": 0
+        },
+        "156": {
+          "hits": 0
+        },
+        "157": {
+          "hits": 0
+        },
+        "158": {
+          "hits": 0
+        },
+        "159": {
+          "hits": 0
+        },
+        "160": {
+          "hits": 0
+        },
+        "161": {
+          "hits": 0
+        },
+        "162": {
+          "hits": 0
+        },
+        "163": {
+          "hits": 0
+        },
+        "164": {
+          "hits": 0
+        },
+        "165": {
+          "hits": 0
+        },
+        "166": {
+          "hits": 0
+        },
+        "167": {
+          "hits": 0
+        },
+        "168": {
+          "hits": 0
+        },
+        "169": {
+          "hits": 3
+        },
+        "170": {
+          "hits": 3
+        },
+        "171": {
+          "hits": 3
+        },
+        "172": {
+          "hits": 3
+        },
+        "173": {
+          "hits": 3
+        },
+        "174": {
+          "hits": 3
+        },
+        "175": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "176": {
+          "hits": 0
+        },
+        "177": {
+          "hits": 0
+        },
+        "178": {
+          "hits": 0
+        },
+        "179": {
+          "hits": 3
+        },
+        "180": {
+          "hits": 3
+        },
+        "181": {
+          "hits": 3
+        },
+        "182": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "183": {
+          "hits": 0
+        },
+        "184": {
+          "hits": 0
+        },
+        "185": {
+          "hits": 0
+        },
+        "186": {
+          "hits": 0
+        },
+        "187": {
+          "hits": 0
+        },
+        "188": {
+          "hits": 0
+        },
+        "189": {
+          "hits": 0
+        },
+        "190": {
+          "hits": 0
+        },
+        "191": {
+          "hits": 0
+        },
+        "192": {
+          "hits": 0
+        },
+        "193": {
+          "hits": 0
+        },
+        "194": {
+          "hits": 0
+        },
+        "195": {
+          "hits": 0
+        },
+        "196": {
+          "hits": 0
+        },
+        "197": {
+          "hits": 0
+        },
+        "198": {
+          "hits": 0
+        },
+        "199": {
+          "hits": 0
+        },
+        "200": {
+          "hits": 3
+        },
+        "201": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "202": {
+          "hits": 0
+        },
+        "203": {
+          "hits": 0
+        },
+        "204": {
+          "hits": 0
+        },
+        "205": {
+          "hits": 0
+        },
+        "206": {
+          "hits": 0
+        },
+        "207": {
+          "hits": 3
+        },
+        "208": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "209": {
+          "hits": 0
+        },
+        "210": {
+          "hits": 0
+        },
+        "211": {
+          "hits": 0
+        },
+        "212": {
+          "hits": 0
+        },
+        "213": {
+          "hits": 0
+        },
+        "214": {
+          "hits": 0
+        },
+        "215": {
+          "hits": 0
+        },
+        "216": {
+          "hits": 0
+        },
+        "217": {
+          "hits": 0
+        },
+        "218": {
+          "hits": 0
+        },
+        "219": {
+          "hits": 0
+        },
+        "220": {
+          "hits": 0
+        },
+        "221": {
+          "hits": 0
+        },
+        "222": {
+          "hits": 0
+        },
+        "223": {
+          "hits": 0
+        },
+        "224": {
+          "hits": 0
+        },
+        "225": {
+          "hits": 0
+        },
+        "226": {
+          "hits": 0
+        },
+        "227": {
+          "hits": 0
+        },
+        "228": {
+          "hits": 0
+        },
+        "229": {
+          "hits": 0
+        },
+        "230": {
+          "hits": 0
+        },
+        "231": {
+          "hits": 0
+        },
+        "232": {
+          "hits": 0
+        },
+        "233": {
+          "hits": 0
+        },
+        "234": {
+          "hits": 0
+        },
+        "235": {
+          "hits": 0
+        },
+        "236": {
+          "hits": 0
+        },
+        "237": {
+          "hits": 0
+        },
+        "238": {
+          "hits": 0
+        },
+        "239": {
+          "hits": 0
+        },
+        "240": {
+          "hits": 0
+        },
+        "241": {
+          "hits": 0
+        },
+        "242": {
+          "hits": 0
+        },
+        "243": {
+          "hits": 0
+        },
+        "244": {
+          "hits": 0
+        },
+        "245": {
+          "hits": 0
+        },
+        "246": {
+          "hits": 0
+        },
+        "247": {
+          "hits": 0
+        },
+        "248": {
+          "hits": 0
+        },
+        "249": {
+          "hits": 0
+        },
+        "250": {
+          "hits": 0
+        },
+        "251": {
+          "hits": 0
+        },
+        "252": {
+          "hits": 0
+        },
+        "253": {
+          "hits": 0
+        },
+        "254": {
+          "hits": 0
+        },
+        "255": {
+          "hits": 0
+        },
+        "256": {
+          "hits": 0
+        },
+        "257": {
+          "hits": 0
+        },
+        "258": {
+          "hits": 0
+        },
+        "259": {
+          "hits": 0
+        },
+        "260": {
+          "hits": 0
+        },
+        "261": {
+          "hits": 0
+        },
+        "262": {
+          "hits": 0
+        },
+        "263": {
+          "hits": 0
+        },
+        "264": {
+          "hits": 0
+        },
+        "265": {
+          "hits": 0
+        },
+        "266": {
+          "hits": 0
+        },
+        "267": {
+          "hits": 0
+        },
+        "268": {
+          "hits": 0
+        },
+        "269": {
+          "hits": 0
+        },
+        "270": {
+          "hits": 0
+        },
+        "271": {
+          "hits": 0
+        },
+        "272": {
+          "hits": 0
+        },
+        "273": {
+          "hits": 0
+        },
+        "274": {
+          "hits": 0
+        },
+        "275": {
+          "hits": 0
+        },
+        "276": {
+          "hits": 0
+        },
+        "277": {
+          "hits": 0
+        },
+        "278": {
+          "hits": 0
+        },
+        "279": {
+          "hits": 0
+        },
+        "280": {
+          "hits": 0
+        },
+        "281": {
+          "hits": 3
+        },
+        "282": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "283": {
+          "hits": 0
+        },
+        "284": {
+          "hits": 0
+        },
+        "285": {
+          "hits": 0
+        },
+        "286": {
+          "hits": 0
+        },
+        "287": {
+          "hits": 0
+        },
+        "288": {
+          "hits": 0
+        },
+        "289": {
+          "hits": 0
+        },
+        "290": {
+          "hits": 0
+        },
+        "291": {
+          "hits": 0
+        },
+        "292": {
+          "hits": 0
+        },
+        "293": {
+          "hits": 0
+        },
+        "294": {
+          "hits": 0
+        },
+        "295": {
+          "hits": 0
+        },
+        "296": {
+          "hits": 0
+        },
+        "297": {
+          "hits": 0
+        },
+        "298": {
+          "hits": 0
+        },
+        "299": {
+          "hits": 0
+        },
+        "300": {
+          "hits": 0
+        },
+        "301": {
+          "hits": 0
+        },
+        "302": {
+          "hits": 0
+        },
+        "303": {
+          "hits": 0
+        },
+        "304": {
+          "hits": 0
+        },
+        "305": {
+          "hits": 0
+        },
+        "306": {
+          "hits": 0
+        },
+        "307": {
+          "hits": 3
+        },
+        "308": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "309": {
+          "hits": 0
+        },
+        "310": {
+          "hits": 0
+        },
+        "311": {
+          "hits": 0
+        },
+        "312": {
+          "hits": 0
+        },
+        "313": {
+          "hits": 0
+        },
+        "314": {
+          "hits": 0
+        },
+        "315": {
+          "hits": 0
+        },
+        "316": {
+          "hits": 0
+        },
+        "317": {
+          "hits": 0
+        },
+        "318": {
+          "hits": 0
+        },
+        "319": {
+          "hits": 0
+        },
+        "320": {
+          "hits": 0
+        },
+        "321": {
+          "hits": 0
+        },
+        "322": {
+          "hits": 0
+        },
+        "323": {
+          "hits": 0
+        },
+        "324": {
+          "hits": 0
+        },
+        "325": {
+          "hits": 0
+        },
+        "326": {
+          "hits": 3
+        },
+        "327": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "328": {
+          "hits": 0
+        },
+        "329": {
+          "hits": 0
+        },
+        "330": {
+          "hits": 0
+        },
+        "331": {
+          "hits": 0
+        },
+        "332": {
+          "hits": 0
+        },
+        "333": {
+          "hits": 0
+        },
+        "334": {
+          "hits": 0
+        },
+        "335": {
+          "hits": 0
+        },
+        "336": {
+          "hits": 0
+        },
+        "337": {
+          "hits": 0
+        },
+        "338": {
+          "hits": 0
+        },
+        "339": {
+          "hits": 0
+        },
+        "340": {
+          "hits": 0
+        },
+        "341": {
+          "hits": 3
+        },
+        "342": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "343": {
+          "hits": 0
+        },
+        "344": {
+          "hits": 0
+        },
+        "345": {
+          "hits": 0
+        },
+        "346": {
+          "hits": 0
+        },
+        "347": {
+          "hits": 0
+        },
+        "348": {
+          "hits": 0
+        },
+        "349": {
+          "hits": 0
+        },
+        "350": {
+          "hits": 0
+        },
+        "351": {
+          "hits": 0
+        },
+        "352": {
+          "hits": 0
+        },
+        "353": {
+          "hits": 0
+        },
+        "354": {
+          "hits": 0
+        },
+        "355": {
+          "hits": 0
+        },
+        "356": {
+          "hits": 0
+        },
+        "357": {
+          "hits": 0
+        },
+        "358": {
+          "hits": 0
+        },
+        "359": {
+          "hits": 0
+        },
+        "360": {
+          "hits": 0
+        },
+        "361": {
+          "hits": 0
+        },
+        "362": {
+          "hits": 0
+        },
+        "363": {
+          "hits": 0
+        },
+        "364": {
+          "hits": 3
+        },
+        "365": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "366": {
+          "hits": 0
+        },
+        "367": {
+          "hits": 0
+        },
+        "368": {
+          "hits": 0
+        },
+        "369": {
+          "hits": 3
+        },
+        "370": {
+          "hits": 3
+        },
+        "371": {
+          "hits": 3
+        },
+        "372": {
+          "hits": 3
+        },
+        "373": {
+          "hits": 0
+        },
+        "374": {
+          "hits": 0
+        },
+        "375": {
+          "hits": 3
+        }
+      },
+      "functionDetails": [
+        {
+          "name": "printBanner",
+          "line": 16,
+          "hits": 1
+        },
+        {
+          "name": "printHelp",
+          "line": 27,
+          "hits": 1
+        },
+        {
+          "name": "parseArgs",
+          "line": 67,
+          "hits": 3
+        },
+        {
+          "name": "openBrowser",
+          "line": 110,
+          "hits": 0
+        },
+        {
+          "name": "main",
+          "line": 119,
+          "hits": 3
+        },
+        {
+          "name": "anonymous_5",
+          "line": 140,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_6",
+          "line": 156,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_7",
+          "line": 177,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_8",
+          "line": 220,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_9",
+          "line": 287,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_10",
+          "line": 302,
+          "hits": 0
+        },
+        {
+          "name": "anonymous_11",
+          "line": 372,
+          "hits": 0
+        }
+      ],
+      "sourceCode": "#!/usr/bin/env node\n\nimport { c } from '../lib/colors.mjs';\nimport { findAdbPath, listDevices, forwardPort } from '../lib/adb.mjs';\nimport { MuckerClient } from '../lib/api.mjs';\nimport { listenLive } from '../lib/cdp.mjs';\nimport { exec, spawn } from 'node:child_process';\nimport path from 'node:path';\nimport { fileURLToPath } from 'node:url';\n\nconst __filename = fileURLToPath(import.meta.url);\nconst __dirname = path.dirname(__filename);\n\nconst VERSION = '1.0.0';\n\nfunction printBanner() {\n  console.log(`\n${c.cyan(c.bold('   __  _____  ______  ______  __ ___________ '))}\n${c.cyan(c.bold('  /  |/  / / / / __ \\\\/ ____/ / //_/ ____/ __ \\\\'))}\n${c.cyan(c.bold(' / /|_/ / / / / / / / /_    / ,< / __/ / /_/ /'))}\n${c.cyan(c.bold('/ /  / / /_/ / /_/ / __/   / /| / /___/ _, _/ '))}\n${c.cyan(c.bold('/_/  /_/\\\\____/\\\\____/_/     /_/ |_/_____/_/ |_|  '))} ${c.dim(`v${VERSION}`)}\n  ${c.dim('Muck with your network, zero certs required. CDP-compatible Mock Engine.')}\n`);\n}\n\nfunction printHelp() {\n  printBanner();\n  console.log(`\n${c.bold('USAGE:')}\n  ${c.green('mucker')} <command> [options]\n\n${c.bold('COMMANDS:')}\n  ${c.yellow('demo')}                       One-line build, run demo app & launch browser dashboard\n  ${c.yellow('forward')} [port]               Forward adb port to connected device (default: 8080)\n  ${c.yellow('status')}                     Check Mucker status & connected app\n  ${c.yellow('open')}                       Open the Mucker Web Dashboard in your browser\n  ${c.yellow('listen')}                     Stream intercepted requests live to console\n  ${c.yellow('rules list')}                 List active mock rules\n  ${c.yellow('rules add')} <pattern> [opts] Add a mock rule\n  ${c.yellow('rules remove')} <ruleId>      Remove a mock rule by ID\n  ${c.yellow('rules clear')}                Remove all mock rules\n  ${c.yellow('fulfill')} <reqId> [opts]     Fulfill a paused request with mock response\n  ${c.yellow('continue')} <reqId>           Continue a paused request without mocking\n  ${c.yellow('cdp')}                        Show CDP endpoints for Puppeteer/Playwright\n  ${c.yellow('devices')}                    List connected Android devices\n\n${c.bold('OPTIONS:')}\n  ${c.cyan('--host')} <url>                 Mucker server URL (default: http://localhost:8080)\n  ${c.cyan('--status')} <code>              HTTP status code (default: 200)\n  ${c.cyan('--delay')} <ms>                 Artificial delay in milliseconds (default: 0)\n  ${c.cyan('--method')} <GET|POST|ALL>     HTTP method to match (default: ALL)\n  ${c.cyan('--body')} <string|json>         Mock response body string/JSON\n  ${c.cyan('--header')} <Key:Value>         Custom response header (repeatable)\n  ${c.cyan('-h, --help')}                   Show this help menu\n  ${c.cyan('-v, --version')}                Show version\n\n${c.bold('EXAMPLES:')}\n  $ mucker forward\n  $ mucker status\n  $ mucker rules add \"/api/v1/user\" --status 200 --body '{\"id\":1,\"name\":\"Alice\"}'\n  $ mucker rules add \"/api/v1/checkout\" --status 500 --delay 1000 --body '{\"error\":\"Failed\"}'\n  $ mucker listen\n`);\n}\n\nfunction parseArgs(args) {\n  const parsed = {\n    command: args[0],\n    subcommand: args[1],\n    positionals: [],\n    flags: {},\n  };\n\n  let i = 0;\n  while (i < args.length) {\n    const arg = args[i];\n    if (arg.startsWith('--')) {\n      const key = arg.slice(2);\n      const next = args[i + 1];\n      if (next && !next.startsWith('-')) {\n        if (!parsed.flags[key]) {\n          parsed.flags[key] = next;\n        } else if (Array.isArray(parsed.flags[key])) {\n          parsed.flags[key].push(next);\n        } else {\n          parsed.flags[key] = [parsed.flags[key], next];\n        }\n        i += 2;\n        continue;\n      } else {\n        parsed.flags[key] = true;\n        i++;\n        continue;\n      }\n    } else if (arg.startsWith('-')) {\n      const key = arg.slice(1);\n      parsed.flags[key] = true;\n      i++;\n      continue;\n    } else {\n      parsed.positionals.push(arg);\n      i++;\n    }\n  }\n\n  return parsed;\n}\n\nfunction openBrowser(url) {\n  const start = process.platform === 'darwin' ? 'open' : (process.platform === 'win32' ? 'start' : 'xdg-open');\n  exec(`${start} \"${url}\"`, (err) => {\n    if (err) {\n      console.log(`${c.dim('Could not open browser automatically. Please visit:')} ${c.underline(url)}`);\n    }\n  });\n}\n\nasync function main() {\n  const args = process.argv.slice(2);\n  const parsed = parseArgs(args);\n  const host = parsed.flags.host || 'http://localhost:8080';\n  const client = new MuckerClient(host);\n\n  if (parsed.flags.v || parsed.flags.version || parsed.command === 'version') {\n    console.log(`v${VERSION}`);\n    return;\n  }\n\n  if (!parsed.command || parsed.flags.h || parsed.flags.help || parsed.command === 'help') {\n    printHelp();\n    return;\n  }\n\n  switch (parsed.command) {\n    case 'demo': {\n      console.log(c.cyan('Launching Mucker one-line demo...'));\n      const scriptPath = path.resolve(__dirname, '../../scripts/quickstart.sh');\n      const child = spawn('bash', [scriptPath], { stdio: 'inherit' });\n      child.on('close', (code) => {\n        process.exit(code || 0);\n      });\n      break;\n    }\n\n    case 'forward': {\n      const port = Number(parsed.positionals[1] || parsed.flags.port || 8080);\n      const adb = findAdbPath();\n      console.log(`${c.dim('Using ADB:')} ${c.cyan(adb)}`);\n      const devices = listDevices(adb);\n      if (devices.length === 0) {\n        console.log(c.yellow('⚠ No active Android devices/emulators detected via ADB.'));\n        console.log(c.dim('Attempting port forwarding anyway...'));\n      } else {\n        console.log(c.green(`✔ Detected ${devices.length} device(s):`));\n        devices.forEach(d => console.log(`  • ${c.bold(d.id)} (${d.model})`));\n      }\n\n      const res = forwardPort(port, adb);\n      if (res.success) {\n        console.log(c.green(c.bold(`✔ Successfully forwarded tcp:${port} -> tcp:${port}`)));\n        console.log(`\\nOpen Dashboard in browser: ${c.cyan(c.underline(`http://localhost:${port}`))}\\n`);\n      } else {\n        console.error(c.red(`✖ Failed to forward port: ${res.error}`));\n        process.exit(1);\n      }\n      break;\n    }\n\n    case 'devices': {\n      const adb = findAdbPath();\n      const devices = listDevices(adb);\n      if (devices.length === 0) {\n        console.log(c.yellow('No active Android devices or emulators found.'));\n      } else {\n        console.log(c.green(`Connected Android devices (${devices.length}):`));\n        devices.forEach(d => console.log(`  ${c.bold(d.id)} \\t${c.cyan(d.model)}`));\n      }\n      break;\n    }\n\n    case 'status': {\n      try {\n        const status = await client.getStatus();\n        console.log(c.green(c.bold('\\n✔ Mucker Engine Connected!')));\n        console.log(`  ${c.bold('Status:')}             ${c.green(status.status || 'running')}`);\n        console.log(`  ${c.bold('App Name:')}           ${c.cyan(status.app || 'Android App')}`);\n        console.log(`  ${c.bold('Server Port:')}        ${c.yellow(status.port || 8080)}`);\n        console.log(`  ${c.bold('Active Rules:')}       ${status.activeRulesCount ?? 0}`);\n        console.log(`  ${c.bold('Paused Requests:')}    ${status.pausedRequestsCount ?? 0}`);\n        console.log(`  ${c.bold('Web Dashboard:')}      ${c.underline(`http://localhost:${status.port || 8080}`)}`);\n        console.log(`  ${c.bold('CDP WebSocket:')}      ${c.dim(`ws://localhost:${status.port || 8080}/devtools/page`)}\\n`);\n      } catch (err) {\n        console.error(c.red(`\\n✖ Could not connect to Mucker at ${host}`));\n        console.error(c.dim(`Make sure your app is running in debug mode and port forward is active:\\n  $ mucker forward\\n`));\n        process.exit(1);\n      }\n      break;\n    }\n\n    case 'open': {\n      const targetUrl = host;\n      console.log(`Opening Mucker Web Dashboard at ${c.cyan(targetUrl)}...`);\n      openBrowser(targetUrl);\n      break;\n    }\n\n    case 'rules': {\n      const sub = parsed.positionals[1] || 'list';\n      if (sub === 'list') {\n        try {\n          const rules = await client.getRules();\n          if (!rules || rules.length === 0) {\n            console.log(c.yellow('\\nNo active mock rules found. Add one with:'));\n            console.log(c.dim('  $ mucker rules add \"/api/v1/...\" --status 200 --body \\'{\"hello\":\"world\"}\\'\\n'));\n            return;\n          }\n          console.log(c.bold(`\\nActive Mock Rules (${rules.length}):`));\n          console.log(c.dim('─'.repeat(72)));\n          rules.forEach((r, idx) => {\n            const statusColor = r.statusCode < 300 ? c.green : (r.statusCode < 400 ? c.cyan : c.red);\n            const state = r.isEnabled ? c.green('● ENABLED') : c.gray('○ DISABLED');\n            console.log(`${idx + 1}. [${r.id}] ${state}  ${c.bold(r.method || 'ALL')} ${c.cyan(r.urlPattern)}`);\n            console.log(`   Returns: ${statusColor(String(r.statusCode))} | Delay: ${r.delayMs || 0}ms`);\n            if (r.responseBody) {\n              const preview = r.responseBody.length > 60 ? r.responseBody.slice(0, 57) + '...' : r.responseBody;\n              console.log(`   Body: ${c.dim(preview)}`);\n            }\n          });\n          console.log(c.dim('─'.repeat(72)) + '\\n');\n        } catch (err) {\n          console.error(c.red(`Failed to fetch rules: ${err.message}`));\n          process.exit(1);\n        }\n      } else if (sub === 'add') {\n        const pattern = parsed.positionals[2];\n        if (!pattern) {\n          console.error(c.red('Error: Missing pattern. Usage: mucker rules add <pattern> [--status 200] [--body \"...\"]'));\n          process.exit(1);\n        }\n        const rule = {\n          urlPattern: pattern,\n          method: (parsed.flags.method || 'ALL').toUpperCase(),\n          statusCode: Number(parsed.flags.status || 200),\n          delayMs: Number(parsed.flags.delay || 0),\n          responseBody: parsed.flags.body || '{\"message\":\"mocked by mucker\"}',\n          responseHeaders: { 'Content-Type': 'application/json', 'X-Mocked-By': 'Mucker-CLI' },\n          isEnabled: true,\n        };\n        try {\n          const res = await client.addRule(rule);\n          console.log(c.green(`✔ Added mock rule [${res.id}]: ${rule.method} ${rule.urlPattern} -> ${rule.statusCode}`));\n        } catch (err) {\n          console.error(c.red(`Failed to add rule: ${err.message}`));\n          process.exit(1);\n        }\n      } else if (sub === 'remove' || sub === 'rm') {\n        const ruleId = parsed.positionals[2];\n        if (!ruleId) {\n          console.error(c.red('Error: Missing rule ID. Usage: mucker rules remove <ruleId>'));\n          process.exit(1);\n        }\n        try {\n          await client.removeRule(ruleId);\n          console.log(c.green(`✔ Removed rule [${ruleId}]`));\n        } catch (err) {\n          console.error(c.red(`Failed to remove rule: ${err.message}`));\n          process.exit(1);\n        }\n      } else if (sub === 'clear') {\n        try {\n          await client.clearRules();\n          console.log(c.green('✔ Cleared all mock rules.'));\n        } catch (err) {\n          console.error(c.red(`Failed to clear rules: ${err.message}`));\n          process.exit(1);\n        }\n      }\n      break;\n    }\n\n    case 'listen': {\n      const wsUrl = host.replace(/^http/, 'ws') + '/devtools/page';\n      console.log(c.cyan(`\\nConnecting to Mucker live event stream at ${wsUrl}...`));\n      console.log(c.dim('Press Ctrl+C to stop listening.\\n'));\n\n      listenLive(wsUrl, (msg, ws) => {\n        if (msg.method === 'Fetch.requestPaused') {\n          const { requestId, request } = msg.params;\n          console.log(`${c.yellow(c.bold('[PAUSED]'))} ${c.bold(request.method)} ${c.cyan(request.url)}  ${c.dim(`(ID: ${requestId})`)}`);\n        } else if (msg.method === 'Network.requestWillBeSent') {\n          const { request } = msg.params;\n          console.log(`${c.blue('[OUT]')}    ${c.bold(request.method)} ${request.url}`);\n        } else if (msg.method === 'Network.responseReceived') {\n          const { response } = msg.params;\n          const status = response.status;\n          const isMocked = response.headers?.['x-mocked-by'] || response.headers?.['X-Mocked-By'];\n          const tag = isMocked ? c.magenta(c.bold('[MOCKED]')) : c.green('[REAL]');\n          const statusColor = status < 300 ? c.green : (status < 400 ? c.cyan : c.red);\n          console.log(`${tag}   ${statusColor(String(status))} ${response.url}  ${c.dim(`(${response.responseTime || 0}ms)`)}`);\n        }\n      }, (err) => {\n        console.error(c.red(`WebSocket error: ${err.message}`));\n      });\n      break;\n    }\n\n    case 'fulfill': {\n      const reqId = parsed.positionals[1];\n      if (!reqId) {\n        console.error(c.red('Error: Missing requestId. Usage: mucker fulfill <requestId> [--status 200] [--body \"...\"]'));\n        process.exit(1);\n      }\n      try {\n        await client.fulfillPaused(reqId, {\n          statusCode: Number(parsed.flags.status || 200),\n          responseBody: parsed.flags.body || '{\"status\":\"ok\"}',\n          responseHeaders: { 'Content-Type': 'application/json' },\n        });\n        console.log(c.green(`✔ Fulfill request [${reqId}] with status ${parsed.flags.status || 200}`));\n      } catch (err) {\n        console.error(c.red(`Failed to fulfill request: ${err.message}`));\n      }\n      break;\n    }\n\n    case 'continue': {\n      const reqId = parsed.positionals[1];\n      if (!reqId) {\n        console.error(c.red('Error: Missing requestId. Usage: mucker continue <requestId>'));\n        process.exit(1);\n      }\n      try {\n        await client.continuePaused(reqId);\n        console.log(c.green(`✔ Resumed request [${reqId}] to real network.`));\n      } catch (err) {\n        console.error(c.red(`Failed to resume request: ${err.message}`));\n      }\n      break;\n    }\n\n    case 'cdp': {\n      const wsUrl = host.replace(/^http/, 'ws') + '/devtools/page';\n      console.log(c.bold('\\nChrome DevTools Protocol (CDP) Endpoints:'));\n      console.log(`  Discovery Version:  ${c.cyan(`${host}/json/version`)}`);\n      console.log(`  Target List:        ${c.cyan(`${host}/json/list`)}`);\n      console.log(`  WebSocket Endpoint: ${c.green(wsUrl)}`);\n      console.log(`\n${c.bold('Integration Sample (Puppeteer / Playwright / Node.js):')}\n${c.dim(`import WebSocket from 'ws';\nconst ws = new WebSocket('${wsUrl}');\nws.on('open', () => {\n  ws.send(JSON.stringify({ id: 1, method: 'Fetch.enable', params: { patterns: [{ urlPattern: '*' }] } }));\n});\nws.on('message', (data) => {\n  const event = JSON.parse(data.toString());\n  if (event.method === 'Fetch.requestPaused') {\n    // Fulfill or continue\n  }\n});`)}\n`);\n      break;\n    }\n\n    default:\n      console.error(c.red(`Unknown command: ${parsed.command}`));\n      printHelp();\n      process.exit(1);\n  }\n}\n\nmain().catch(err => {\n  console.error(c.red(`\\nUnexpected error: ${err.message}`));\n  process.exit(1);\n});\n"
+    },
+    "cli/lib/adb.mjs": {
+      "path": "cli/lib/adb.mjs",
+      "lines": {
+        "total": 86,
+        "covered": 29,
+        "skipped": 57,
+        "pct": 33.72
+      },
+      "functions": {
+        "total": 3,
+        "covered": 2,
+        "skipped": 1,
+        "pct": 66.67
+      },
+      "branches": {
+        "total": 7,
+        "covered": 3,
+        "skipped": 4,
+        "pct": 42.86
+      },
+      "lineDetails": {
+        "1": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "2": {
+          "hits": 3
+        },
+        "3": {
+          "hits": 3
+        },
+        "4": {
+          "hits": 3
+        },
+        "5": {
+          "hits": 3
+        },
+        "6": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "7": {
+          "hits": 1
+        },
+        "8": {
+          "hits": 1
+        },
+        "9": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "10": {
+          "hits": 1
+        },
+        "11": {
+          "hits": 1
+        },
+        "12": {
+          "hits": 1
+        },
+        "13": {
+          "hits": 1
+        },
+        "14": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "15": {
+          "hits": 0
+        },
+        "16": {
+          "hits": 0
+        },
+        "17": {
+          "hits": 0
+        },
+        "18": {
+          "hits": 0
+        },
+        "19": {
+          "hits": 0
+        },
+        "20": {
+          "hits": 0
+        },
+        "21": {
+          "hits": 0
+        },
+        "22": {
+          "hits": 0
+        },
+        "23": {
+          "hits": 0
+        },
+        "24": {
+          "hits": 0
+        },
+        "25": {
+          "hits": 0
+        },
+        "26": {
+          "hits": 0
+        },
+        "27": {
+          "hits": 0
+        },
+        "28": {
+          "hits": 0
+        },
+        "29": {
+          "hits": 0
+        },
+        "30": {
+          "hits": 0
+        },
+        "31": {
+          "hits": 0
+        },
+        "32": {
+          "hits": 0
+        },
+        "33": {
+          "hits": 0
+        },
+        "34": {
+          "hits": 0
+        },
+        "35": {
+          "hits": 0
+        },
+        "36": {
+          "hits": 0
+        },
+        "37": {
+          "hits": 0
+        },
+        "38": {
+          "hits": 0
+        },
+        "39": {
+          "hits": 0
+        },
+        "40": {
+          "hits": 0
+        },
+        "41": {
+          "hits": 0
+        },
+        "42": {
+          "hits": 0
+        },
+        "43": {
+          "hits": 0
+        },
+        "44": {
+          "hits": 0
+        },
+        "45": {
+          "hits": 0
+        },
+        "46": {
+          "hits": 0
+        },
+        "47": {
+          "hits": 0
+        },
+        "48": {
+          "hits": 1
+        },
+        "49": {
+          "hits": 3
+        },
+        "50": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "51": {
+          "hits": 1
+        },
+        "52": {
+          "hits": 1
+        },
+        "53": {
+          "hits": 1
+        },
+        "54": {
+          "hits": 1
+        },
+        "55": {
+          "hits": 1
+        },
+        "56": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "57": {
+          "hits": 0
+        },
+        "58": {
+          "hits": 0
+        },
+        "59": {
+          "hits": 0
+        },
+        "60": {
+          "hits": 0
+        },
+        "61": {
+          "hits": 0
+        },
+        "62": {
+          "hits": 0
+        },
+        "63": {
+          "hits": 0
+        },
+        "64": {
+          "hits": 0
+        },
+        "65": {
+          "hits": 0
+        },
+        "66": {
+          "hits": 0
+        },
+        "67": {
+          "hits": 0
+        },
+        "68": {
+          "hits": 0
+        },
+        "69": {
+          "hits": 0
+        },
+        "70": {
+          "hits": 0
+        },
+        "71": {
+          "hits": 0
+        },
+        "72": {
+          "hits": 1
+        },
+        "73": {
+          "hits": 1
+        },
+        "74": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "75": {
+          "hits": 0
+        },
+        "76": {
+          "hits": 0
+        },
+        "77": {
+          "hits": 1
+        },
+        "78": {
+          "hits": 3
+        },
+        "79": {
+          "hits": 3
+        },
+        "80": {
+          "hits": 0
+        },
+        "81": {
+          "hits": 0
+        },
+        "82": {
+          "hits": 0
+        },
+        "83": {
+          "hits": 0
+        },
+        "84": {
+          "hits": 0
+        },
+        "85": {
+          "hits": 0
+        },
+        "86": {
+          "hits": 0
+        }
+      },
+      "functionDetails": [
+        {
+          "name": "findAdbPath",
+          "line": 6,
+          "hits": 1
+        },
+        {
+          "name": "listDevices",
+          "line": 50,
+          "hits": 1
+        },
+        {
+          "name": "forwardPort",
+          "line": 79,
+          "hits": 0
+        }
+      ],
+      "sourceCode": "import { execSync, spawn } from 'node:child_process';\nimport fs from 'node:fs';\nimport path from 'node:path';\nimport os from 'node:os';\n\nexport function findAdbPath() {\n  // 1. Try which adb / where adb\n  try {\n    const whichCmd = process.platform === 'win32' ? 'where adb' : 'which adb';\n    const found = execSync(whichCmd, { stdio: ['pipe', 'pipe', 'ignore'], encoding: 'utf-8' }).trim();\n    if (found) {\n      return found.split('\\n')[0].trim();\n    }\n  } catch {\n    // continue searching\n  }\n\n  // 2. Try ANDROID_HOME or ANDROID_SDK_ROOT\n  const envDirs = [process.env.ANDROID_HOME, process.env.ANDROID_SDK_ROOT];\n  for (const dir of envDirs) {\n    if (dir) {\n      const adbBinary = process.platform === 'win32' ? 'adb.exe' : 'adb';\n      const fullPath = path.join(dir, 'platform-tools', adbBinary);\n      if (fs.existsSync(fullPath)) {\n        return fullPath;\n      }\n    }\n  }\n\n  // 3. Common OS paths\n  const home = os.homedir();\n  const commonPaths = [\n    path.join(home, 'Library/Android/sdk/platform-tools/adb'),\n    path.join(home, 'Android/Sdk/platform-tools/adb'),\n    path.join(home, 'AppData/Local/Android/Sdk/platform-tools/adb.exe'),\n    '/opt/android-sdk/platform-tools/adb',\n    '/usr/local/bin/adb',\n    '/opt/homebrew/bin/adb',\n  ];\n\n  for (const p of commonPaths) {\n    if (fs.existsSync(p)) {\n      return p;\n    }\n  }\n\n  return 'adb'; // fallback to standard PATH\n}\n\nexport function listDevices(adbPath = findAdbPath()) {\n  try {\n    const output = execSync(`\"${adbPath}\" devices -l`, { encoding: 'utf-8' });\n    const lines = output.trim().split('\\n').slice(1);\n    const devices = [];\n\n    for (const line of lines) {\n      const trimmed = line.trim();\n      if (!trimmed) continue;\n      const parts = trimmed.split(/\\s+/);\n      const id = parts[0];\n      const state = parts[1];\n      if (state === 'device') {\n        const modelMatch = trimmed.match(/model:(\\S+)/);\n        const deviceMatch = trimmed.match(/device:(\\S+)/);\n        devices.push({\n          id,\n          model: modelMatch ? modelMatch[1] : (deviceMatch ? deviceMatch[1] : 'Unknown'),\n          raw: trimmed\n        });\n      }\n    }\n\n    return devices;\n  } catch (err) {\n    return [];\n  }\n}\n\nexport function forwardPort(port = 8080, adbPath = findAdbPath()) {\n  try {\n    execSync(`\"${adbPath}\" forward tcp:${port} tcp:${port}`, { encoding: 'utf-8' });\n    return { success: true, port };\n  } catch (err) {\n    return { success: false, error: err.message };\n  }\n}\n"
+    },
+    "cli/lib/api.mjs": {
+      "path": "cli/lib/api.mjs",
+      "lines": {
+        "total": 81,
+        "covered": 57,
+        "skipped": 24,
+        "pct": 70.37
+      },
+      "functions": {
+        "total": 11,
+        "covered": 6,
+        "skipped": 5,
+        "pct": 54.55
+      },
+      "branches": {
+        "total": 12,
+        "covered": 7,
+        "skipped": 5,
+        "pct": 58.33
+      },
+      "lineDetails": {
+        "1": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "2": {
+          "hits": 4
+        },
+        "3": {
+          "hits": 4
+        },
+        "4": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "5": {
+          "hits": 4
+        },
+        "6": {
+          "hits": 4
+        },
+        "7": {
+          "hits": 4
+        },
+        "8": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "9": {
+          "hits": 1
+        },
+        "10": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "11": {
+          "hits": 1
+        },
+        "12": {
+          "hits": 1
+        },
+        "13": {
+          "hits": 4
+        },
+        "14": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "15": {
+          "hits": 2
+        },
+        "16": {
+          "hits": 2,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "17": {
+          "hits": 2
+        },
+        "18": {
+          "hits": 2
+        },
+        "19": {
+          "hits": 4
+        },
+        "20": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "21": {
+          "hits": 1
+        },
+        "22": {
+          "hits": 1
+        },
+        "23": {
+          "hits": 1
+        },
+        "24": {
+          "hits": 1
+        },
+        "25": {
+          "hits": 1
+        },
+        "26": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "27": {
+          "hits": 1
+        },
+        "28": {
+          "hits": 1
+        },
+        "29": {
+          "hits": 4
+        },
+        "30": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "31": {
+          "hits": 1
+        },
+        "32": {
+          "hits": 1
+        },
+        "33": {
+          "hits": 1
+        },
+        "34": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "35": {
+          "hits": 1
+        },
+        "36": {
+          "hits": 1
+        },
+        "37": {
+          "hits": 4
+        },
+        "38": {
+          "hits": 4
+        },
+        "39": {
+          "hits": 0
+        },
+        "40": {
+          "hits": 0
+        },
+        "41": {
+          "hits": 0
+        },
+        "42": {
+          "hits": 0
+        },
+        "43": {
+          "hits": 0
+        },
+        "44": {
+          "hits": 0
+        },
+        "45": {
+          "hits": 4
+        },
+        "46": {
+          "hits": 4
+        },
+        "47": {
+          "hits": 0
+        },
+        "48": {
+          "hits": 0
+        },
+        "49": {
+          "hits": 0
+        },
+        "50": {
+          "hits": 0
+        },
+        "51": {
+          "hits": 4
+        },
+        "52": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "53": {
+          "hits": 1
+        },
+        "54": {
+          "hits": 1
+        },
+        "55": {
+          "hits": 1
+        },
+        "56": {
+          "hits": 1
+        },
+        "57": {
+          "hits": 1
+        },
+        "58": {
+          "hits": 1,
+          "branches": {
+            "total": 1,
+            "taken": 0
+          }
+        },
+        "59": {
+          "hits": 1
+        },
+        "60": {
+          "hits": 1
+        },
+        "61": {
+          "hits": 4
+        },
+        "62": {
+          "hits": 4
+        },
+        "63": {
+          "hits": 0
+        },
+        "64": {
+          "hits": 0
+        },
+        "65": {
+          "hits": 0
+        },
+        "66": {
+          "hits": 0
+        },
+        "67": {
+          "hits": 0
+        },
+        "68": {
+          "hits": 0
+        },
+        "69": {
+          "hits": 4
+        },
+        "70": {
+          "hits": 4
+        },
+        "71": {
+          "hits": 0
+        },
+        "72": {
+          "hits": 0
+        },
+        "73": {
+          "hits": 0
+        },
+        "74": {
+          "hits": 0
+        },
+        "75": {
+          "hits": 4
+        },
+        "76": {
+          "hits": 4
+        },
+        "77": {
+          "hits": 0
+        },
+        "78": {
+          "hits": 0
+        },
+        "79": {
+          "hits": 0
+        },
+        "80": {
+          "hits": 0
+        },
+        "81": {
+          "hits": 4
+        }
+      },
+      "functionDetails": [
+        {
+          "name": "MuckerClient",
+          "line": 4,
+          "hits": 4
+        },
+        {
+          "name": "getStatus",
+          "line": 8,
+          "hits": 1
+        },
+        {
+          "name": "getRules",
+          "line": 14,
+          "hits": 2
+        },
+        {
+          "name": "addRule",
+          "line": 20,
+          "hits": 1
+        },
+        {
+          "name": "removeRule",
+          "line": 30,
+          "hits": 1
+        },
+        {
+          "name": "clearRules",
+          "line": 38,
+          "hits": 0
+        },
+        {
+          "name": "getHistory",
+          "line": 46,
+          "hits": 0
+        },
+        {
+          "name": "fulfillPaused",
+          "line": 52,
+          "hits": 1
+        },
+        {
+          "name": "continuePaused",
+          "line": 62,
+          "hits": 0
+        },
+        {
+          "name": "getCdpVersion",
+          "line": 70,
+          "hits": 0
+        },
+        {
+          "name": "getCdpTargets",
+          "line": 76,
+          "hits": 0
+        }
+      ],
+      "sourceCode": "// REST client for Mucker Server\n\nexport class MuckerClient {\n  constructor(baseUrl = 'http://localhost:8080') {\n    this.baseUrl = baseUrl.replace(/\\/+$/, '');\n  }\n\n  async getStatus() {\n    const res = await fetch(`${this.baseUrl}/api/status`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async getRules() {\n    const res = await fetch(`${this.baseUrl}/api/rules`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async addRule(rule) {\n    const res = await fetch(`${this.baseUrl}/api/rules`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify(rule),\n    });\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async removeRule(ruleId) {\n    const res = await fetch(`${this.baseUrl}/api/rules/${encodeURIComponent(ruleId)}`, {\n      method: 'DELETE',\n    });\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async clearRules() {\n    const res = await fetch(`${this.baseUrl}/api/rules`, {\n      method: 'DELETE',\n    });\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async getHistory() {\n    const res = await fetch(`${this.baseUrl}/api/history`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async fulfillPaused(requestId, { statusCode = 200, responseHeaders = {}, responseBody = '' } = {}) {\n    const res = await fetch(`${this.baseUrl}/api/paused/${encodeURIComponent(requestId)}/fulfill`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ statusCode, responseHeaders, responseBody }),\n    });\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async continuePaused(requestId) {\n    const res = await fetch(`${this.baseUrl}/api/paused/${encodeURIComponent(requestId)}/continue`, {\n      method: 'POST',\n    });\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async getCdpVersion() {\n    const res = await fetch(`${this.baseUrl}/json/version`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n\n  async getCdpTargets() {\n    const res = await fetch(`${this.baseUrl}/json/list`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);\n    return await res.json();\n  }\n}\n"
+    },
+    "cli/lib/cdp.mjs": {
+      "path": "cli/lib/cdp.mjs",
+      "lines": {
+        "total": 31,
+        "covered": 3,
+        "skipped": 28,
+        "pct": 9.68
+      },
+      "functions": {
+        "total": 1,
+        "covered": 0,
+        "skipped": 1,
+        "pct": 0
+      },
+      "branches": {
+        "total": 1,
+        "covered": 1,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lineDetails": {
+        "1": {
+          "hits": 3,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "2": {
+          "hits": 3
+        },
+        "3": {
+          "hits": 3
+        },
+        "4": {
+          "hits": 0
+        },
+        "5": {
+          "hits": 0
+        },
+        "6": {
+          "hits": 0
+        },
+        "7": {
+          "hits": 0
+        },
+        "8": {
+          "hits": 0
+        },
+        "9": {
+          "hits": 0
+        },
+        "10": {
+          "hits": 0
+        },
+        "11": {
+          "hits": 0
+        },
+        "12": {
+          "hits": 0
+        },
+        "13": {
+          "hits": 0
+        },
+        "14": {
+          "hits": 0
+        },
+        "15": {
+          "hits": 0
+        },
+        "16": {
+          "hits": 0
+        },
+        "17": {
+          "hits": 0
+        },
+        "18": {
+          "hits": 0
+        },
+        "19": {
+          "hits": 0
+        },
+        "20": {
+          "hits": 0
+        },
+        "21": {
+          "hits": 0
+        },
+        "22": {
+          "hits": 0
+        },
+        "23": {
+          "hits": 0
+        },
+        "24": {
+          "hits": 0
+        },
+        "25": {
+          "hits": 0
+        },
+        "26": {
+          "hits": 0
+        },
+        "27": {
+          "hits": 0
+        },
+        "28": {
+          "hits": 0
+        },
+        "29": {
+          "hits": 0
+        },
+        "30": {
+          "hits": 0
+        },
+        "31": {
+          "hits": 0
+        }
+      },
+      "functionDetails": [
+        {
+          "name": "listenLive",
+          "line": 3,
+          "hits": 0
+        }
+      ],
+      "sourceCode": "// WebSocket client for live listening and CDP interaction using Node 22 native WebSocket\n\nexport function listenLive(wsUrl, onEvent, onError) {\n  const ws = new WebSocket(wsUrl);\n\n  ws.addEventListener('open', () => {\n    // Send standard CDP Fetch.enable to receive interception events\n    ws.send(JSON.stringify({\n      id: 1,\n      method: 'Fetch.enable',\n      params: {\n        patterns: [{ urlPattern: '*' }]\n      }\n    }));\n  });\n\n  ws.addEventListener('message', (event) => {\n    try {\n      const data = JSON.parse(event.data);\n      onEvent(data, ws);\n    } catch (e) {\n      // ignore malformed\n    }\n  });\n\n  ws.addEventListener('error', (err) => {\n    if (onError) onError(err);\n  });\n\n  return ws;\n}\n"
+    },
+    "cli/lib/colors.mjs": {
+      "path": "cli/lib/colors.mjs",
+      "lines": {
+        "total": 34,
+        "covered": 34,
+        "skipped": 0,
+        "pct": 100
+      },
+      "functions": {
+        "total": 2,
+        "covered": 2,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 4,
+        "covered": 3,
+        "skipped": 1,
+        "pct": 75
+      },
+      "lineDetails": {
+        "1": {
+          "hits": 4,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "2": {
+          "hits": 4
+        },
+        "3": {
+          "hits": 4
+        },
+        "4": {
+          "hits": 4
+        },
+        "5": {
+          "hits": 88,
+          "branches": {
+            "total": 1,
+            "taken": 1
+          }
+        },
+        "6": {
+          "hits": 88,
+          "branches": {
+            "total": 2,
+            "taken": 1
+          }
+        },
+        "7": {
+          "hits": 88
+        },
+        "8": {
+          "hits": 4
+        },
+        "9": {
+          "hits": 4
+        },
+        "10": {
+          "hits": 4
+        },
+        "11": {
+          "hits": 4
+        },
+        "12": {
+          "hits": 4
+        },
+        "13": {
+          "hits": 4
+        },
+        "14": {
+          "hits": 4
+        },
+        "15": {
+          "hits": 4
+        },
+        "16": {
+          "hits": 4
+        },
+        "17": {
+          "hits": 4
+        },
+        "18": {
+          "hits": 4
+        },
+        "19": {
+          "hits": 4
+        },
+        "20": {
+          "hits": 4
+        },
+        "21": {
+          "hits": 4
+        },
+        "22": {
+          "hits": 4
+        },
+        "23": {
+          "hits": 4
+        },
+        "24": {
+          "hits": 4
+        },
+        "25": {
+          "hits": 4
+        },
+        "26": {
+          "hits": 4
+        },
+        "27": {
+          "hits": 4
+        },
+        "28": {
+          "hits": 4
+        },
+        "29": {
+          "hits": 4
+        },
+        "30": {
+          "hits": 4
+        },
+        "31": {
+          "hits": 4
+        },
+        "32": {
+          "hits": 4
+        },
+        "33": {
+          "hits": 4
+        },
+        "34": {
+          "hits": 4
+        }
+      },
+      "functionDetails": [
+        {
+          "name": "color",
+          "line": 5,
+          "hits": 88
+        },
+        {
+          "name": "anonymous_1",
+          "line": 6,
+          "hits": 42
+        }
+      ],
+      "sourceCode": "// Zero-dependency terminal colors and formatting\n\nconst isColorSupported = !process.env.NO_COLOR && (process.stdout.isTTY || process.env.FORCE_COLOR);\n\nfunction color(start, end) {\n  return (text) => isColorSupported ? `\\x1b[${start}m${text}\\x1b[${end}m` : String(text);\n}\n\nexport const c = {\n  bold: color(1, 22),\n  dim: color(2, 22),\n  italic: color(3, 23),\n  underline: color(4, 24),\n  inverse: color(7, 27),\n  \n  black: color(30, 39),\n  red: color(31, 39),\n  green: color(32, 39),\n  yellow: color(33, 39),\n  blue: color(34, 39),\n  magenta: color(35, 39),\n  cyan: color(36, 39),\n  white: color(37, 39),\n  gray: color(90, 39),\n  \n  bgBlack: color(40, 49),\n  bgRed: color(41, 49),\n  bgGreen: color(42, 49),\n  bgYellow: color(43, 49),\n  bgBlue: color(44, 49),\n  bgMagenta: color(45, 49),\n  bgCyan: color(46, 49),\n  bgWhite: color(47, 49),\n};\n"
     }
   },
   "folderChildren": {
     "": {
       "subfolders": [
+        "cli",
         "dart",
         "mucker-interceptor",
         "mucker-mcp"
@@ -6563,6 +8896,28 @@
         "mucker-mcp/src/main/java/io/github/mucker/mcp/McpHandler.kt",
         "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcp.kt",
         "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt"
+      ]
+    },
+    "cli": {
+      "subfolders": [
+        "cli/bin",
+        "cli/lib"
+      ],
+      "files": []
+    },
+    "cli/bin": {
+      "subfolders": [],
+      "files": [
+        "cli/bin/mucker.mjs"
+      ]
+    },
+    "cli/lib": {
+      "subfolders": [],
+      "files": [
+        "cli/lib/adb.mjs",
+        "cli/lib/api.mjs",
+        "cli/lib/cdp.mjs",
+        "cli/lib/colors.mjs"
       ]
     }
   },
@@ -7734,11 +10089,1125 @@
           }
         }
       }
+    },
+    {
+      "commit": {
+        "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+        "shortSha": "c6e2072",
+        "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+        "author": "Yongjhih Chen",
+        "date": "2026-10-18T14:26:54.000Z",
+        "branch": "main"
+      },
+      "summary": {
+        "lines": {
+          "total": 2355,
+          "covered": 1248,
+          "skipped": 1107,
+          "pct": 52.99
+        },
+        "functions": {
+          "total": 29,
+          "covered": 14,
+          "skipped": 15,
+          "pct": 48.28
+        },
+        "branches": {
+          "total": 43,
+          "covered": 19,
+          "skipped": 24,
+          "pct": 44.19
+        }
+      },
+      "folderSummaries": {
+        "": {
+          "lines": {
+            "total": 2355,
+            "covered": 1248,
+            "skipped": 1107,
+            "pct": 52.99
+          },
+          "functions": {
+            "total": 29,
+            "covered": 14,
+            "skipped": 15,
+            "pct": 48.28
+          },
+          "branches": {
+            "total": 43,
+            "covered": 19,
+            "skipped": 24,
+            "pct": 44.19
+          }
+        },
+        "dart": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core": {
+          "lines": {
+            "total": 258,
+            "covered": 211,
+            "skipped": 47,
+            "pct": 81.78
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models": {
+          "lines": {
+            "total": 155,
+            "covered": 126,
+            "skipped": 29,
+            "pct": 81.29
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server": {
+          "lines": {
+            "total": 395,
+            "covered": 0,
+            "skipped": 395,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/util": {
+          "lines": {
+            "total": 31,
+            "covered": 0,
+            "skipped": 31,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli": {
+          "lines": {
+            "total": 607,
+            "covered": 270,
+            "skipped": 337,
+            "pct": 44.48
+          },
+          "functions": {
+            "total": 29,
+            "covered": 14,
+            "skipped": 15,
+            "pct": 48.28
+          },
+          "branches": {
+            "total": 43,
+            "covered": 19,
+            "skipped": 24,
+            "pct": 44.19
+          }
+        },
+        "cli/bin": {
+          "lines": {
+            "total": 375,
+            "covered": 147,
+            "skipped": 228,
+            "pct": 39.2
+          },
+          "functions": {
+            "total": 12,
+            "covered": 4,
+            "skipped": 8,
+            "pct": 33.33
+          },
+          "branches": {
+            "total": 19,
+            "covered": 5,
+            "skipped": 14,
+            "pct": 26.32
+          }
+        },
+        "cli/lib": {
+          "lines": {
+            "total": 232,
+            "covered": 123,
+            "skipped": 109,
+            "pct": 53.02
+          },
+          "functions": {
+            "total": 17,
+            "covered": 10,
+            "skipped": 7,
+            "pct": 58.82
+          },
+          "branches": {
+            "total": 24,
+            "covered": 14,
+            "skipped": 10,
+            "pct": 58.33
+          }
+        }
+      },
+      "fileSummaries": {
+        "dart/mucker/lib/src/mock_rule.dart": {
+          "lines": {
+            "total": 33,
+            "covered": 32,
+            "skipped": 1,
+            "pct": 96.97
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/dio_interceptor.dart": {
+          "lines": {
+            "total": 166,
+            "covered": 101,
+            "skipped": 65,
+            "pct": 60.84
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/http_client.dart": {
+          "lines": {
+            "total": 24,
+            "covered": 17,
+            "skipped": 7,
+            "pct": 70.83
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/mcp_server.dart": {
+          "lines": {
+            "total": 293,
+            "covered": 204,
+            "skipped": 89,
+            "pct": 69.62
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/CdpMessages.kt": {
+          "lines": {
+            "total": 61,
+            "covered": 58,
+            "skipped": 3,
+            "pct": 95.08
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockRule.kt": {
+          "lines": {
+            "total": 52,
+            "covered": 49,
+            "skipped": 3,
+            "pct": 94.23
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockDecision.kt": {
+          "lines": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 4,
+            "pct": 50
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/NetworkRecord.kt": {
+          "lines": {
+            "total": 34,
+            "covered": 15,
+            "skipped": 19,
+            "pct": 44.12
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/RestHandler.kt": {
+          "lines": {
+            "total": 110,
+            "covered": 0,
+            "skipped": 110,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/WebSocketConnection.kt": {
+          "lines": {
+            "total": 79,
+            "covered": 0,
+            "skipped": 79,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/CdpHandler.kt": {
+          "lines": {
+            "total": 47,
+            "covered": 0,
+            "skipped": 47,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/MuckerHttpServer.kt": {
+          "lines": {
+            "total": 159,
+            "covered": 0,
+            "skipped": 159,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/MuckerInterceptor.kt": {
+          "lines": {
+            "total": 134,
+            "covered": 110,
+            "skipped": 24,
+            "pct": 82.09
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/MuckerConfig.kt": {
+          "lines": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 8,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/Mucker.kt": {
+          "lines": {
+            "total": 50,
+            "covered": 0,
+            "skipped": 50,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/MockEngine.kt": {
+          "lines": {
+            "total": 66,
+            "covered": 55,
+            "skipped": 11,
+            "pct": 83.33
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/RequestHistory.kt": {
+          "lines": {
+            "total": 14,
+            "covered": 8,
+            "skipped": 6,
+            "pct": 57.14
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/MockRuleRegistry.kt": {
+          "lines": {
+            "total": 23,
+            "covered": 22,
+            "skipped": 1,
+            "pct": 95.65
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/util/NetworkUtils.kt": {
+          "lines": {
+            "total": 31,
+            "covered": 0,
+            "skipped": 31,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/McpHandler.kt": {
+          "lines": {
+            "total": 229,
+            "covered": 196,
+            "skipped": 33,
+            "pct": 85.59
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt": {
+          "lines": {
+            "total": 120,
+            "covered": 104,
+            "skipped": 16,
+            "pct": 86.67
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcp.kt": {
+          "lines": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 4,
+            "pct": 42.86
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli/bin/mucker.mjs": {
+          "lines": {
+            "total": 375,
+            "covered": 147,
+            "skipped": 228,
+            "pct": 39.2
+          },
+          "functions": {
+            "total": 12,
+            "covered": 4,
+            "skipped": 8,
+            "pct": 33.33
+          },
+          "branches": {
+            "total": 19,
+            "covered": 5,
+            "skipped": 14,
+            "pct": 26.32
+          }
+        },
+        "cli/lib/adb.mjs": {
+          "lines": {
+            "total": 86,
+            "covered": 29,
+            "skipped": 57,
+            "pct": 33.72
+          },
+          "functions": {
+            "total": 3,
+            "covered": 2,
+            "skipped": 1,
+            "pct": 66.67
+          },
+          "branches": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 4,
+            "pct": 42.86
+          }
+        },
+        "cli/lib/api.mjs": {
+          "lines": {
+            "total": 81,
+            "covered": 57,
+            "skipped": 24,
+            "pct": 70.37
+          },
+          "functions": {
+            "total": 11,
+            "covered": 6,
+            "skipped": 5,
+            "pct": 54.55
+          },
+          "branches": {
+            "total": 12,
+            "covered": 7,
+            "skipped": 5,
+            "pct": 58.33
+          }
+        },
+        "cli/lib/cdp.mjs": {
+          "lines": {
+            "total": 31,
+            "covered": 3,
+            "skipped": 28,
+            "pct": 9.68
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 1,
+            "pct": 0
+          },
+          "branches": {
+            "total": 1,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli/lib/colors.mjs": {
+          "lines": {
+            "total": 34,
+            "covered": 34,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 2,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 4,
+            "covered": 3,
+            "skipped": 1,
+            "pct": 75
+          }
+        }
+      }
     }
   ],
   "refs": {
     "branches": {
-      "main": "c1cabdcc91b007ca25df272d435350d994a4d048"
+      "main": "c6e207298f0229bcb78e0f25156f35e89996ecb3"
     },
     "tags": {}
   },
@@ -7769,6 +11238,19 @@
         "branchesPct": 100,
         "linesCovered": 978,
         "linesTotal": 1748
+      },
+      {
+        "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+        "shortSha": "c6e2072",
+        "date": "2026-10-18T14:26:54.000Z",
+        "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+        "author": "Yongjhih Chen",
+        "branch": "main",
+        "linesPct": 52.99,
+        "functionsPct": 48.28,
+        "branchesPct": 44.19,
+        "linesCovered": 1248,
+        "linesTotal": 2355
       }
     ],
     "folders": {
@@ -7798,6 +11280,19 @@
           "branchesPct": 100,
           "linesCovered": 978,
           "linesTotal": 1748
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 52.99,
+          "functionsPct": 48.28,
+          "branchesPct": 44.19,
+          "linesCovered": 1248,
+          "linesTotal": 2355
         }
       ],
       "dart": [
@@ -7819,6 +11314,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 68.6,
@@ -7854,6 +11362,19 @@
           "branchesPct": 100,
           "linesCovered": 354,
           "linesTotal": 516
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
         }
       ],
       "dart/mucker/lib": [
@@ -7875,6 +11396,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 68.6,
@@ -7910,6 +11444,19 @@
           "branchesPct": 100,
           "linesCovered": 354,
           "linesTotal": 516
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
         }
       ],
       "mucker-interceptor": [
@@ -7918,6 +11465,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -7940,6 +11500,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main": [
@@ -7948,6 +11521,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -7970,6 +11556,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main/java/io": [
@@ -7978,6 +11577,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -8000,6 +11612,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker": [
@@ -8008,6 +11633,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -8030,6 +11668,19 @@
           "branchesPct": 100,
           "linesCovered": 211,
           "linesTotal": 258
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 81.78,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 211,
+          "linesTotal": 258
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models": [
@@ -8038,6 +11689,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 81.29,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 126,
+          "linesTotal": 155
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 81.29,
@@ -8060,6 +11724,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 395
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 395
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/util": [
@@ -8068,6 +11745,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 31
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -8090,6 +11780,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src": [
@@ -8098,6 +11801,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -8120,6 +11836,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java": [
@@ -8128,6 +11857,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -8150,6 +11892,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java/io/github": [
@@ -8158,6 +11913,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -8180,6 +11948,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java/io/github/mucker/mcp": [
@@ -8195,6 +11976,64 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        }
+      ],
+      "cli": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 44.48,
+          "functionsPct": 48.28,
+          "branchesPct": 44.19,
+          "linesCovered": 270,
+          "linesTotal": 607
+        }
+      ],
+      "cli/bin": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 39.2,
+          "functionsPct": 33.33,
+          "branchesPct": 26.32,
+          "linesCovered": 147,
+          "linesTotal": 375
+        }
+      ],
+      "cli/lib": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 53.02,
+          "functionsPct": 58.82,
+          "branchesPct": 58.33,
+          "linesCovered": 123,
+          "linesTotal": 232
         }
       ]
     },
@@ -8218,6 +12057,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 96.97,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 32,
+          "linesTotal": 33
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 96.97,
@@ -8253,6 +12105,19 @@
           "branchesPct": 100,
           "linesCovered": 101,
           "linesTotal": 166
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 60.84,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 101,
+          "linesTotal": 166
         }
       ],
       "dart/mucker/lib/src/http_client.dart": [
@@ -8274,6 +12139,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 70.83,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 17,
+          "linesTotal": 24
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 70.83,
@@ -8309,6 +12187,19 @@
           "branchesPct": 100,
           "linesCovered": 204,
           "linesTotal": 293
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 69.62,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 204,
+          "linesTotal": 293
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models/CdpMessages.kt": [
@@ -8317,6 +12208,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 95.08,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 58,
+          "linesTotal": 61
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 95.08,
@@ -8339,6 +12243,19 @@
           "branchesPct": 100,
           "linesCovered": 49,
           "linesTotal": 52
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 94.23,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 49,
+          "linesTotal": 52
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockDecision.kt": [
@@ -8347,6 +12264,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 50,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 4,
+          "linesTotal": 8
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 50,
@@ -8369,6 +12299,19 @@
           "branchesPct": 100,
           "linesCovered": 15,
           "linesTotal": 34
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 44.12,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 15,
+          "linesTotal": 34
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/server/RestHandler.kt": [
@@ -8377,6 +12320,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 110
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -8399,6 +12355,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 79
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 79
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/server/CdpHandler.kt": [
@@ -8407,6 +12376,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 47
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -8429,6 +12411,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 159
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 159
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/MuckerInterceptor.kt": [
@@ -8437,6 +12432,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 82.09,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 110,
+          "linesTotal": 134
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 82.09,
@@ -8459,6 +12467,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 8
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 8
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/Mucker.kt": [
@@ -8467,6 +12488,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 50
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -8489,6 +12523,19 @@
           "branchesPct": 100,
           "linesCovered": 55,
           "linesTotal": 66
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 83.33,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 55,
+          "linesTotal": 66
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/RequestHistory.kt": [
@@ -8497,6 +12544,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 57.14,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 8,
+          "linesTotal": 14
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 57.14,
@@ -8519,6 +12579,19 @@
           "branchesPct": 100,
           "linesCovered": 22,
           "linesTotal": 23
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 95.65,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 22,
+          "linesTotal": 23
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/util/NetworkUtils.kt": [
@@ -8527,6 +12600,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 31
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -8549,6 +12635,19 @@
           "branchesPct": 100,
           "linesCovered": 196,
           "linesTotal": 229
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.59,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 196,
+          "linesTotal": 229
         }
       ],
       "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt": [
@@ -8557,6 +12656,19 @@
           "shortSha": "c1cabdc",
           "date": "2026-10-18T13:41:22.000Z",
           "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 86.67,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 104,
+          "linesTotal": 120
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 86.67,
@@ -8579,6 +12691,94 @@
           "branchesPct": 100,
           "linesCovered": 3,
           "linesTotal": 7
+        },
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 42.86,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 3,
+          "linesTotal": 7
+        }
+      ],
+      "cli/bin/mucker.mjs": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 39.2,
+          "functionsPct": 33.33,
+          "branchesPct": 26.32,
+          "linesCovered": 147,
+          "linesTotal": 375
+        }
+      ],
+      "cli/lib/adb.mjs": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 33.72,
+          "functionsPct": 66.67,
+          "branchesPct": 42.86,
+          "linesCovered": 29,
+          "linesTotal": 86
+        }
+      ],
+      "cli/lib/api.mjs": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 70.37,
+          "functionsPct": 54.55,
+          "branchesPct": 58.33,
+          "linesCovered": 57,
+          "linesTotal": 81
+        }
+      ],
+      "cli/lib/cdp.mjs": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 9.68,
+          "functionsPct": 0,
+          "branchesPct": 100,
+          "linesCovered": 3,
+          "linesTotal": 31
+        }
+      ],
+      "cli/lib/colors.mjs": [
+        {
+          "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
+          "shortSha": "c6e2072",
+          "date": "2026-10-18T14:26:54.000Z",
+          "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 100,
+          "functionsPct": 100,
+          "branchesPct": 75,
+          "linesCovered": 34,
+          "linesTotal": 34
         }
       ]
     }

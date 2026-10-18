@@ -5492,9 +5492,25 @@ ws.on('message', (raw) => {
           ].join('\n');
         }
 
+        // 0. What is Mucker
+        if (text.includes('什麼是 mucker') || text.includes('什麼是mucker') || text.includes('mucker 是什麼') || text.includes('what is mucker') || text === 'mucker') {
+          return [
+            `**Mucker** 是一個針對 Android OkHttp 與 Dart/Flutter 網路連線的零憑證（Zero-cert）流量監控與 Mock 工具：`,
+            ``,
+            `- 🚀 **無需安裝 CA 憑證**：透過應用程式內攔截器（Interceptor）直接捕捉 HTTPS 流量`,
+            `- 🛠️ **Chrome DevTools (CDP) 相容**：直接用標準 Chrome 開發者工具或本 Dashboard 監控封包與斷點（Breakpoint）`,
+            `- 🤖 **原生 WebMCP 與 ai-proxy 整合**：支援 Claude Code、Cursor、Windsurf 等本機 AI Copilot 即時下達 Mock 規則與流量查詢`,
+            `- 📊 **多模組測試覆蓋率報告**：整合 Covpages 提供 Android Kotlin、Dart、CLI 多平台測試覆蓋率趨勢`,
+            ``,
+            `[🔌 一鍵註冊 Dashboard MCP 到 ai-proxy](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp)`,
+            `[📚 查看 Mucker 規範與 MCP 工具目錄](https://yongjhih.github.io/mucker/mcp)`
+          ].join('\n');
+        }
+
+        const currentHost = state.targetHost || (window.location && window.location.host) || 'localhost:8080';
         // Default greeting / help
         return [
-          `I am ready to help with your network testing on **${state.targetHost}**:`,
+          `I am ready to help with your network testing on **${currentHost}**:`,
           `- Ask me to **mock an API** (e.g. \`mock /api/v1/user with 500\`)`,
           `- Ask me to **pause network traffic** or toggle breakpoints`,
           `- Ask about **ai-proxy MCP integration**`,
@@ -5538,9 +5554,16 @@ ws.on('message', (raw) => {
         }
 
         let reply = null;
+        const currentHost = state.targetHost || (window.location && window.location.host) || 'localhost:8080';
+        let customEndpoint = '';
         try {
-          const systemMsg = `You are Mucker AI Copilot. The user is inspecting Android OkHttp traffic at ${state.targetHost}. Rules: ${state.rules.length}, Breakpoint: ${state.breakpointMode}. Provide concise answers with markdown and action buttons like [⚡ Apply Mock Rule](action:apply-mock?url=/api&status=200).`;
-          const res = await fetch('http://127.0.0.1:8788/v1/chat/completions', {
+          if (window.localStorage) customEndpoint = window.localStorage.getItem('ai_proxy_endpoint') || '';
+        } catch (_) {}
+        const endpoint = (customEndpoint || 'http://127.0.0.1:8788').replace(/\/+$/, '');
+
+        try {
+          const systemMsg = `You are Mucker AI Copilot. The user is inspecting Android OkHttp traffic at ${currentHost}. Rules: ${state.rules.length}, Breakpoint: ${state.breakpointMode}. Provide concise answers with markdown and action buttons like [⚡ Apply Mock Rule](action:apply-mock?url=/api&status=200).`;
+          const res = await fetch(`${endpoint}/v1/chat/completions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -5554,11 +5577,28 @@ ws.on('message', (raw) => {
           });
           if (res.ok) {
             const data = await res.json();
-            reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            const textContent = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            if (textContent) {
+              const isFallbackEcho = textContent.includes('ai-proxy local assistant received:') ||
+                                    textContent.includes('Permitted read-only tools: [none]');
+              if (!isFallbackEcho) {
+                reply = textContent;
+              }
+            }
+          } else {
+            const errData = await res.json().catch(() => null);
+            const errMsg = (errData && errData.error && (errData.error.message || errData.error)) || `HTTP ${res.status}`;
+            console.warn('[Mucker AI] /v1/chat/completions error:', errMsg);
+            const clientAnswer = generateClientReply(input);
+            reply = `${clientAnswer}\n\n> ⚠️ *ai-proxy error: ${errMsg}*\n\n[🔌 Connect to local ai-proxy](action:connect)`;
           }
         } catch (err) {
-          if (currentAbortController && currentAbortController.signal.aborted) {
+          if (currentAbortController && currentAbortController.signal && currentAbortController.signal.aborted) {
             reply = '⏹️ Thinking stopped.';
+          } else {
+            console.warn('[Mucker AI] Failed to fetch /v1/chat/completions:', err);
+            const clientAnswer = generateClientReply(input);
+            reply = `${clientAnswer}\n\n> 💡 *Local ai-proxy is not connected or Origin unauthorized.*\n\n[🔌 Connect to local ai-proxy](action:connect)`;
           }
         } finally {
           currentAbortController = null;
@@ -5624,6 +5664,9 @@ ws.on('message', (raw) => {
           } else if (actionName === 'add-mcp') {
             const targetUrl = params.get('url');
             window.open(`https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=${encodeURIComponent(targetUrl)}`, '_blank');
+          } else if (actionName === 'connect') {
+            const endpoint = (localStorage.getItem('ai_proxy_endpoint') || 'http://127.0.0.1:8788').replace(/\/+$/, '');
+            window.open(`${endpoint}/dashboard`, '_blank');
           }
         } catch (e) {
           console.warn('Action click handler error:', e);

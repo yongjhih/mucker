@@ -4,19 +4,27 @@ import { execSync } from 'node:child_process';
 
 const ROOT_DIR = process.cwd();
 
-console.log('🚀 [1/4] Running Android Unit Tests & generating Jacoco Coverage...');
+console.log('🚀 [1/5] Running Android Unit Tests & generating Jacoco Coverage...');
 execSync('./gradlew :mucker-interceptor:createDebugUnitTestCoverageReport :mucker-mcp:createDebugUnitTestCoverageReport', {
   stdio: 'inherit',
   cwd: ROOT_DIR,
 });
 
-console.log('\n🎯 [2/4] Running Dart Unit Tests & collecting Coverage...');
+console.log('\n🎯 [2/5] Running Dart Unit Tests & collecting Coverage...');
 execSync('dart test --coverage=coverage && dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=lib', {
   stdio: 'inherit',
   cwd: path.join(ROOT_DIR, 'dart/mucker'),
 });
 
-console.log('\n🔄 [3/4] Converting Jacoco XML to LCOV format...');
+console.log('\n💻 [3/5] Running CLI Node.js Unit Tests & collecting Coverage...');
+const cliCoverageDir = path.join(ROOT_DIR, 'cli/coverage');
+fs.mkdirSync(cliCoverageDir, { recursive: true });
+execSync('node --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test test/*.test.mjs', {
+  stdio: 'inherit',
+  cwd: path.join(ROOT_DIR, 'cli'),
+});
+
+console.log('\n🔄 [4/5] Converting Jacoco XML and normalizing LCOV formats...');
 function jacocoToLcov(xmlPath, moduleDir) {
   if (!fs.existsSync(xmlPath)) {
     console.warn(`Warning: ${xmlPath} not found!`);
@@ -69,8 +77,17 @@ const mcpLcov = jacocoToLcov(
   path.join(ROOT_DIR, 'mucker-mcp/build/reports/coverage/test/debug/report.xml'),
   'mucker-mcp'
 );
+const cliLcovRaw = fs.existsSync(path.join(cliCoverageDir, 'lcov.info'))
+  ? fs.readFileSync(path.join(cliCoverageDir, 'lcov.info'), 'utf8')
+  : '';
+const cliLcov = cliLcovRaw
+  .split('end_of_record')
+  .map((rec) => rec.trim())
+  .filter((rec) => rec && !/^SF:(?:cli\/)?test\//m.test(rec))
+  .map((rec) => rec.replace(/^SF:(?!cli\/)(.*)$/m, 'SF:cli/$1') + '\nend_of_record')
+  .join('\n');
 
-const combinedLcov = [dartLcov.trim(), interceptorLcov.trim(), mcpLcov.trim()]
+const combinedLcov = [dartLcov.trim(), interceptorLcov.trim(), mcpLcov.trim(), cliLcov.trim()]
   .filter(Boolean)
   .join('\n');
 
@@ -79,7 +96,7 @@ fs.mkdirSync(coverageDir, { recursive: true });
 fs.writeFileSync(path.join(coverageDir, 'lcov.info'), combinedLcov);
 console.log(`Combined LCOV written to ${path.join(coverageDir, 'lcov.info')} (${combinedLcov.length} bytes)`);
 
-console.log('\n📊 [4/4] Generating covpages static site with multi-module breakdown...');
+console.log('\n📊 [5/5] Generating covpages static site with multi-module breakdown...');
 const localCovpagesBin = '/Users/yongjhih/works/covpages/bin/covpages.js';
 let covpagesCmd = 'npx covpages';
 if (fs.existsSync(localCovpagesBin)) {

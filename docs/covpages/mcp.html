@@ -703,6 +703,50 @@
     box-shadow: 0 0 0 2px var(--color-accent-subtle, rgba(9, 105, 218, 0.15));
   }
 
+  .ask-ai-thinking {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-fg-muted, #59636e);
+    font-size: 13px;
+  }
+  .ask-ai-thinking-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--color-border-default, #d0d7de);
+    border-top-color: var(--color-accent-fg, #0969da);
+    border-radius: 50%;
+    animation: ask-ai-spin 0.8s linear infinite;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .ask-ai-thinking-dots span {
+    animation: ask-ai-blink 1.4s infinite both;
+    font-weight: 700;
+  }
+  .ask-ai-thinking-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .ask-ai-thinking-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes ask-ai-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes ask-ai-blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  .btn-danger {
+    color: #ffffff !important;
+    background-color: var(--color-btn-danger-bg, #da3633) !important;
+    border-color: var(--color-btn-danger-border, #b62324) !important;
+  }
+  .btn-danger:hover {
+    background-color: var(--color-btn-danger-hover-bg, #b62324) !important;
+  }
+
   </style>
   <script>
     (function () {
@@ -1032,7 +1076,7 @@
     <div class="ask-ai-footer">
       <form class="ask-ai-form" id="ask-ai-form">
         <input type="text" class="ask-ai-input" id="ask-ai-input" placeholder="Ask about high-value targets, files, trends..." autocomplete="off" required />
-        <button type="submit" class="btn btn-primary btn-sm">Send</button>
+        <button type="submit" class="btn btn-primary btn-sm" id="ask-ai-submit">Send</button>
       </form>
     </div>
   </aside>
@@ -1105,6 +1149,8 @@
   var input = document.getElementById('ask-ai-input');
   var messagesEl = document.getElementById('ask-ai-messages');
   var statusPill = document.getElementById('ask-ai-status-pill');
+  var submitBtn = document.getElementById('ask-ai-submit') || (form && form.querySelector('button[type="submit"]'));
+  var currentAbortController = null;
 
   if (!drawer || !form || !input || !messagesEl) return;
 
@@ -1784,10 +1830,15 @@
     appendMessage('user', '<p>' + escapeHtml(text) + '</p>', true, text);
     input.value = '';
 
-    // Show typing placeholder
+    // Show animated thinking placeholder
     var typingEl = document.createElement('div');
     typingEl.className = 'ask-ai-msg ask-ai-msg-assistant';
-    typingEl.innerHTML = '<p><em>Thinking...</em></p>';
+    typingEl.innerHTML = [
+      '<div class="ask-ai-thinking">',
+      '  <span class="ask-ai-thinking-spinner"></span>',
+      '  <span>Thinking<span class="ask-ai-thinking-dots"><span>.</span><span>.</span><span>.</span></span></span>',
+      '</div>'
+    ].join('');
     messagesEl.appendChild(typingEl);
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
@@ -1824,13 +1875,32 @@
       saveHistory();
     }
 
+    var activeAbortCtrl = typeof AbortController === 'function' ? new AbortController() : null;
+    try {
+      if (typeof currentAbortController !== 'undefined') {
+        currentAbortController = activeAbortCtrl;
+      }
+    } catch (_) {}
+    var activeSubmitBtn = typeof submitBtn !== 'undefined' ? submitBtn : null;
+    if (activeSubmitBtn) {
+      activeSubmitBtn.textContent = '■ Stop';
+      activeSubmitBtn.classList.add('btn-danger');
+      activeSubmitBtn.classList.remove('btn-primary');
+    }
+
     // 1. Try local ai-proxy /v1/chat/completions relay
     var relaySuccess = false;
+    var customEndpoint = '';
+    try {
+      if (window.localStorage) customEndpoint = window.localStorage.getItem('ai_proxy_endpoint') || '';
+    } catch (e) {}
+    var endpoint = (customEndpoint || 'http://127.0.0.1:8788').replace(/\/+$/, '');
+
     try {
       var promptMessages = [
         {
           role: 'system',
-          content: 'You are the Covpages Assistant. Covpages is a git-native test coverage reporting tool for GitHub Pages with multi-commit trends, scoped badges, and zero backend required.'
+          content: 'You are the Covpages Assistant. Covpages is a git-native test coverage reporting tool for GitHub Pages with multi-commit trends, scoped badges, and zero backend required. Answer questions helpfully and concisely using markdown formatting and action buttons when relevant.'
         }
       ];
 
@@ -1845,14 +1915,14 @@
         }
       }
 
-      var relayRes = await fetch('http://127.0.0.1:8788/v1/chat/completions', {
+      var relayRes = await fetch(endpoint + '/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'local',
+          model: 'local-default',
           messages: promptMessages
         }),
-        signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(1500) : undefined
+        signal: activeAbortCtrl ? activeAbortCtrl.signal : undefined
       });
 
       if (relayRes.ok) {
@@ -1860,8 +1930,7 @@
         var replyText = replyData && replyData.choices && replyData.choices[0] && replyData.choices[0].message && replyData.choices[0].message.content;
         if (replyText) {
           var isFallbackEcho = replyText.indexOf('ai-proxy local assistant received:') !== -1 ||
-                               replyText.indexOf('Permitted read-only tools: [none]') !== -1 ||
-                               replyText.indexOf('Permitted read-only tools:') !== -1;
+                               replyText.indexOf('Permitted read-only tools: [none]') !== -1;
           if (!isFallbackEcho) {
             var formatted = formatMarkdown(replyText);
             updateTypingContent(formatted, replyText);
@@ -1877,9 +1946,28 @@
             }
           }
         }
+      } else {
+        var errJson = await relayRes.json().catch(function () { return null; });
+        var errMsg = (errJson && errJson.error && (errJson.error.message || errJson.error)) || ('HTTP ' + relayRes.status);
+        console.warn('[Covpages AI] Relay returned non-200:', errMsg);
       }
     } catch (e) {
-      // Local relay not available; proceed to WebMCP tool engine
+      if (activeAbortCtrl && activeAbortCtrl.signal && activeAbortCtrl.signal.aborted) {
+        updateTypingContent('<p>⏹️ <em>Thinking stopped.</em></p>', '⏹️ Thinking stopped.');
+        return;
+      }
+      console.warn('[Covpages AI] Failed to fetch /v1/chat/completions:', e);
+    } finally {
+      try {
+        if (typeof currentAbortController !== 'undefined') {
+          currentAbortController = null;
+        }
+      } catch (_) {}
+      if (activeSubmitBtn) {
+        activeSubmitBtn.textContent = 'Send';
+        activeSubmitBtn.classList.remove('btn-danger');
+        activeSubmitBtn.classList.add('btn-primary');
+      }
     }
 
     if (relaySuccess) return;
@@ -2051,8 +2139,20 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (currentAbortController) {
+        currentAbortController.abort();
+        return;
+      }
       var val = input.value;
       if (val) handleUserQuery(val);
+    });
+  }
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && currentAbortController) {
+        currentAbortController.abort();
+      }
     });
   }
 
