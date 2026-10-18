@@ -38,6 +38,9 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
     <a href="{{ '/getting-started' | relative_url }}" class="btn btn-secondary">
       <span>Quickstart Docs</span>
     </a>
+    <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp" class="btn btn-secondary" style="border-color: #238636; color: #3fb950; font-weight: 600;" target="_blank" rel="noopener" title="Connect Mucker WebMCP to local ai-proxy">
+      <span>🔌 Add to ai-proxy</span>
+    </a>
     <a href="https://github.com/yongjhih/mucker" class="btn btn-github" target="_blank" rel="noopener">
       <span>View on GitHub</span>
     </a>
