@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Mucker Live Dashboard WebMCP Endpoint</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236366f1'/><path d='M30 45 L50 25 L70 45 L60 45 L60 75 L40 75 L40 45 Z' fill='white'/></svg>">
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <style>
+    .mcp-page-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .mcp-header-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+      border: 1px solid var(--border-light, #334155);
+      border-radius: var(--radius-lg, 16px);
+      padding: 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mcp-header-banner::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mcp-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius-full, 9999px);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #c084fc;
+      margin-bottom: 16px;
+    }
+    .mcp-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .mcp-subtitle {
+      font-size: 1.0625rem;
+      color: var(--text-muted, #94a3b8);
+      max-width: 760px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .mcp-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+    .mcp-install-box {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.875rem;
+      color: #38bdf8;
+      overflow-x: auto;
+    }
+    .mcp-install-box code {
+      color: inherit;
+      background: transparent;
+      padding: 0;
+    }
+    .mcp-copy-btn {
+      padding: 6px 12px;
+      background: var(--bg-subtle, #334155);
+      border: 1px solid var(--border-light, #475569);
+      color: var(--text-main, #f8fafc);
+      border-radius: var(--radius-sm, 6px);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .mcp-copy-btn:hover {
+      background: var(--primary, #6366f1);
+      border-color: var(--primary, #6366f1);
+    }
+
+    /* WebMCP Widget Styling */
+    .mcp-page-widget {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .mcp-status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      font-size: 0.9375rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .badge-neutral {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .badge-readonly {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .badge-mutating {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .mcp-port-meta {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8125rem;
+      color: var(--text-dim, #64748b);
+    }
+    .mcp-port-meta code {
+      color: var(--accent, #38bdf8);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .mcp-catalog h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-main, #f8fafc);
+    }
+    .mcp-tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mcp-tool-row {
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      padding: 20px 24px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .mcp-tool-row:hover {
+      border-color: var(--border-light, #334155);
+      box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.2));
+    }
+    .mcp-tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .mcp-tool-title code {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: #a855f7;
+      background: transparent;
+      padding: 0;
+    }
+    .mcp-tool-desc {
+      color: var(--text-muted, #94a3b8);
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .mcp-field-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mcp-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-muted, #94a3b8);
+    }
+    .mcp-field span code {
+      color: var(--accent, #38bdf8);
+      font-size: 0.8125rem;
+    }
+    .mcp-field input {
+      background: var(--bg-base, #090d16);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-sm, 6px);
+      padding: 8px 12px;
+      color: var(--text-main, #f8fafc);
+      font-family: var(--font-sans, inherit);
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .mcp-field input:focus {
+      border-color: var(--primary, #6366f1);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    .mcp-tool-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.8125rem;
+      border-radius: var(--radius-sm, 6px);
+      cursor: pointer;
+      font-weight: 600;
+      border: 1px solid var(--primary, #6366f1);
+      background: var(--primary, #6366f1);
+      color: white;
+      transition: all 0.15s ease;
+    }
+    .btn-sm:hover {
+      background: var(--primary-hover, #4f46e5);
+      border-color: var(--primary-hover, #4f46e5);
+    }
+    .btn-link {
+      font-size: 0.8125rem;
+      color: var(--accent, #38bdf8);
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+    .mcp-tool-result {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--bg-base, #090d16);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-sm, 6px);
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8125rem;
+      color: #e2e8f0;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="../" class="site-brand">
+        <div class="brand-badge-icon">M</div>
+        <span class="brand-name">Mucker</span>
+        <span class="brand-tag">Dashboard MCP</span>
+      </a>
+
+      <nav class="site-nav">
+        <a href="./" class="nav-link" style="color: var(--accent); font-weight: 600;">⚡ Open Live Dashboard</a>
+        <a href="../getting-started" class="nav-link">Quickstart</a>
+        <a href="../architecture" class="nav-link">Architecture</a>
+        <a href="../mcp.html" class="nav-link">Docs WebMCP</a>
+        <a href="mcp.html" class="nav-link active" style="color: #3fb950; font-weight: 600;">🔌 Dashboard WebMCP</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/yongjhih/mucker" class="btn btn-github" target="_blank" rel="noopener">
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="mcp-page-container">
+      <div class="mcp-header-banner">
+        <div class="mcp-badge-pill">
+          <span>🎮 Live Control & Inspection</span>
+          <span>•</span>
+          <span>In-App Micro-Server Bridge</span>
+        </div>
+        <h1 class="mcp-title">Mucker Dashboard WebMCP Endpoint</h1>
+        <p class="mcp-subtitle">
+          Exposes direct control tools for your connected Android app's mock engine.
+          Local AI assistants (Claude Code, Cursor, Windsurf) can inspect recorded network history, create/toggle mock rules, and fulfill breakpoints in real time.
+        </p>
+
+        <div class="mcp-actions-row">
+          <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp" class="btn btn-primary" target="_blank" rel="noopener" style="background:#238636;border-color:#238636;">
+            <span>🔌 One-Click Add Dashboard MCP to ai-proxy</span>
+          </a>
+          <a href="./" class="btn btn-secondary">
+            <span>Open Dashboard UI</span>
+          </a>
+        </div>
+
+        <div class="mcp-install-box">
+          <code>npx ai-proxy add https://yongjhih.github.io/mucker/dashboard/mcp --name mucker-dashboard</code>
+          <button type="button" class="mcp-copy-btn" id="copyCmdBtn">Copy Command</button>
+        </div>
+      </div>
+
+      <div id="mcp-catalog"></div>
+    </div>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+    document.getElementById('copyCmdBtn')?.addEventListener('click', async () => {
+      const btn = document.getElementById('copyCmdBtn');
+      const text = 'npx ai-proxy add https://yongjhih.github.io/mucker/dashboard/mcp --name mucker-dashboard';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Command'; }, 2000);
+      } catch (e) {
+        console.warn('Copy failed:', e);
+      }
+    });
+  </script>
+
+  <script type="module">
+    import { mountMcpPageUi } from './web/ui.mjs';
+
+    function resolveHost(host) {
+      return host ? host.replace(/\/+$/, '') : 'http://127.0.0.1:8080';
+    }
+
+    const tools = [
+      {
+        name: 'dashboard_get_status',
+        description: 'Get live Mucker server status, active mock rules count, breakpoint mode state, and pending requests.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          }
+        },
+        annotations: {
+          title: 'Get Mucker Status',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/status`, { signal });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            return { connected: true, host: baseUrl, status: data };
+          } catch (err) {
+            return {
+              connected: false,
+              host: baseUrl,
+              message: `Could not connect to Mucker at ${baseUrl}. Make sure "adb forward tcp:8080 tcp:8080" is running.`,
+              error: err && err.message ? err.message : String(err)
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_list_rules',
+        description: 'List all registered mock rules currently active in Mucker.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          }
+        },
+        annotations: {
+          title: 'List Mock Rules',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/rules`, { signal });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const rules = await res.json();
+            return { host: baseUrl, total: rules.length, rules };
+          } catch (err) {
+            return {
+              host: baseUrl,
+              error: `Failed to fetch rules from ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_add_rule',
+        description: 'Add or update a mock rule on the connected Mucker instance. The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            urlPattern: {
+              type: 'string',
+              description: 'URL pattern (glob or regex, e.g. *://api.example.com/v1/user*)'
+            },
+            method: {
+              type: 'string',
+              enum: ['ALL', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+              default: 'ALL',
+              description: 'HTTP method to match'
+            },
+            statusCode: {
+              type: 'integer',
+              default: 200,
+              description: 'HTTP status code'
+            },
+            responseBody: {
+              type: 'string',
+              description: 'JSON response body to inject'
+            },
+            delayMs: {
+              type: 'integer',
+              default: 0,
+              description: 'Simulated response latency in milliseconds'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          },
+          required: ['urlPattern']
+        },
+        annotations: {
+          title: 'Add Mock Rule',
+          readOnlyHint: false,
+          destructiveHint: false
+        },
+        async execute({ urlPattern, method = 'ALL', statusCode = 200, responseBody = '{"mocked":true}', delayMs = 0, host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          const payload = {
+            urlPattern,
+            method,
+            statusCode: Number(statusCode) || 200,
+            delayMs: Number(delayMs) || 0,
+            responseHeaders: {
+              'Content-Type': 'application/json',
+              'X-Mocked-By': 'Mucker'
+            },
+            responseBody,
+            isEnabled: true
+          };
+
+          try {
+            const res = await fetch(`${baseUrl}/api/rules`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const result = await res.json().catch(() => ({ ok: true }));
+            return {
+              ok: true,
+              message: `Successfully created mock rule for "${urlPattern}"`,
+              rule: payload,
+              response: result
+            };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to add rule on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_remove_rule',
+        description: 'Delete a mock rule by ID from Mucker memory. The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'ID of rule to remove'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          },
+          required: ['id']
+        },
+        annotations: {
+          title: 'Remove Mock Rule',
+          readOnlyHint: false,
+          destructiveHint: true
+        },
+        async execute({ id, host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/rules/${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return { ok: true, message: `Rule ${id} successfully removed` };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to delete rule ${id} on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_clear_rules',
+        description: 'Clear all registered mock rules in Mucker memory. The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          }
+        },
+        annotations: {
+          title: 'Clear All Rules',
+          readOnlyHint: false,
+          destructiveHint: true
+        },
+        async execute({ host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/rules`, {
+              method: 'DELETE',
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return { ok: true, message: 'All mock rules cleared from Mucker memory' };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to clear rules on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_set_breakpoint_mode',
+        description: 'Toggle global breakpoint interception mode on Mucker (pauses all matching requests). The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            breakpointMode: {
+              type: 'boolean',
+              description: 'true to enable breakpoints, false to disable'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          },
+          required: ['breakpointMode']
+        },
+        annotations: {
+          title: 'Set Breakpoint Mode',
+          readOnlyHint: false,
+          destructiveHint: false
+        },
+        async execute({ breakpointMode, host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/status`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ breakpointMode: Boolean(breakpointMode) }),
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return {
+              ok: true,
+              breakpointMode: Boolean(breakpointMode),
+              message: `Breakpoint mode is now ${breakpointMode ? 'ENABLED (requests will pause)' : 'DISABLED'}`
+            };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to update breakpoint mode on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_list_history',
+        description: 'Query recorded network request history from Mucker memory buffer, with optional filtering by URL keyword, method, or status.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description: 'Filter keyword for URL or response body'
+            },
+            method: {
+              type: 'string',
+              description: 'Filter by HTTP method (GET, POST, etc.)'
+            },
+            limit: {
+              type: 'integer',
+              default: 20,
+              description: 'Maximum number of records to return'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          }
+        },
+        annotations: {
+          title: 'List Request History',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ query, method, limit = 20, host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/history`, { signal });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            let list = await res.json();
+            if (!Array.isArray(list)) list = [];
+
+            if (method) {
+              const m = method.toUpperCase();
+              list = list.filter((r) => r.method === m);
+            }
+            if (query) {
+              const q = query.toLowerCase();
+              list = list.filter((r) => (r.url && r.url.toLowerCase().includes(q)) || (r.responseBody && r.responseBody.toLowerCase().includes(q)));
+            }
+
+            const total = list.length;
+            const records = list.slice(0, Number(limit) || 20);
+            return { host: baseUrl, totalMatches: total, returned: records.length, records };
+          } catch (err) {
+            return {
+              host: baseUrl,
+              error: `Failed to fetch history from ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_fulfill_request',
+        description: 'Fulfill an in-flight paused OkHttp request with a mocked response. The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            requestId: {
+              type: 'string',
+              description: 'ID of the paused request'
+            },
+            statusCode: {
+              type: 'integer',
+              default: 200,
+              description: 'HTTP status code'
+            },
+            responseBody: {
+              type: 'string',
+              default: '{"status":"fulfilled"}',
+              description: 'Mocked response body'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          },
+          required: ['requestId']
+        },
+        annotations: {
+          title: 'Fulfill Paused Request',
+          readOnlyHint: false,
+          destructiveHint: false
+        },
+        async execute({ requestId, statusCode = 200, responseBody = '{"status":"fulfilled"}', host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/paused/${encodeURIComponent(requestId)}/fulfill`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                statusCode: Number(statusCode) || 200,
+                responseBody
+              }),
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return { ok: true, message: `Request ${requestId} fulfilled with status ${statusCode}` };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to fulfill request ${requestId} on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      },
+      {
+        name: 'dashboard_continue_request',
+        description: 'Resume a paused OkHttp request without modification, allowing it to proceed to real network. The AI assistant should only invoke this when explicitly requested by the user.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            requestId: {
+              type: 'string',
+              description: 'ID of the paused request'
+            },
+            host: {
+              type: 'string',
+              description: 'Mucker host address (default: http://127.0.0.1:8080)'
+            }
+          },
+          required: ['requestId']
+        },
+        annotations: {
+          title: 'Continue Paused Request',
+          readOnlyHint: false,
+          destructiveHint: false
+        },
+        async execute({ requestId, host } = {}, { signal } = {}) {
+          const baseUrl = resolveHost(host);
+          try {
+            const res = await fetch(`${baseUrl}/api/paused/${encodeURIComponent(requestId)}/continue`, {
+              method: 'POST',
+              signal
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return { ok: true, message: `Request ${requestId} continued to real network` };
+          } catch (err) {
+            return {
+              ok: false,
+              error: `Failed to continue request ${requestId} on ${baseUrl}: ${err && err.message ? err.message : String(err)}`
+            };
+          }
+        }
+      }
+    ];
+
+    mountMcpPageUi({
+      container: document.getElementById('mcp-catalog'),
+      title: 'Mucker Live Dashboard WebMCP Tools',
+      tools
+    });
+  </script>
+</body>
+</html>

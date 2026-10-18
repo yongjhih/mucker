@@ -25,4 +25,7 @@ defaults:
 include:
   - web
   - mcp.html
+  - dashboard/web
+  - dashboard/mcp.html
+
 

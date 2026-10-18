@@ -1711,7 +1711,290 @@
     [data-theme="light"] .cm-s-mucker .cm-string { color: #059669 !important; }
     [data-theme="light"] .cm-s-mucker .cm-number { color: #d97706 !important; }
     [data-theme="light"] .cm-s-mucker .cm-atom { color: #7c3aed !important; }
-  
+
+    /* AI Chat Copilot Drawer & WebMCP Explorer */
+    .ai-chat-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 440px;
+      max-width: 100vw;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-color);
+      box-shadow: -8px 0 28px rgba(0, 0, 0, 0.45);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ai-chat-drawer[data-open="true"] {
+      transform: translateX(0);
+    }
+    .ai-chat-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .ai-chat-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ai-chat-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ai-chat-badge {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #818cf8;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .ai-chat-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+    }
+    .ai-chat-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ai-chat-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-base);
+      flex-shrink: 0;
+    }
+    .ai-chat-tab {
+      flex: 1;
+      padding: 10px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ai-chat-tab:hover {
+      color: var(--text-main);
+    }
+    .ai-chat-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+    .ai-chat-tab-pane {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .ai-chat-tab-pane.active {
+      display: flex;
+    }
+    .ai-quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    .ai-prompt-chip {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .ai-prompt-chip:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+      background: rgba(99, 102, 241, 0.12);
+    }
+    .ai-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ai-msg {
+      display: flex;
+      gap: 10px;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+    .ai-msg-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+    }
+    .ai-msg-user .ai-msg-avatar {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+    .ai-msg-body {
+      flex: 1;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: var(--text-main);
+      word-break: break-word;
+    }
+    .ai-msg-user .ai-msg-body {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    .ai-msg-body p {
+      margin: 0 0 8px;
+    }
+    .ai-msg-body p:last-child {
+      margin-bottom: 0;
+    }
+    .ai-msg-body pre {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+    .ai-msg-body code {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #38bdf8;
+    }
+    .ai-msg-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .ai-chat-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+      flex-shrink: 0;
+    }
+    .ai-chat-form {
+      display: flex;
+      gap: 8px;
+    }
+    .ai-chat-input {
+      flex: 1;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .ai-chat-input:focus {
+      border-color: var(--primary);
+    }
+    .ai-mcp-info {
+      padding: 12px 16px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--bg-base);
+    }
+    .ai-mcp-info a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .ai-mcp-info a:hover {
+      text-decoration: underline;
+    }
+    .ai-mcp-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ai-mcp-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+    }
+    .ai-mcp-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .ai-mcp-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #a855f7;
+    }
+    .ai-mcp-card-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .ai-mcp-card-btn {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .ai-mcp-card-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -1748,6 +2031,10 @@
 
       <button class="btn btn-sm btn-primary" id="btnNewRule">
         <span>+ New Mock</span>
+      </button>
+
+      <button class="btn btn-sm" id="btnAskAi" style="border-color:#6366f1;color:#818cf8;font-weight:600;display:inline-flex;align-items:center;gap:4px;" title="Open AI Assistant & WebMCP Tools">
+        <span>✨ Ask AI</span>
       </button>
 
       <button class="btn btn-sm btn-icon" id="btnToggleTheme" title="Toggle Dark/Light Mode">
@@ -2020,6 +2307,76 @@ ws.on('message', (raw) => {
       </div>
     </div>
   </div>
+
+  <!-- AI Chat Drawer & WebMCP Explorer -->
+  <aside class="ai-chat-drawer" id="aiChatDrawer" data-open="false">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title-group">
+        <div class="ai-chat-title">
+          <span>✨ Mucker AI Assistant</span>
+          <span class="ai-chat-badge">Local Relay</span>
+        </div>
+        <div class="ai-chat-subtitle">Ask questions, mock APIs, inspect traffic, or connect WebMCP</div>
+      </div>
+      <div class="ai-chat-header-actions">
+        <a href="mcp.html" class="btn btn-sm" target="_blank" title="Open Dashboard WebMCP Page" style="text-decoration:none;font-size:0.75rem;padding:3px 8px;border-color:var(--border-subtle);color:var(--text-muted);">
+          <span>🔌 MCP</span>
+        </a>
+        <button class="btn btn-sm btn-icon" id="btnAiChatClose" title="Close AI Assistant">✕</button>
+      </div>
+    </div>
+
+    <!-- Mode Tabs: Chat vs WebMCP Tools -->
+    <div class="ai-chat-tabs">
+      <button class="ai-chat-tab active" id="tabAiChat" type="button">Chat Assistant</button>
+      <button class="ai-chat-tab" id="tabAiMcp" type="button">WebMCP Tools (9)</button>
+    </div>
+
+    <!-- Tab 1: Chat View -->
+    <div class="ai-chat-tab-pane active" id="paneAiChat">
+      <!-- Quick Prompt Suggestions -->
+      <div class="ai-quick-prompts">
+        <button class="ai-prompt-chip" data-prompt="How do I mock an API response?">💡 Mock API</button>
+        <button class="ai-prompt-chip" data-prompt="Turn on breakpoint mode to pause requests">⏸ Breakpoints</button>
+        <button class="ai-prompt-chip" data-prompt="How do I connect Mucker to ai-proxy?">🔌 Connect ai-proxy</button>
+        <button class="ai-prompt-chip" data-prompt="Show me all active mock rules">📋 List Rules</button>
+      </div>
+
+      <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-msg ai-msg-assistant">
+          <div class="ai-msg-avatar">🤖</div>
+          <div class="ai-msg-body">
+            <p>Hello! I am your <strong>Mucker AI Assistant</strong>. I can help you create mock rules, debug breakpoints, query network history, or connect your browser to <strong>ai-proxy</strong>.</p>
+            <div class="ai-msg-cta-group">
+              <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp" target="_blank" rel="noopener" class="btn btn-sm btn-primary" style="background:#238636;border-color:#238636;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                <span>🔌 Add Dashboard MCP to ai-proxy</span>
+              </a>
+              <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp" target="_blank" rel="noopener" class="btn btn-sm btn-secondary" style="border-color:#238636;color:#3fb950;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                <span>🔌 Add Docs MCP</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-chat-footer">
+        <form id="aiChatForm" class="ai-chat-form">
+          <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask AI (e.g. 'mock /api/users with 200')..." autocomplete="off" />
+          <button type="submit" class="btn btn-sm btn-primary" id="btnAiSend">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tab 2: MCP Tools Explorer -->
+    <div class="ai-chat-tab-pane" id="paneAiMcp">
+      <div class="ai-mcp-info">
+        <p>These 9 WebMCP tools are available via <a href="mcp.html" target="_blank"><code>mcp.html</code></a> and registered on <code>navigator.modelContext</code>:</p>
+      </div>
+      <div class="ai-mcp-list" id="aiMcpList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </aside>
 
   <input type="file" id="importFileInput" style="display:none;" accept=".json">
 
@@ -4906,6 +5263,329 @@ ws.on('message', (raw) => {
         }
       }, 500);
     }
+
+    // ==========================================
+    // Mucker AI Copilot & WebMCP Tools Extension
+    // ==========================================
+    (function initAiCopilot() {
+      const btnAskAi = document.getElementById('btnAskAi');
+      const aiChatDrawer = document.getElementById('aiChatDrawer');
+      const btnAiChatClose = document.getElementById('btnAiChatClose');
+      const tabAiChat = document.getElementById('tabAiChat');
+      const tabAiMcp = document.getElementById('tabAiMcp');
+      const paneAiChat = document.getElementById('paneAiChat');
+      const paneAiMcp = document.getElementById('paneAiMcp');
+      const aiChatForm = document.getElementById('aiChatForm');
+      const aiChatInput = document.getElementById('aiChatInput');
+      const aiChatMessages = document.getElementById('aiChatMessages');
+      const aiMcpList = document.getElementById('aiMcpList');
+
+      if (!btnAskAi || !aiChatDrawer) return;
+
+      // Toggle drawer
+      btnAskAi.addEventListener('click', () => {
+        const isOpen = aiChatDrawer.getAttribute('data-open') === 'true';
+        aiChatDrawer.setAttribute('data-open', isOpen ? 'false' : 'true');
+        if (!isOpen) {
+          setTimeout(() => aiChatInput && aiChatInput.focus(), 100);
+        }
+      });
+
+      btnAiChatClose?.addEventListener('click', () => {
+        aiChatDrawer.setAttribute('data-open', 'false');
+      });
+
+      // Tabs
+      tabAiChat?.addEventListener('click', () => {
+        tabAiChat.classList.add('active');
+        tabAiMcp?.classList.remove('active');
+        paneAiChat?.classList.add('active');
+        paneAiMcp?.classList.remove('active');
+      });
+
+      tabAiMcp?.addEventListener('click', () => {
+        tabAiMcp.classList.add('active');
+        tabAiChat?.classList.remove('active');
+        paneAiMcp?.classList.add('active');
+        paneAiChat?.classList.remove('active');
+      });
+
+      // Prompt chips
+      document.querySelectorAll('.ai-prompt-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const prompt = chip.getAttribute('data-prompt');
+          if (prompt && aiChatInput) {
+            aiChatInput.value = prompt;
+            aiChatForm.dispatchEvent(new Event('submit'));
+          }
+        });
+      });
+
+      function appendMessage(role, htmlContent) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `ai-msg ai-msg-${role}`;
+        msgDiv.innerHTML = `
+          <div class="ai-msg-avatar">${role === 'user' ? '👤' : '🤖'}</div>
+          <div class="ai-msg-body">${htmlContent}</div>
+        `;
+        aiChatMessages.appendChild(msgDiv);
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        return msgDiv;
+      }
+
+      function escapeText(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function formatMarkdown(text) {
+        let out = escapeText(text);
+
+        // Action links [Label](action:...)
+        out = out.replace(
+          /\[([^\]]+)\]\((action:[^)]+)\)/g,
+          (_, label, actionUrl) =>
+            `<button type="button" class="btn btn-sm btn-primary" data-action="${actionUrl}" style="margin:4px 4px 4px 0;font-size:0.75rem;padding:3px 8px;">${label}</button>`
+        );
+
+        // Web links [Label](url)
+        out = out.replace(
+          /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+          (_, label, url) =>
+            `<a href="${url}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">${label}</a>`
+        );
+
+        // Inline code `code`
+        out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Line breaks & paragraphs
+        return '<p>' + out.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+      }
+
+      // Client-side Assistant Fallback & Intent Parser
+      function generateClientReply(promptText) {
+        const text = promptText.trim().toLowerCase();
+
+        // 1. Mock intent
+        if (text.includes('mock') || text.includes('rule') || text.includes('fake') || text.includes('stub')) {
+          const urlMatch = promptText.match(/(https?:\/\/[^\s"']+|\/[^\s"']+)/);
+          const statusMatch = promptText.match(/\b(200|201|400|401|403|404|500|502|503|504)\b/);
+          const targetUrl = urlMatch ? urlMatch[1] : '/api/v1/user';
+          const targetStatus = statusMatch ? statusMatch[1] : '200';
+          const bodyPayload = JSON.stringify({ mocked: true, timestamp: Date.now() }, null, 2);
+
+          return [
+            `I can configure a mock rule for you on Mucker:`,
+            `- **Pattern**: \`${targetUrl}\``,
+            `- **Status**: \`${targetStatus}\``,
+            `- **Response**: \`{"mocked": true}\``,
+            ``,
+            `[⚡ Apply Mock Rule in Dashboard](action:apply-mock?url=${encodeURIComponent(targetUrl)}&status=${targetStatus}&body=${encodeURIComponent(bodyPayload)})`,
+            ``,
+            `Or add it from your terminal:`,
+            `\`npx mucker rules add "${targetUrl}" --status ${targetStatus}\``
+          ].join('\n');
+        }
+
+        // 2. Breakpoint intent
+        if (text.includes('breakpoint') || text.includes('pause') || text.includes('halt')) {
+          const enable = !text.includes('off') && !text.includes('disable');
+          return [
+            `Global breakpoint mode lets you pause every in-flight OkHttp request in real-time, inspect headers, and inject mock responses before it reaches the network:`,
+            ``,
+            enable
+              ? `[⏸ Enable Breakpoint Mode](action:toggle-bp?enable=true)`
+              : `[▶ Disable Breakpoint Mode](action:toggle-bp?enable=false)`,
+            ``,
+            `You can also pause via terminal: \`npx mucker status --breakpoint\``
+          ].join('\n');
+        }
+
+        // 3. Clear rules intent
+        if (text.includes('clear') && (text.includes('rule') || text.includes('all'))) {
+          return [
+            `Do you want to clear all mock rules registered in Mucker engine memory?`,
+            ``,
+            `[🗑️ Clear All Mock Rules](action:clear-rules)`,
+            ``,
+            `Or via CLI: \`npx mucker rules clear\``
+          ].join('\n');
+        }
+
+        // 4. ai-proxy / MCP intent
+        if (text.includes('mcp') || text.includes('ai-proxy') || text.includes('proxy') || text.includes('claude') || text.includes('cursor')) {
+          return [
+            `Mucker exposes two client-side WebMCP endpoints that can be connected to local AI assistants (Claude Code, Cursor, Windsurf) through **ai-proxy**:`,
+            ``,
+            `1. **Dashboard MCP** (inspect live traffic, CRUD rules, fulfill breakpoints):`,
+            `[🔌 One-Click Add Dashboard MCP](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp)`,
+            `CLI: \`npx ai-proxy add https://yongjhih.github.io/mucker/dashboard/mcp --name mucker-dashboard\``,
+            ``,
+            `2. **Docs & Spec MCP** (guidance, templates, CDP spec, docs search):`,
+            `[🔌 One-Click Add Docs MCP](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)`,
+            `CLI: \`npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker\``
+          ].join('\n');
+        }
+
+        // 5. Recent requests summary
+        if (text.includes('history') || text.includes('request') || text.includes('log') || text.includes('failed') || text.includes('error')) {
+          const reqs = state.requests || [];
+          if (reqs.length === 0) {
+            return `No network requests recorded in the buffer yet. Trigger network activity in your Android app or click **Target: Connect** to establish the bridge.`;
+          }
+          const errors = reqs.filter(r => r.statusCode >= 400);
+          return [
+            `Recorded **${reqs.length}** requests in memory (Buffer size: ${reqs.length}/200).`,
+            errors.length > 0
+              ? `⚠️ Found **${errors.length}** failed requests (status >= 400): ${errors.slice(0, 3).map(e => `\`${e.method} ${e.url} (${e.statusCode})\``).join(', ')}`
+              : `✅ All captured requests returned successful status codes (2xx/3xx).`,
+            ``,
+            `Latest request: \`${reqs[0].method} ${reqs[0].url} (${reqs[0].statusCode})\``
+          ].join('\n');
+        }
+
+        // Default greeting / help
+        return [
+          `I am ready to help with your network testing on **${state.targetHost}**:`,
+          `- Ask me to **mock an API** (e.g. \`mock /api/v1/user with 500\`)`,
+          `- Ask me to **pause network traffic** or toggle breakpoints`,
+          `- Ask about **ai-proxy MCP integration**`,
+          `- Ask to inspect recent **traffic errors**`
+        ].join('\n');
+      }
+
+      // Handle sending prompt
+      aiChatForm?.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const input = aiChatInput.value.trim();
+        if (!input) return;
+        aiChatInput.value = '';
+
+        appendMessage('user', escapeText(input));
+        const pendingMsg = appendMessage('assistant', '<span style="color:var(--text-subtle);">Thinking...</span>');
+
+        // Check local relay first
+        let reply = null;
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 1600);
+          const systemMsg = `You are Mucker AI Copilot. The user is inspecting Android OkHttp traffic at ${state.targetHost}. Rules: ${state.rules.length}, Breakpoint: ${state.breakpointMode}. Provide concise answers with markdown and action buttons like [⚡ Apply Mock Rule](action:apply-mock?url=/api&status=200).`;
+          const res = await fetch('http://127.0.0.1:8788/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'local-default',
+              messages: [
+                { role: 'system', content: systemMsg },
+                { role: 'user', content: input }
+              ]
+            }),
+            signal: controller.signal
+          });
+          clearTimeout(timer);
+          if (res.ok) {
+            const data = await res.json();
+            reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+          }
+        } catch (_) {}
+
+        if (!reply) {
+          reply = generateClientReply(input);
+        }
+
+        pendingMsg.querySelector('.ai-msg-body').innerHTML = formatMarkdown(reply);
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+      });
+
+      // Handle interactive action clicks
+      document.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('[data-action]');
+        if (!btn) return;
+        const actionStr = btn.getAttribute('data-action');
+        if (!actionStr) return;
+
+        try {
+          const urlObj = new URL(actionStr, 'http://localhost');
+          const actionName = urlObj.pathname;
+          const params = urlObj.searchParams;
+
+          if (actionName === 'apply-mock') {
+            const url = params.get('url') || '/api/v1/mock';
+            const status = params.get('status') || '200';
+            const body = params.get('body') || '{\n  "status": "mocked"\n}';
+            state.editingRuleId = null;
+            document.getElementById('modalTitle').innerText = 'Create Mock Rule (from AI)';
+            document.getElementById('ruleMethod').value = params.get('method') || 'ALL';
+            document.getElementById('rulePattern').value = url;
+            document.getElementById('ruleStatus').value = Number(status) || 200;
+            document.getElementById('ruleDelay').value = 0;
+            document.getElementById('ruleBody').value = body;
+            ruleModal.classList.add('open');
+            showToast('Mock rule pre-filled from AI Copilot!', 'info');
+          } else if (actionName === 'toggle-bp') {
+            const enable = params.get('enable') === 'true';
+            if (state.breakpointMode !== enable) {
+              btnToggleBreakpoint.click();
+            }
+          } else if (actionName === 'clear-rules') {
+            if (confirm('Clear all mock rules from Mucker memory?')) {
+              state.rules = [];
+              renderRules();
+              fetch(`${state.targetHost}/api/rules`, { method: 'DELETE' }).catch(() => {});
+              showToast('All mock rules cleared.', 'info');
+            }
+          } else if (actionName === 'add-mcp') {
+            const targetUrl = params.get('url');
+            window.open(`https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=${encodeURIComponent(targetUrl)}`, '_blank');
+          }
+        } catch (e) {
+          console.warn('Action click handler error:', e);
+        }
+      });
+
+      // Populate WebMCP Tools tab
+      const dashboardMcpTools = [
+        { name: 'dashboard_get_status', desc: 'Get live Mucker server status, rule count, and breakpoint mode.' },
+        { name: 'dashboard_list_rules', desc: 'List all registered mock rules currently active in Mucker.' },
+        { name: 'dashboard_add_rule', desc: 'Add or update a dynamic mock rule with custom status code & body.' },
+        { name: 'dashboard_remove_rule', desc: 'Delete a mock rule by ID from Mucker engine memory.' },
+        { name: 'dashboard_clear_rules', desc: 'Clear all mock rules from Mucker memory.' },
+        { name: 'dashboard_set_breakpoint_mode', desc: 'Toggle global breakpoint interception on or off.' },
+        { name: 'dashboard_list_history', desc: 'Query recorded network request history with URL/body search.' },
+        { name: 'dashboard_fulfill_request', desc: 'Fulfill an in-flight paused OkHttp request with a mocked payload.' },
+        { name: 'dashboard_continue_request', desc: 'Resume a paused OkHttp request without modification.' }
+      ];
+
+      if (aiMcpList) {
+        aiMcpList.innerHTML = dashboardMcpTools.map(t => `
+          <div class="ai-mcp-card">
+            <div class="ai-mcp-card-header">
+              <span class="ai-mcp-card-title"><code>${t.name}</code></span>
+              <a href="mcp.html?tool=${encodeURIComponent(t.name)}" target="_blank" class="ai-mcp-card-btn" style="text-decoration:none;">Run Tool ↗</a>
+            </div>
+            <div class="ai-mcp-card-desc">${t.desc}</div>
+          </div>
+        `).join('');
+      }
+
+      // Progressive ModelContext registration
+      import('./web/model-context.mjs').then(({ installModelContext }) => {
+        const mc = installModelContext(window.navigator);
+        for (const t of dashboardMcpTools) {
+          mc.registerTool({
+            name: t.name,
+            description: t.desc,
+            inputSchema: { type: 'object', properties: {} },
+            annotations: { readOnlyHint: !t.name.includes('add') && !t.name.includes('remove') && !t.name.includes('clear') && !t.name.includes('set') && !t.name.includes('fulfill') },
+            async execute() {
+              return { tool: t.name, targetHost: state.targetHost, status: state.connected ? 'connected' : 'disconnected' };
+            }
+          });
+        }
+      }).catch(() => {});
+    })();
   </script>
 </body>
 </html>

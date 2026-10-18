@@ -233,19 +233,39 @@ ws.on('message', (raw) => {
 
 ## 🔌 WebMCP for AI Assistants (ai-proxy)
 
-[![MCP Pages: Connect](https://img.shields.io/badge/MCP%20Pages-Connect-238636?logo=github&logoColor=white)](https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)
+[![MCP Pages: Dashboard MCP](https://img.shields.io/badge/MCP%20Pages-Dashboard%20Connect-238636?logo=github&logoColor=white)](https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp)
+[![MCP Pages: Docs MCP](https://img.shields.io/badge/MCP%20Pages-Docs%20Connect-238636?logo=github&logoColor=white)](https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)
 [![ai-proxy: MCP](https://img.shields.io/badge/ai--proxy-MCP%20ready-blueviolet?logo=anthropic&logoColor=white)](https://github.com/yongjhih/ai-proxy)
 
-Mucker hosts a client-side **WebMCP endpoint** at [`https://yongjhih.github.io/mucker/mcp.html`](https://yongjhih.github.io/mucker/mcp.html) via the [MCP Pages protocol](https://github.com/yongjhih/ai-proxy). Connect it with your local **Claude Code**, **Cursor**, **Windsurf**, or AI agent in one command:
+Mucker provides two client-side **WebMCP endpoints** via the [MCP Pages protocol](https://github.com/yongjhih/ai-proxy) for local AI assistants (**Claude Code**, **Cursor**, **Windsurf**):
 
+### 1. Live Dashboard MCP (`/dashboard/mcp`)
+Directly inspects and controls your connected Android app's mock engine in real time:
+```bash
+npx ai-proxy add https://yongjhih.github.io/mucker/dashboard/mcp --name mucker-dashboard
+```
+
+| Tool | Description |
+| :--- | :--- |
+| `dashboard_get_status` | Get live Mucker server status, rule count, and breakpoint mode. |
+| `dashboard_list_rules` | List all registered mock rules currently active in Mucker memory. |
+| `dashboard_add_rule` | Add or update a dynamic mock rule with custom status code & body. |
+| `dashboard_remove_rule` | Delete a mock rule by ID from Mucker engine memory. |
+| `dashboard_clear_rules` | Clear all mock rules from Mucker memory. |
+| `dashboard_set_breakpoint_mode` | Toggle global breakpoint interception on or off. |
+| `dashboard_list_history` | Query recorded network request history with URL/body search. |
+| `dashboard_fulfill_request` | Fulfill an in-flight paused OkHttp request with a mocked payload. |
+| `dashboard_continue_request` | Resume a paused OkHttp request without modification. |
+
+### 2. Documentation & Spec MCP (`/mcp`)
+Provides instant offline knowledge, mock rule templates, CLI specs, and integration guidance:
 ```bash
 npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker
 ```
 
-### Registered WebMCP Tools (5 Tools):
 | Tool | Description |
 | :--- | :--- |
-| `get_mock_rule_template` | Generates Mucker REST API rules (`POST /api/rules`), CDP `Fetch.fulfillRequest` payloads, and CLI command snippets. |
+| `get_mock_rule_template` | Generates Mucker REST API rules (`POST /api/rules`), CDP `Fetch.fulfillRequest` payloads, and CLI commands. |
 | `get_cli_command` | Generates ready-to-run `mucker` CLI commands (`mock`, `breakpoint`, `list`, `clear`, `export`). |
 | `get_cdp_spec` | Retrieves CDP Fetch/Network specifications with Puppeteer/Playwright integration templates. |
 | `consult_integration` | Provides Gradle KTS/Groovy, OkHttp, Retrofit, and Ktor integration setup guidance and Zero-CA explanations. |
