@@ -11,6 +11,7 @@
   <a href="#cdp-protocol"><img src="https://img.shields.io/badge/CDP-Fetch%20Domain%201.3-orange.svg" alt="CDP Fetch 1.3"/></a>
   <a href="#zero-ca-certificates"><img src="https://img.shields.io/badge/Certificates-Zero%20CA%20Required-success.svg" alt="Zero CA Required"/></a>
   <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp"><img src="https://img.shields.io/badge/MCP%20Pages-Connect-238636?logo=github&logoColor=white" alt="MCP Pages Connect"/></a>
+  <a href="https://github.com/yongjhih/ai-proxy"><img src="https://img.shields.io/badge/ai--proxy-MCP%20ready-blueviolet?logo=anthropic&logoColor=white" alt="ai-proxy MCP ready"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-purple.svg" alt="License MIT"/></a>
 </p>
 
@@ -227,6 +228,28 @@ ws.on('message', (raw) => {
   }
 });
 ```
+
+---
+
+## 🔌 WebMCP for AI Assistants (ai-proxy)
+
+[![MCP Pages: Connect](https://img.shields.io/badge/MCP%20Pages-Connect-238636?logo=github&logoColor=white)](https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)
+[![ai-proxy: MCP](https://img.shields.io/badge/ai--proxy-MCP%20ready-blueviolet?logo=anthropic&logoColor=white)](https://github.com/yongjhih/ai-proxy)
+
+Mucker hosts a client-side **WebMCP endpoint** at [`https://yongjhih.github.io/mucker/mcp.html`](https://yongjhih.github.io/mucker/mcp.html) via the [MCP Pages protocol](https://github.com/yongjhih/ai-proxy). Connect it with your local **Claude Code**, **Cursor**, **Windsurf**, or AI agent in one command:
+
+```bash
+npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker
+```
+
+### Registered WebMCP Tools (5 Tools):
+| Tool | Description |
+| :--- | :--- |
+| `get_mock_rule_template` | Generates Mucker REST API rules (`POST /api/rules`), CDP `Fetch.fulfillRequest` payloads, and CLI command snippets. |
+| `get_cli_command` | Generates ready-to-run `mucker` CLI commands (`mock`, `breakpoint`, `list`, `clear`, `export`). |
+| `get_cdp_spec` | Retrieves CDP Fetch/Network specifications with Puppeteer/Playwright integration templates. |
+| `consult_integration` | Provides Gradle KTS/Groovy, OkHttp, Retrofit, and Ktor integration setup guidance and Zero-CA explanations. |
+| `search_docs` | Fast keyword search across all Mucker documentation topics. |
 
 ---
 
