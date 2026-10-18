@@ -2319,7 +2319,7 @@ ws.on('message', (raw) => {
         <div class="ai-chat-subtitle">Ask questions, mock APIs, inspect traffic, or connect WebMCP</div>
       </div>
       <div class="ai-chat-header-actions">
-        <a href="mcp.html" class="btn btn-sm" target="_blank" title="Open Dashboard WebMCP Page" style="text-decoration:none;font-size:0.75rem;padding:3px 8px;border-color:var(--border-subtle);color:var(--text-muted);">
+        <a href="mcp" class="btn btn-sm" target="_blank" title="Open Dashboard WebMCP Page" style="text-decoration:none;font-size:0.75rem;padding:3px 8px;border-color:var(--border-subtle);color:var(--text-muted);">
           <span>🔌 MCP</span>
         </a>
         <button class="btn btn-sm btn-icon" id="btnAiChatClose" title="Close AI Assistant">✕</button>
@@ -2370,7 +2370,7 @@ ws.on('message', (raw) => {
     <!-- Tab 2: MCP Tools Explorer -->
     <div class="ai-chat-tab-pane" id="paneAiMcp">
       <div class="ai-mcp-info">
-        <p>These 9 WebMCP tools are available via <a href="mcp.html" target="_blank"><code>mcp.html</code></a> and registered on <code>navigator.modelContext</code>:</p>
+        <p>These 9 WebMCP tools are available via <a href="mcp" target="_blank"><code>mcp</code></a> and registered on <code>navigator.modelContext</code>:</p>
       </div>
       <div class="ai-mcp-list" id="aiMcpList">
         <!-- Rendered dynamically -->
@@ -5568,7 +5568,7 @@ ws.on('message', (raw) => {
           <div class="ai-mcp-card">
             <div class="ai-mcp-card-header">
               <span class="ai-mcp-card-title"><code>${t.name}</code></span>
-              <a href="mcp.html?tool=${encodeURIComponent(t.name)}" target="_blank" class="ai-mcp-card-btn" style="text-decoration:none;">Run Tool ↗</a>
+              <a href="mcp?tool=${encodeURIComponent(t.name)}" target="_blank" class="ai-mcp-card-btn" style="text-decoration:none;">Run Tool ↗</a>
             </div>
             <div class="ai-mcp-card-desc">${t.desc}</div>
           </div>
