@@ -14,36 +14,12 @@
       padding: 40px 24px 80px;
     }
     .mcp-header-banner {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
-      border: 1px solid var(--border-light, #334155);
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
       border-radius: var(--radius-lg, 16px);
       padding: 32px;
       margin-bottom: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-    .mcp-header-banner::before {
-      content: "";
-      position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .mcp-badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: rgba(168, 85, 247, 0.15);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: var(--radius-full, 9999px);
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: #c084fc;
-      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
     }
     .mcp-title {
       font-size: 2.25rem;
@@ -322,11 +298,6 @@
   <main class="page-content">
     <div class="mcp-page-container">
       <div class="mcp-header-banner">
-        <div class="mcp-badge-pill">
-          <span>🎮 Live Control & Inspection</span>
-          <span>•</span>
-          <span>In-App Micro-Server Bridge</span>
-        </div>
         <h1 class="mcp-title">Mucker Dashboard WebMCP Endpoint</h1>
         <p class="mcp-subtitle">
           Exposes direct control tools for your connected Android app's mock engine.

@@ -5,18 +5,9 @@ description: Zero-cert OkHttp network mocking and Chrome DevTools Protocol inspe
 ---
 
 <div class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-tag">
-    <span>⚡ Zero CA Certs Required</span>
-    <span>•</span>
-    <span>One-Line Instant Demo</span>
-    <span>•</span>
-    <span>Cloud DevContainer Ready</span>
-  </div>
-
   <h1>
     Muck with your network.<br>
-    <span class="gradient-text">Zero certs required.</span>
+    <span class="hero-highlight">Zero certs required.</span>
   </h1>
 
   <p class="hero-subtitle">
