@@ -10,6 +10,7 @@
   <a href="#quickstart"><img src="https://img.shields.io/badge/OkHttp-4.x%20%2F%205.x-blue.svg" alt="OkHttp 4.x/5.x"/></a>
   <a href="#cdp-protocol"><img src="https://img.shields.io/badge/CDP-Fetch%20Domain%201.3-orange.svg" alt="CDP Fetch 1.3"/></a>
   <a href="#zero-ca-certificates"><img src="https://img.shields.io/badge/Certificates-Zero%20CA%20Required-success.svg" alt="Zero CA Required"/></a>
+  <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp"><img src="https://img.shields.io/badge/MCP%20Pages-Connect-238636?logo=github&logoColor=white" alt="MCP Pages Connect"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-purple.svg" alt="License MIT"/></a>
 </p>
 
