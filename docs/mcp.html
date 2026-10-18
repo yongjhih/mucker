@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Mucker WebMCP Tools · MCP Pages</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236366f1'/><path d='M30 45 L50 25 L70 45 L60 45 L60 75 L40 75 L40 45 Z' fill='white'/></svg>">
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .mcp-page-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .mcp-header-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(56, 189, 248, 0.08) 100%);
+      border: 1px solid var(--border-light, #334155);
+      border-radius: var(--radius-lg, 16px);
+      padding: 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mcp-header-banner::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, var(--primary-glow, rgba(99, 102, 241, 0.3)) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mcp-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-full, 9999px);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #818cf8;
+      margin-bottom: 16px;
+    }
+    .mcp-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .mcp-subtitle {
+      font-size: 1.0625rem;
+      color: var(--text-muted, #94a3b8);
+      max-width: 720px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .mcp-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+    .mcp-install-box {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.875rem;
+      color: #38bdf8;
+      overflow-x: auto;
+    }
+    .mcp-install-box code {
+      color: inherit;
+      background: transparent;
+      padding: 0;
+    }
+    .mcp-copy-btn {
+      padding: 6px 12px;
+      background: var(--bg-subtle, #334155);
+      border: 1px solid var(--border-light, #475569);
+      color: var(--text-main, #f8fafc);
+      border-radius: var(--radius-sm, 6px);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .mcp-copy-btn:hover {
+      background: var(--primary, #6366f1);
+      border-color: var(--primary, #6366f1);
+    }
+
+    /* WebMCP Widget Styling */
+    .mcp-page-widget {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .mcp-status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      font-size: 0.9375rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .badge-neutral {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .badge-readonly {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .badge-mutating {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .mcp-port-meta {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8125rem;
+      color: var(--text-dim, #64748b);
+    }
+    .mcp-port-meta code {
+      color: var(--accent, #38bdf8);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .mcp-catalog h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-main, #f8fafc);
+    }
+    .mcp-tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mcp-tool-row {
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-md, 10px);
+      padding: 20px 24px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .mcp-tool-row:hover {
+      border-color: var(--border-light, #334155);
+      box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.2));
+    }
+    .mcp-tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .mcp-tool-title code {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: #818cf8;
+      background: transparent;
+      padding: 0;
+    }
+    .mcp-tool-desc {
+      color: var(--text-muted, #94a3b8);
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .mcp-field-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mcp-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-muted, #94a3b8);
+    }
+    .mcp-field span code {
+      color: var(--accent, #38bdf8);
+      font-size: 0.8125rem;
+    }
+    .mcp-field input {
+      background: var(--bg-base, #090d16);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-sm, 6px);
+      padding: 8px 12px;
+      color: var(--text-main, #f8fafc);
+      font-family: var(--font-sans, inherit);
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .mcp-field input:focus {
+      border-color: var(--primary, #6366f1);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    .mcp-tool-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.8125rem;
+      border-radius: var(--radius-sm, 6px);
+      cursor: pointer;
+      font-weight: 600;
+      border: 1px solid var(--primary, #6366f1);
+      background: var(--primary, #6366f1);
+      color: white;
+      transition: all 0.15s ease;
+    }
+    .btn-sm:hover {
+      background: var(--primary-hover, #4f46e5);
+      border-color: var(--primary-hover, #4f46e5);
+    }
+    .btn-link {
+      font-size: 0.8125rem;
+      color: var(--accent, #38bdf8);
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+    .mcp-tool-result {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--bg-base, #090d16);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-sm, 6px);
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8125rem;
+      color: #e2e8f0;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .mcp-direct-result {
+      background: var(--bg-surface, #0f172a);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md, 10px);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .mcp-direct-result h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent, #38bdf8);
+      margin-bottom: 12px;
+    }
+    .mcp-output {
+      padding: 14px;
+      background: var(--bg-base, #090d16);
+      border: 1px solid var(--border, #1e293b);
+      border-radius: var(--radius-sm, 6px);
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8125rem;
+      color: #e2e8f0;
+      max-height: 360px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .mcp-alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm, 6px);
+      font-size: 0.875rem;
+    }
+    .mcp-alert-warning {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="./" class="site-brand">
+        <div class="brand-badge-icon">M</div>
+        <span class="brand-name">Mucker</span>
+        <span class="brand-tag">v1.0</span>
+      </a>
+
+      <nav class="site-nav">
+        <a href="getting-started" class="nav-link">Quickstart</a>
+        <a href="architecture" class="nav-link">Architecture</a>
+        <a href="dashboard/" class="nav-link" style="color: var(--accent); font-weight: 600;">⚡ Live Dashboard</a>
+        <a href="cli" class="nav-link">CLI</a>
+        <a href="cdp-history" class="nav-link">CDP</a>
+        <a href="mcp.html" class="nav-link active" style="color: #3fb950; font-weight: 600;">🔌 WebMCP</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/yongjhih/mucker" class="btn btn-github" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="mcp-page-container">
+      <div class="mcp-header-banner">
+        <div class="mcp-badge-pill">
+          <span>⚡ WebMCP Protocol</span>
+          <span>•</span>
+          <span>Zero Backend Required</span>
+          <span>•</span>
+          <span>Tab-Scoped Isolation</span>
+        </div>
+        <h1 class="mcp-title">Mucker WebMCP Endpoint</h1>
+        <p class="mcp-subtitle">
+          Exposes client-side Model Context Protocol (MCP) tools for local AI agents (Claude Code, Cursor, Windsurf, Roo Code).
+          Connect via local <code>ai-proxy</code> relay to generate mock rules, query CLI commands, consult setup guidance, and search documentation.
+        </p>
+
+        <div class="mcp-actions-row">
+          <a href="https://yongjhih.github.io/ai-proxy/dashboard.html#add-url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp" class="btn btn-primary" target="_blank" rel="noopener" style="background:#238636;border-color:#238636;">
+            <span>🔌 One-Click Add to ai-proxy</span>
+          </a>
+          <a href="https://github.com/yongjhih/ai-proxy" class="btn btn-secondary" target="_blank" rel="noopener">
+            <span>Learn about ai-proxy</span>
+          </a>
+        </div>
+
+        <div class="mcp-install-box">
+          <code>npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker</code>
+          <button type="button" class="mcp-copy-btn" id="copyCmdBtn">Copy Command</button>
+        </div>
+      </div>
+
+      <div id="mcp-catalog"></div>
+    </div>
+  </main>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.getElementById('copyCmdBtn')?.addEventListener('click', async () => {
+      const btn = document.getElementById('copyCmdBtn');
+      const text = 'npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Command'; }, 2000);
+      } catch (e) {
+        console.warn('Copy failed:', e);
+      }
+    });
+  </script>
+
+  <script type="module">
+    import { mountMcpPageUi } from './web/ui.mjs';
+
+    function safeBtoa(str) {
+      try {
+        return btoa(unescape(encodeURIComponent(str)));
+      } catch {
+        return '';
+      }
+    }
+
+    const docsDatabase = [
+      {
+        title: 'Quickstart Guide',
+        url: 'https://yongjhih.github.io/mucker/getting-started',
+        tags: ['quickstart', 'setup', 'installation', 'gradle', 'demo', 'codespaces', 'jitpack'],
+        summary: 'Get up and running with Mucker in under 2 minutes. Automated one-line demo, GitHub Codespaces cloud devcontainer, JitPack Gradle setup (debugImplementation vs mucker-noop), and Application initialization.'
+      },
+      {
+        title: 'Architecture & Zero-CA Deep Dive',
+        url: 'https://yongjhih.github.io/mucker/architecture',
+        tags: ['architecture', 'zero-ca', 'ca', 'certificate', 'tls', 'interceptor', 'security', 'micro-server', 'ktor'],
+        summary: 'Explains why Mucker requires zero CA certificates or VPNs: in-app OkHttp interceptor executes inside the app boundary after TLS handshake, embedded Ktor HTTP/WebSocket server, ring buffer history.'
+      },
+      {
+        title: 'Chrome DevTools Protocol (CDP) & History',
+        url: 'https://yongjhih.github.io/mucker/cdp-history',
+        tags: ['cdp', 'protocol', 'fetch', 'network', 'websocket', 'puppeteer', 'playwright', 'requestpaused', 'fulfillrequest'],
+        summary: 'Full Chrome DevTools Protocol implementation in Mucker. Fetch and Network domains over WebSocket (ws://localhost:8080/cdp), requestPaused breakpoints, fulfillRequest mocking, and failRequest chaos injection.'
+      },
+      {
+        title: 'Command Line Interface (CLI) Reference',
+        url: 'https://yongjhih.github.io/mucker/cli',
+        tags: ['cli', 'npx', 'terminal', 'forward', 'status', 'listen', 'rules', 'fulfill', 'continue'],
+        summary: 'Control Mucker directly from the terminal via npx mucker: adb port forwarding, real-time traffic streaming (mucker listen), adding/clearing mock rules, and fulfilling breakpoints.'
+      },
+      {
+        title: 'Android SDK & REST API Reference',
+        url: 'https://yongjhih.github.io/mucker/api-reference',
+        tags: ['api', 'rest', 'sdk', 'kotlin', 'endpoints', 'muckerconfig', 'history', 'rules', 'json'],
+        summary: 'Complete REST API reference for Mucker: /json/version, /json/list, /api/status, /api/rules, /api/history, and Kotlin Mucker singleton API.'
+      },
+      {
+        title: 'E2E Automation & Chaos Engineering',
+        url: 'https://yongjhih.github.io/mucker/automation',
+        tags: ['automation', 'chaos', 'playwright', 'puppeteer', 'e2e', 'ci/cd', 'testing', 'latency', '500'],
+        summary: 'Guide to automated UI and integration testing with Puppeteer / Playwright against real Android OkHttp traffic. Chaos fault injection: random 500 errors, network timeouts, offline simulation.'
+      },
+      {
+        title: 'Comparison: Mucker vs Charles, Proxyman & Chucker',
+        url: 'https://yongjhih.github.io/mucker/comparison',
+        tags: ['comparison', 'charles', 'proxyman', 'flipper', 'chucker', 'mockwebserver', 'mitmproxy'],
+        summary: 'Detailed side-by-side feature comparison of Mucker against Charles Proxy, Proxyman, Chucker, Flipper, and MockWebServer. Why in-app interceptors defeat cert-pinning problems.'
+      },
+      {
+        title: 'Live Dashboard & Modularity',
+        url: 'https://yongjhih.github.io/mucker/dashboard-modularity',
+        tags: ['dashboard', 'ui', 'plugins', 'codemirror', 'webview', 'spa', 'modular'],
+        summary: 'Pluggable architecture of the Mucker Web Dashboard: CodeMirror live editor, bi-directional hover timeline, in-app mobile WebView and desktop browser support.'
+      },
+      {
+        title: 'Web Craftsmanship & Design System',
+        url: 'https://yongjhih.github.io/mucker/web-craftsmanship',
+        tags: ['design', 'craftsmanship', 'tokens', 'keyboard', 'shortcuts', 'theme', 'dark'],
+        summary: 'Design craftsmanship behind Mucker: keyboard-first navigation (⌘S, Cmd+Enter), zero-dependency vanilla JS, dark/light theme switching, responsive ergonomics.'
+      },
+      {
+        title: 'Cross-Platform App Debugging',
+        url: 'https://yongjhih.github.io/mucker/cross-platform',
+        tags: ['cross-platform', 'flutter', 'react-native', 'kotlin-multiplatform', 'android'],
+        summary: 'Using Mucker across modern cross-platform stacks that leverage native OkHttp engines under Android (e.g. React Native, Flutter Android platform channels, Kotlin Multiplatform).'
+      }
+    ];
+
+    const tools = [
+      {
+        name: 'get_mock_rule_template',
+        description: 'Generate a JSON mock rule template for Mucker or CDP Fetch.fulfillRequest matching a URL pattern.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            urlPattern: {
+              type: 'string',
+              description: 'URL regex or glob pattern (e.g. *://api.example.com/v1/users*)'
+            },
+            method: {
+              type: 'string',
+              enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+              description: 'HTTP method'
+            },
+            statusCode: {
+              type: 'integer',
+              default: 200,
+              description: 'HTTP status code to mock'
+            },
+            responseBody: {
+              type: 'string',
+              description: 'JSON response body'
+            },
+            delayMs: {
+              type: 'integer',
+              default: 0,
+              description: 'Simulated response latency in milliseconds'
+            }
+          },
+          required: ['urlPattern']
+        },
+        annotations: {
+          title: 'Generate Mock Rule',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ urlPattern, method, statusCode = 200, responseBody, delayMs = 0 } = {}, { signal } = {}) {
+          const resolvedMethod = method || 'ALL';
+          const status = Number(statusCode) || 200;
+          const delay = Number(delayMs) || 0;
+          const defaultBody = responseBody || JSON.stringify({ status: 'mocked', message: 'Mucker simulated response' }, null, 2);
+          const base64Body = safeBtoa(defaultBody);
+
+          const restRule = {
+            urlPattern,
+            method: resolvedMethod,
+            statusCode: status,
+            delayMs: delay,
+            responseHeaders: {
+              'Content-Type': 'application/json',
+              'X-Mocked-By': 'Mucker'
+            },
+            responseBody: defaultBody,
+            isEnabled: true
+          };
+
+          const cdpFulfillRequest = {
+            method: 'Fetch.fulfillRequest',
+            params: {
+              requestId: '<intercepted_requestId>',
+              responseCode: status,
+              responseHeaders: [
+                { name: 'Content-Type', value: 'application/json' },
+                { name: 'X-Mocked-By', value: 'CDP-Fetch' }
+              ],
+              body: base64Body,
+              bodyIsBase64: true
+            }
+          };
+
+          const cliCommand = `npx mucker rules add "${urlPattern}" --status ${status}${resolvedMethod !== 'ALL' ? ` --method ${resolvedMethod}` : ''}${delay > 0 ? ` --delay ${delay}` : ''} --body '${defaultBody.replace(/'/g, "'\\''")}'`;
+
+          return {
+            description: `Mock rule templates for matching pattern "${urlPattern}"`,
+            muckerRestApi: {
+              endpoint: 'POST http://localhost:8080/api/rules',
+              payload: restRule,
+              curl: `curl -X POST http://localhost:8080/api/rules -H "Content-Type: application/json" -d '${JSON.stringify(restRule)}'`
+            },
+            cdpFetchCommand: cdpFulfillRequest,
+            cliCommand
+          };
+        }
+      },
+      {
+        name: 'get_cli_command',
+        description: 'Generate a ready-to-run Mucker CLI command for mocking, forwarding, or inspecting OkHttp traffic.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            action: {
+              type: 'string',
+              enum: ['mock', 'breakpoint', 'list', 'clear', 'export'],
+              description: 'CLI action'
+            },
+            url: {
+              type: 'string',
+              description: 'Target URL or pattern'
+            },
+            statusCode: {
+              type: 'integer',
+              description: 'Status code for mock'
+            }
+          },
+          required: ['action']
+        },
+        annotations: {
+          title: 'Get CLI Command',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ action, url, statusCode = 200 } = {}, { signal } = {}) {
+          const targetUrl = url || '/api/v1/user';
+          const status = Number(statusCode) || 200;
+
+          switch (action) {
+            case 'mock':
+              return {
+                action: 'mock',
+                command: `npx mucker rules add "${targetUrl}" --status ${status} --body '{"mocked":true}'`,
+                description: `Add a dynamic mock rule intercepting ${targetUrl} with status code ${status}`,
+                options: [
+                  '--method <GET|POST|PUT|DELETE|PATCH>: Match specific HTTP method (default: ALL)',
+                  '--delay <ms>: Simulate network latency in milliseconds',
+                  '--host <url>: Remote device Mucker address (default: http://localhost:8080)'
+                ]
+              };
+            case 'breakpoint':
+              return {
+                action: 'breakpoint',
+                commands: {
+                  enableGlobalBreakpoint: 'curl -X POST http://localhost:8080/api/status -H "Content-Type: application/json" -d \'{"breakpointMode":true}\'',
+                  listenPausedRequests: 'npx mucker listen',
+                  fulfillPaused: 'npx mucker fulfill <requestId> --status 200 --body \'{"status":"ok"}\'',
+                  continuePaused: 'npx mucker continue <requestId>'
+                },
+                description: 'Pause OkHttp requests on breakpoint, inspect headers and body in terminal, and fulfill or continue.'
+              };
+            case 'list':
+              return {
+                action: 'list',
+                command: 'npx mucker rules list',
+                curlEquivalent: 'curl -s http://localhost:8080/api/rules',
+                description: 'List all currently active mock rules registered in Mucker.'
+              };
+            case 'clear':
+              return {
+                action: 'clear',
+                command: 'npx mucker rules clear',
+                curlEquivalent: 'curl -X DELETE http://localhost:8080/api/rules',
+                description: 'Clear and remove all mock rules from Mucker engine memory.'
+              };
+            case 'export':
+              return {
+                action: 'export',
+                command: 'curl -s http://localhost:8080/api/history > mucker_history.json',
+                description: 'Export all recorded network requests and responses from Mucker memory buffer to a JSON file.'
+              };
+            default:
+              return {
+                error: `Unknown action "${action}". Supported actions: mock, breakpoint, list, clear, export`
+              };
+          }
+        }
+      },
+      {
+        name: 'get_cdp_spec',
+        description: 'Retrieve the Chrome DevTools Protocol Fetch domain specification supported by Mucker.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            command: {
+              type: 'string',
+              enum: ['all', 'Fetch.enable', 'Fetch.requestPaused', 'Fetch.fulfillRequest', 'Fetch.continueRequest', 'Fetch.failRequest'],
+              description: 'CDP command name'
+            }
+          }
+        },
+        annotations: {
+          title: 'Get CDP Spec',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ command = 'all' } = {}, { signal } = {}) {
+          const specs = {
+            'Fetch.enable': {
+              type: 'method',
+              description: 'Enables network request interception for specified URL patterns.',
+              parameters: {
+                patterns: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      urlPattern: { type: 'string', description: 'Glob/regex URL pattern to intercept, e.g. * or */api/*' },
+                      requestStage: { type: 'string', enum: ['Request', 'Response'], default: 'Request' }
+                    }
+                  }
+                }
+              },
+              sampleRpc: {
+                id: 1,
+                method: 'Fetch.enable',
+                params: { patterns: [{ urlPattern: '*' }] }
+              }
+            },
+            'Fetch.requestPaused': {
+              type: 'event',
+              description: 'Emitted by Mucker when an OkHttp request matches an enabled interception pattern.',
+              parameters: {
+                requestId: 'String: unique ID assigned to the in-flight paused OkHttp call',
+                resourceType: 'XHR',
+                request: {
+                  url: 'String: full request URL',
+                  method: 'String: GET, POST, etc.',
+                  headers: 'Object: HTTP request headers',
+                  postData: 'String (optional): HTTP request body if present'
+                }
+              },
+              samplePayload: {
+                method: 'Fetch.requestPaused',
+                params: {
+                  requestId: 'req_8f1b3c',
+                  resourceType: 'XHR',
+                  request: {
+                    url: 'https://api.example.com/v1/user/profile',
+                    method: 'GET',
+                    headers: { 'User-Agent': 'OkHttp/4.12.0', 'Accept': 'application/json' }
+                  }
+                }
+              }
+            },
+            'Fetch.fulfillRequest': {
+              type: 'method',
+              description: 'Fulfills a paused request with custom response status, headers, and body, short-circuiting the network.',
+              parameters: {
+                requestId: 'String: ID of paused request',
+                responseCode: 'Integer: HTTP status code (default: 200)',
+                responseHeaders: 'Array<{name: string, value: string}>: HTTP response headers',
+                body: 'String: Base64-encoded response payload',
+                bodyIsBase64: 'Boolean: true'
+              },
+              sampleRpc: {
+                id: 2,
+                method: 'Fetch.fulfillRequest',
+                params: {
+                  requestId: 'req_8f1b3c',
+                  responseCode: 200,
+                  responseHeaders: [{ name: 'Content-Type', value: 'application/json' }],
+                  body: 'eyJzdGF0dXMiOiJva2tpZCJ9',
+                  bodyIsBase64: true
+                }
+              }
+            },
+            'Fetch.continueRequest': {
+              type: 'method',
+              description: 'Resumes the paused request without modifying the response, forwarding it to real network.',
+              parameters: {
+                requestId: 'String: ID of paused request'
+              },
+              sampleRpc: {
+                id: 3,
+                method: 'Fetch.continueRequest',
+                params: { requestId: 'req_8f1b3c' }
+              }
+            },
+            'Fetch.failRequest': {
+              type: 'method',
+              description: 'Causes the paused OkHttp request to fail with a simulated IOException.',
+              parameters: {
+                requestId: 'String: ID of paused request',
+                errorReason: 'String: Network failure reason (e.g. Failed, ConnectionReset, TimedOut)'
+              },
+              sampleRpc: {
+                id: 4,
+                method: 'Fetch.failRequest',
+                params: { requestId: 'req_8f1b3c', errorReason: 'Failed' }
+              }
+            }
+          };
+
+          if (command && command !== 'all' && specs[command]) {
+            return {
+              command,
+              spec: specs[command],
+              cdpWebSocketUrl: 'ws://localhost:8080/cdp',
+              compatibility: 'Works with Chrome DevTools Protocol, Puppeteer (CDPSession), and Playwright (CDPSession)'
+            };
+          }
+
+          return {
+            protocol: 'Chrome DevTools Protocol (CDP) 1.3 / Fetch domain',
+            cdpWebSocketUrl: 'ws://localhost:8080/cdp',
+            availableCommands: Object.keys(specs),
+            specs,
+            puppeteerExample: `const puppeteer = require('puppeteer-core');\nconst browser = await puppeteer.connect({ browserWSEndpoint: 'ws://localhost:8080/cdp' });\nconst client = await browser.target().createCDPSession();\nawait client.send('Fetch.enable', { patterns: [{ urlPattern: '*' }] });\nclient.on('Fetch.requestPaused', async (evt) => {\n  await client.send('Fetch.fulfillRequest', {\n    requestId: evt.requestId,\n    responseCode: 200,\n    body: Buffer.from('{"mock":true}').toString('base64')\n  });\n});`
+          };
+        }
+      },
+      {
+        name: 'consult_integration',
+        description: 'Get setup and integration guidance for OkHttp 4.x/5.x, Gradle debugImplementation vs releaseImplementation no-op split, and zero CA setup.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            buildSystem: {
+              type: 'string',
+              enum: ['gradle-kts', 'gradle-groovy', 'maven'],
+              description: 'Build system'
+            },
+            client: {
+              type: 'string',
+              enum: ['okhttp', 'retrofit', 'ktor'],
+              description: 'HTTP client framework'
+            }
+          }
+        },
+        annotations: {
+          title: 'Consult Integration',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ buildSystem = 'gradle-kts', client = 'okhttp' } = {}, { signal } = {}) {
+          const version = '1.0.0';
+
+          const buildConfigs = {
+            'gradle-kts': {
+              repo: `// settings.gradle.kts or root build.gradle.kts\ndependencyResolutionManagement {\n    repositories {\n        google()\n        mavenCentral()\n        maven { url = uri("https://jitpack.io") }\n    }\n}`,
+              dependencies: `// app/build.gradle.kts\ndependencies {\n    // OkHttp host client\n    implementation("com.squareup.okhttp3:okhttp:4.12.0")\n\n    // Mucker in debug builds (Interceptors + Web Dashboard + CDP server)\n    debugImplementation("com.github.yongjhih.mucker:mucker:${version}")\n\n    // Zero-overhead no-op stubs in release builds\n    releaseImplementation("com.github.yongjhih.mucker:mucker-noop:${version}")\n}`
+            },
+            'gradle-groovy': {
+              repo: `// root build.gradle\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n        maven { url 'https://jitpack.io' }\n    }\n}`,
+              dependencies: `// app/build.gradle\ndependencies {\n    implementation 'com.squareup.okhttp3:okhttp:4.12.0'\n    debugImplementation 'com.github.yongjhih.mucker:mucker:${version}'\n    releaseImplementation 'com.github.yongjhih.mucker:mucker-noop:${version}'\n}`
+            },
+            'maven': {
+              repo: `<repositories>\n    <repository>\n        <id>jitpack.io</id>\n        <url>https://jitpack.io</url>\n    </repository>\n</repositories>`,
+              dependencies: `<dependency>\n    <groupId>com.github.yongjhih.mucker</groupId>\n    <artifactId>mucker</artifactId>\n    <version>${version}</version>\n    <scope>test</scope>\n</dependency>`
+            }
+          };
+
+          const clientConfigs = {
+            'okhttp': {
+              code: `// MyApp.kt or Dependency Injection Module\nimport io.github.mucker.Mucker\nimport okhttp3.OkHttpClient\n\nval okHttpClient = OkHttpClient.Builder()\n    .addInterceptor(Mucker.interceptor)\n    .build()`
+            },
+            'retrofit': {
+              code: `// Retrofit setup\nimport io.github.mucker.Mucker\nimport okhttp3.OkHttpClient\nimport retrofit2.Retrofit\nimport retrofit2.converter.gson.GsonConverterFactory\n\nval okHttpClient = OkHttpClient.Builder()\n    .addInterceptor(Mucker.interceptor)\n    .build()\n\nval retrofit = Retrofit.Builder()\n    .baseUrl("https://api.example.com/")\n    .client(okHttpClient)\n    .addConverterFactory(GsonConverterFactory.create())\n    .build()`
+            },
+            'ktor': {
+              code: `// Ktor Android client engine with OkHttp\nimport io.github.mucker.Mucker\nimport io.ktor.client.*\nimport io.ktor.client.engine.okhttp.*\n\nval client = HttpClient(OkHttp) {\n    engine {\n        addInterceptor(Mucker.interceptor)\n    }\n}`
+            }
+          };
+
+          const applicationInit = `package com.example.app\n\nimport android.app.Application\nimport io.github.mucker.Mucker\nimport io.github.mucker.MuckerConfig\n\nclass MyApp : Application() {\n    override fun onCreate() {\n        super.onCreate()\n        // Initialize Mucker in debug builds\n        Mucker.install(\n            context = this,\n            config = MuckerConfig(\n                port = 8080,\n                showNotification = true,\n                autoStart = true\n            )\n        )\n    }\n}`;
+
+          return {
+            selectedBuildSystem: buildSystem,
+            selectedClient: client,
+            whyZeroCa: "Traditional proxies (Charles, Proxyman, mitmproxy) intercept at TCP/TLS layer and require installing custom root CA certificates into Android system trust store (or configuring networkSecurityConfig with debug-overrides). Mucker operates directly as an in-app OkHttp Interceptor, inspecting and mocking requests at the application layer *inside* the TLS termination. No CA certificates, VPN profiles, or networkSecurityConfig changes are ever required.",
+            releaseNoopSafety: "The mucker-noop artifact provides identical public API signatures (Mucker.install, Mucker.interceptor, MuckerConfig) with empty stub implementations. Your release APK has 0KB extra runtime overhead, zero open server ports, and no mock engine code included.",
+            buildConfiguration: buildConfigs[buildSystem] || buildConfigs['gradle-kts'],
+            clientConfiguration: clientConfigs[client] || clientConfigs['okhttp'],
+            applicationInitialization: applicationInit,
+            portForwardingAdb: "adb forward tcp:8080 tcp:8080"
+          };
+        }
+      },
+      {
+        name: 'search_docs',
+        description: 'Search Mucker documentation topics, architecture, and guides.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description: 'Search keywords'
+            }
+          },
+          required: ['query']
+        },
+        annotations: {
+          title: 'Search Docs',
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true
+        },
+        async execute({ query } = {}, { signal } = {}) {
+          const q = String(query || '').toLowerCase().trim();
+          if (!q) {
+            return { query, total: 0, results: [] };
+          }
+
+          const keywords = q.split(/\s+/).filter(Boolean);
+          const scored = docsDatabase.map((item) => {
+            let score = 0;
+            for (const kw of keywords) {
+              if (item.title.toLowerCase().includes(kw)) score += 10;
+              if (item.tags.some((t) => t.toLowerCase().includes(kw))) score += 5;
+              if (item.summary.toLowerCase().includes(kw)) score += 2;
+            }
+            return { item, score };
+          }).filter((res) => res.score > 0).sort((a, b) => b.score - a.score);
+
+          return {
+            query,
+            total: scored.length,
+            results: scored.map(({ item, score }) => ({
+              title: item.title,
+              url: item.url,
+              summary: item.summary,
+              relevanceScore: score
+            }))
+          };
+        }
+      }
+    ];
+
+    mountMcpPageUi({
+      container: document.getElementById('mcp-catalog'),
+      title: 'Mucker WebMCP Tools',
+      tools
+    });
+  </script>
+</body>
+</html>

@@ -21,3 +21,8 @@ defaults:
       path: ""
     values:
       layout: default
+
+include:
+  - web
+  - mcp.html
+
