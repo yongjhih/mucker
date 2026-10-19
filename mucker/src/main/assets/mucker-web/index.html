@@ -2375,10 +2375,12 @@ ws.on('message', (raw) => {
     <div class="ai-chat-tab-pane active" id="paneAiChat">
       <!-- Quick Prompt Suggestions -->
       <div class="ai-quick-prompts">
+        <button class="ai-prompt-chip" data-prompt="導覽目前的畫面與主要功能">🧭 畫面導覽</button>
+        <button class="ai-prompt-chip" data-prompt="解釋一下 ⊞ Grouped 與 { } Body">⊞ Grouped / Body</button>
         <button class="ai-prompt-chip" data-prompt="How do I mock an API response?">💡 Mock API</button>
         <button class="ai-prompt-chip" data-prompt="Turn on breakpoint mode to pause requests">⏸ Breakpoints</button>
-        <button class="ai-prompt-chip" data-prompt="How do I connect Mucker to ai-proxy?">🔌 Connect ai-proxy</button>
         <button class="ai-prompt-chip" data-prompt="Show me all active mock rules">📋 List Rules</button>
+        <button class="ai-prompt-chip" data-prompt="How do I connect Mucker to ai-proxy?">🔌 Connect ai-proxy</button>
       </div>
 
       <div class="ai-chat-messages" id="aiChatMessages">
@@ -5410,12 +5412,203 @@ ws.on('message', (raw) => {
         return '<p>' + out.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
       }
 
+      // Real-time Dashboard Screen & State Snapshot
+      function getDashboardCurrentViewSnapshot() {
+        const activeTabEl = document.querySelector('.pane-tabs .tab-btn.active');
+        const activeTabName = activeTabEl ? activeTabEl.innerText.trim().replace(/\s+/g, ' ') : 'Inspector';
+        const targetHost = state.targetHost || (window.location && window.location.host) || '127.0.0.1:8080';
+        const connectionStatus = state.connected ? 'Connected' : 'Connecting / Standalone';
+
+        // Search & Filter bar
+        const searchVal = state.search || '';
+        const searchInBody = state.searchInBody ? 'ON' : 'OFF';
+        const isGrouped = state.groupByConsecutive ? 'ON' : 'OFF';
+        const methodFilter = state.filter || 'ALL';
+
+        // Selected request
+        const selectedReq = (state.requests || []).find(r => r.id === state.selectedRequestId);
+        let selectedInfo = 'None (no request selected)';
+        if (selectedReq) {
+          selectedInfo = `${selectedReq.method} ${selectedReq.url} [Status: ${selectedReq.statusCode || 'pending'}, Time: ${selectedReq.durationMs ? selectedReq.durationMs.toFixed(1) + 'ms' : '-'}]`;
+        }
+
+        // Waterfall / Requests summary
+        const reqs = state.requests || [];
+        const totalReqs = reqs.length;
+        const errorReqs = reqs.filter(r => r.statusCode >= 400).length;
+        const mockedReqs = reqs.filter(r => r.mocked).length;
+        const recentEndpoints = reqs.slice(0, 5).map(r => `${r.method} ${r.url} (${r.statusCode})`).join(', ');
+
+        // Rules summary
+        const rules = state.rules || [];
+        const totalRules = rules.length;
+        const rulesList = rules.slice(0, 5).map(r => `[${r.method}] ${r.pattern} -> ${r.statusCode}`).join(', ');
+
+        // Breakpoints
+        const bpMode = state.breakpointMode ? 'PAUSED / ACTIVE' : 'DISABLED';
+        const isReqPaused = state.pausedRequest ? `${state.pausedRequest.method} ${state.pausedRequest.url}` : 'None';
+
+        return {
+          activeTab: activeTabName,
+          targetHost,
+          connectionStatus,
+          uiControls: {
+            groupByConsecutive: isGrouped,
+            searchInBody: searchInBody,
+            searchQuery: searchVal || '(empty)',
+            methodFilter: methodFilter,
+            breakpointMode: bpMode,
+          },
+          traffic: {
+            total: totalReqs,
+            mocked: mockedReqs,
+            errors: errorReqs,
+            recent: recentEndpoints || '(none yet)'
+          },
+          selectedRequest: selectedInfo,
+          rules: {
+            count: totalRules,
+            activeRules: rulesList || '(none)'
+          },
+          pausedAtBreakpoint: isReqPaused
+        };
+      }
+
+      // Build context-rich prompt instructions for LLM
+      function buildDashboardPromptContext(userInput) {
+        const snap = getDashboardCurrentViewSnapshot();
+        return [
+          `[MUCKER DASHBOARD COPILOT - LIVE SCREEN CONTEXT]`,
+          `You are Mucker AI Copilot embedded inside the Mucker Web Dashboard (${window.location.origin}${window.location.pathname}).`,
+          `You have REAL-TIME VISION of the user's current dashboard screen and controls:`,
+          `- Current Active Pane Tab: "${snap.activeTab}" (Tabs: Inspector, Mock Rules, CDP & Automation)`,
+          `- Target Host: ${snap.targetHost} (Status: ${snap.connectionStatus})`,
+          `- Screen Controls on Current View:`,
+          `  * Consecutive Grouping Button "⊞ Grouped": ${snap.uiControls.groupByConsecutive} (When ON, consecutive requests to the same endpoint are folded into a single row with an xN counter badge)`,
+          `  * Response Body Search Button "{ } Body": ${snap.uiControls.searchInBody} (When ON, searches within JSON payload & response body in addition to URL)`,
+          `  * Filter Search Query: "${snap.uiControls.searchQuery}"`,
+          `  * Method Filter Tag: ${snap.uiControls.methodFilter}`,
+          `  * Global Breakpoint Mode: ${snap.uiControls.breakpointMode}`,
+          `- Traffic Summary: ${snap.traffic.total} captured requests (${snap.traffic.errors} failed >=400, ${snap.traffic.mocked} mocked). Recent: ${snap.traffic.recent}`,
+          `- Currently Selected Request: ${snap.selectedRequest}`,
+          `- Active Mock Rules: ${snap.rules.count} rules (${snap.rules.activeRules})`,
+          `- In-flight Paused Request: ${snap.pausedAtBreakpoint}`,
+          ``,
+          `[KNOWLEDGE BASE - MUCKER DASHBOARD CONTROLS]`,
+          `- "⊞ Grouped" (or "Grouped" / "Group"): Consecutive endpoint grouping button on the search toolbar. When ON, it automatically collapses repeated sequential calls to the exact same URL and method into a single row with an xN counter badge, preventing polling/heartbeat spam from overwhelming the list.`,
+          `- "{ } Body": Search scope toggle button. When ON, search filters inside request JSON payloads and response body content in addition to URL pathnames.`,
+          `- "Waterfall": Top timeline panel displaying network lifecycle, queuing, TTFB, and transfer duration with zoom [-] 1.0x [+], [Fit], and collapse toggle.`,
+          `- "Inspector": Detailed view of the selected request showing Headers, formatted JSON Body, timing breakdown, Copy as cURL, Replay request, and Create Mock Rule from request.`,
+          `- "Mock Rules": User-defined mock responses (status code, latency delay ms, header overrides, response body JSON) matching exact, prefix, or regex patterns.`,
+          `- "Breakpoints": Intercepts in-flight OkHttp network calls live inside the Android app before sending to the server, allowing on-the-fly payload editing or mock fulfillment.`,
+          `- "CDP & Automation": Standard Chrome DevTools Protocol WebSocket bridge (ws://<host>/cdp) for chrome://inspect, Playwright, and Puppeteer chaos testing.`,
+          ``,
+          `[GUIDANCE & INTERACTIVE ACTIONS]`,
+          `Provide concise, friendly, and practical guidance. When relevant, embed clickable action buttons to guide the user:`,
+          `- [🔄 切換 Grouped 狀態](action:toggle-grouped)`,
+          `- [🔄 切換 Body 搜尋](action:toggle-body-search)`,
+          `- [🔍 前往 Inspector 頁籤](action:switch-tab?tab=inspector)`,
+          `- [⚡ 前往 Mock Rules 頁籤](action:switch-tab?tab=rules)`,
+          `- [🤖 前往 CDP & Automation 頁籤](action:switch-tab?tab=cdp)`,
+          `- [⏸ 切換斷點攔截](action:toggle-bp?enable=true)`,
+          `- [⚡ 建立 Mock 規則](action:apply-mock?url=/api/v1/user&status=200)`
+        ].join('\n');
+      }
+
       // Client-side Assistant Fallback & Intent Parser
       function generateClientReply(promptText) {
         const text = promptText.trim().toLowerCase();
+        const snap = getDashboardCurrentViewSnapshot();
+        const currentHost = snap.targetHost;
 
-        // 1. Mock intent
-        if (text.includes('mock') || text.includes('rule') || text.includes('fake') || text.includes('stub')) {
+        // 1. Grouped / ⊞ Grouped intent
+        if (text.includes('grouped') || text.includes('group') || text.includes('分組') || text.includes('摺疊') || text.includes('折疊') || text.includes('⊞')) {
+          const status = state.groupByConsecutive ? '開啟 (ON)' : '關閉 (OFF)';
+          return [
+            `### ⊞ Grouped（相鄰同端點請求分組）`,
+            `這是 Mucker Dashboard 左側請求列表的聚合模式：`,
+            `- **功能**：當 Android App 對同一個 API 連續發起多次請求（例如輪詢 Polling、重試、心跳訊號）時，自動將連續且相同 URL/Method 的請求摺疊為單一項目，並標註呼叫次數徽章（如 \`x3\`），防止重複封包洗版。`,
+            `- **目前狀態**：**${status}**。`,
+            `- **操作**：點擊搜尋列右側的 **⊞ Grouped** 按鈕切換，或直接點擊下方：`,
+            ``,
+            state.groupByConsecutive
+              ? `[⊞ 取消分組 (Ungroup)](action:toggle-grouped)`
+              : `[⊞ 開啟相鄰分組 (Group)](action:toggle-grouped)`
+          ].join('\n');
+        }
+
+        // 2. Body search / { } Body intent
+        if ((text.includes('body') && (text.includes('search') || text.includes('搜尋') || text.includes('filter') || text.includes('過濾') || text.includes('{}') || text.includes('{ }'))) || text.includes('{ } body')) {
+          const status = state.searchInBody ? '開啟 (ON)' : '關閉 (OFF)';
+          return [
+            `### { } Body（搜尋請求與回應內容）`,
+            `這是頂部搜尋列的檢索範圍切換：`,
+            `- **功能**：開啟時，除了比對 URL 路徑，還會深入比對 JSON Request Payload 與 Response Body 的欄位與數值。若只需要比對 URL，關閉可加快篩選。`,
+            `- **目前狀態**：**${status}**。`,
+            ``,
+            `[🔄 切換 Body 搜尋範圍](action:toggle-body-search)`
+          ].join('\n');
+        }
+
+        // 3. Waterfall intent
+        if (text.includes('waterfall') || text.includes('時間軸') || text.includes('瀑布') || text.includes('timeline')) {
+          return [
+            `### Waterfall（耗時瀑布圖與時間軸）`,
+            `- **功能**：即時視覺化每個網路請求的生命週期、排隊、DNS、TLS 握手、TTFB 與下載耗時。`,
+            `- **控制項**：頂部包含縮放 \`[-] 1.0x [+]\`、\`[Fit]\` 自適配時間區間、\`[▲]\` 摺疊/展開面板。`,
+            `- **欄位標題**：點擊列表上方的 \`⏱ Dur\` 與 \`🕒 Time\` 可切換絕對時間或相對耗時。`
+          ].join('\n');
+        }
+
+        // 4. Guided Tour / UI Navigation intent
+        if (text.includes('導覽') || text.includes('tour') || text.includes('引導') || text.includes('介面') || text.includes('畫面') || text.includes('ui') || text.includes('layout') || text.includes('功能')) {
+          return [
+            `### 🧭 Mucker Dashboard 畫面與功能導覽`,
+            ``,
+            `**目前畫面即時狀態**：`,
+            `- **目前頁籤**：\`${snap.activeTab}\``,
+            `- **設備連線**：\`${snap.targetHost}\` (${snap.connectionStatus})`,
+            `- **已捕獲請求**：**${snap.traffic.total}** 筆 (${snap.traffic.errors} 筆失敗，${snap.traffic.mocked} 筆已 Mock)`,
+            `- **目前選取**：${snap.selectedRequest}`,
+            `- **當前控制項**：Grouped=\`${snap.uiControls.groupByConsecutive}\`, BodySearch=\`${snap.uiControls.searchInBody}\`, Filter=\`${snap.uiControls.methodFilter}\`, Breakpoint=\`${snap.uiControls.breakpointMode}\``,
+            ``,
+            `#### 主要區域介紹：`,
+            `1. **頂部狀態列 & Waterfall**：顯示目標連線狀態，並以時間軸瀑布圖呈現請求時序。`,
+            `2. **搜尋與篩選列**：支援 URL 搜尋、\`{ } Body\` 內容深搜、\`⊞ Grouped\` 連續同端點分組，以及 HTTP Method / MOCKED / PAUSED 標籤過濾。`,
+            `3. **請求列表（左側）**：即時列出 HTTP 流量，可依耗時 \`⏱ Dur\` 或時間 \`🕒 Time\` 排序。`,
+            `4. **右側功能面板**：`,
+            `   - [🔍 Inspector 檢視器](action:switch-tab?tab=inspector)：檢視 Headers、格式化 JSON Body、複製 cURL 或重放`,
+            `   - [⚡ Mock Rules 規則管理](action:switch-tab?tab=rules)：管理攔截模擬規則 (${snap.rules.count} 條)`,
+            `   - [🤖 CDP & Automation](action:switch-tab?tab=cdp)：Chrome DevTools Protocol 連接與自動化指令`,
+            `   - [⏸ Breakpoints 斷點](action:toggle-bp?enable=true)：即時攔截並修改在途請求`
+          ].join('\n');
+        }
+
+        // 5. Inspector intent
+        if (text.includes('inspector') || text.includes('檢視') || text.includes('curl') || text.includes('replay') || text.includes('重放')) {
+          return [
+            `### 🔍 Inspector 請求詳情檢視器`,
+            `- **功能**：檢視選取請求的完整 Headers、JSON Payload、Response Body、時間分析，並支援一鍵 **Copy as cURL** 與 **Replay** 重放。`,
+            `- **目前選取**：${snap.selectedRequest}`,
+            ``,
+            `[🔍 切換到 Inspector 頁籤](action:switch-tab?tab=inspector)`
+          ].join('\n');
+        }
+
+        // 6. CDP & Automation intent
+        if (text.includes('cdp') || text.includes('automation') || text.includes('chrome') || text.includes('devtools') || text.includes('websocket')) {
+          return [
+            `### 🤖 Chrome DevTools Protocol (CDP) & 自動化`,
+            `- **CDP WebSocket 端點**：\`ws://${currentHost}/cdp\``,
+            `- **功能**：直接在桌面 Chrome 瀏覽器打開 \`chrome://inspect\` 即可將原生 DevTools 掛載到 Android 設備！`,
+            `- **自動化支援**：相容於 Playwright 與 Puppeteer 進行混沌測試（Chaos Engineering）。`,
+            ``,
+            `[🤖 前往 CDP & Automation 頁籤](action:switch-tab?tab=cdp)`
+          ].join('\n');
+        }
+
+        // 7. Mock API rule generator
+        if (text.includes('mock') || text.includes('rule') || text.includes('fake') || text.includes('stub') || text.includes('規則')) {
           const urlMatch = promptText.match(/(https?:\/\/[^\s"']+|\/[^\s"']+)/);
           const statusMatch = promptText.match(/\b(200|201|400|401|403|404|500|502|503|504)\b/);
           const targetUrl = urlMatch ? urlMatch[1] : '/api/v1/user';
@@ -5423,76 +5616,81 @@ ws.on('message', (raw) => {
           const bodyPayload = JSON.stringify({ mocked: true, timestamp: Date.now() }, null, 2);
 
           return [
-            `I can configure a mock rule for you on Mucker:`,
+            `### ⚡ Mock Rules 規則管理`,
+            `我可以直接為您在 Mucker 建立 Mock 模擬規則：`,
             `- **Pattern**: \`${targetUrl}\``,
             `- **Status**: \`${targetStatus}\``,
             `- **Response**: \`{"mocked": true}\``,
+            `- **目前規則數**: **${snap.rules.count}** 條`,
             ``,
             `[⚡ Apply Mock Rule in Dashboard](action:apply-mock?url=${encodeURIComponent(targetUrl)}&status=${targetStatus}&body=${encodeURIComponent(bodyPayload)})`,
+            `[⚡ 查看 Mock Rules 頁籤](action:switch-tab?tab=rules)`,
             ``,
-            `Or add it from your terminal:`,
+            `或透過終端機執行：`,
             `\`npx mucker rules add "${targetUrl}" --status ${targetStatus}\``
           ].join('\n');
         }
 
-        // 2. Breakpoint intent
-        if (text.includes('breakpoint') || text.includes('pause') || text.includes('halt')) {
-          const enable = !text.includes('off') && !text.includes('disable');
+        // 8. Breakpoint intent
+        if (text.includes('breakpoint') || text.includes('pause') || text.includes('halt') || text.includes('斷點')) {
+          const enable = !text.includes('off') && !text.includes('disable') && !text.includes('關閉');
           return [
-            `Global breakpoint mode lets you pause every in-flight OkHttp request in real-time, inspect headers, and inject mock responses before it reaches the network:`,
+            `### ⏸ Breakpoints 即時斷點攔截`,
+            `全域斷點模式會即時暫停 Android OkHttp 的所有請求，讓您在封包送出前檢視 Header 與 Body，並可直接注入 Mock 回應：`,
+            `- **目前狀態**：**${snap.uiControls.breakpointMode}**`,
             ``,
             enable
-              ? `[⏸ Enable Breakpoint Mode](action:toggle-bp?enable=true)`
-              : `[▶ Disable Breakpoint Mode](action:toggle-bp?enable=false)`,
+              ? `[⏸ 開啟斷點攔截模式](action:toggle-bp?enable=true)`
+              : `[▶ 關閉斷點攔截模式](action:toggle-bp?enable=false)`,
             ``,
-            `You can also pause via terminal: \`npx mucker status --breakpoint\``
+            `也可以透過 CLI 執行：\`npx mucker status --breakpoint\``
           ].join('\n');
         }
 
-        // 3. Clear rules intent
+        // 9. Clear rules intent
         if (text.includes('clear') && (text.includes('rule') || text.includes('all'))) {
           return [
-            `Do you want to clear all mock rules registered in Mucker engine memory?`,
+            `確定要清除 Mucker 記憶體中的所有 Mock 規則嗎？`,
             ``,
             `[🗑️ Clear All Mock Rules](action:clear-rules)`,
             ``,
-            `Or via CLI: \`npx mucker rules clear\``
+            `或透過 CLI：\`npx mucker rules clear\``
           ].join('\n');
         }
 
-        // 4. ai-proxy / MCP intent
+        // 10. ai-proxy / MCP intent
         if (text.includes('mcp') || text.includes('ai-proxy') || text.includes('proxy') || text.includes('claude') || text.includes('cursor')) {
           return [
-            `Mucker exposes two client-side WebMCP endpoints that can be connected to local AI assistants (Claude Code, Cursor, Windsurf) through **ai-proxy**:`,
+            `Mucker 提供兩個原生 WebMCP 端點，可透過 **ai-proxy** 連接到本機 AI 助手（Claude Code, Cursor, Windsurf）：`,
             ``,
-            `1. **Dashboard MCP** (inspect live traffic, CRUD rules, fulfill breakpoints):`,
-            `[🔌 One-Click Add Dashboard MCP](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp)`,
+            `1. **Dashboard MCP**（檢視即時流量、增刪查改 Mock 規則、放行斷點）：`,
+            `[🔌 一鍵新增 Dashboard MCP 到 ai-proxy](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fdashboard%2Fmcp)`,
             `CLI: \`npx ai-proxy add https://yongjhih.github.io/mucker/dashboard/mcp --name mucker-dashboard\``,
             ``,
-            `2. **Docs & Spec MCP** (guidance, templates, CDP spec, docs search):`,
-            `[🔌 One-Click Add Docs MCP](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)`,
+            `2. **Docs & Spec MCP**（開發指南、CDP 規範查詢）：`,
+            `[🔌 一鍵新增 Docs MCP 到 ai-proxy](action:add-mcp?url=https%3A%2F%2Fyongjhih.github.io%2Fmucker%2Fmcp)`,
             `CLI: \`npx ai-proxy add https://yongjhih.github.io/mucker/mcp --name mucker\``
           ].join('\n');
         }
 
-        // 5. Recent requests summary
-        if (text.includes('history') || text.includes('request') || text.includes('log') || text.includes('failed') || text.includes('error')) {
+        // 11. Recent requests summary
+        if (text.includes('history') || text.includes('request') || text.includes('log') || text.includes('failed') || text.includes('error') || text.includes('紀錄') || text.includes('請求')) {
           const reqs = state.requests || [];
           if (reqs.length === 0) {
-            return `No network requests recorded in the buffer yet. Trigger network activity in your Android app or click **Target: Connect** to establish the bridge.`;
+            return `目前記憶體中尚無網路請求紀錄。請在 Android App 觸發連線，或確認連線狀態為 **${snap.connectionStatus}**。`;
           }
           const errors = reqs.filter(r => r.statusCode >= 400);
           return [
-            `Recorded **${reqs.length}** requests in memory (Buffer size: ${reqs.length}/200).`,
+            `記憶體緩衝區已記錄 **${reqs.length}** 筆請求（容量：${reqs.length}/200）。`,
             errors.length > 0
-              ? `⚠️ Found **${errors.length}** failed requests (status >= 400): ${errors.slice(0, 3).map(e => `\`${e.method} ${e.url} (${e.statusCode})\``).join(', ')}`
-              : `✅ All captured requests returned successful status codes (2xx/3xx).`,
+              ? `⚠️ 發現 **${errors.length}** 筆失敗請求（HTTP >= 400）：${errors.slice(0, 3).map(e => `\`${e.method} ${e.url} (${e.statusCode})\``).join(', ')}`
+              : `✅ 所有擷取到的請求均回傳正常狀態碼 (2xx/3xx)。`,
             ``,
-            `Latest request: \`${reqs[0].method} ${reqs[0].url} (${reqs[0].statusCode})\``
+            `最新請求：\`${reqs[0].method} ${reqs[0].url} (${reqs[0].statusCode})\``
           ].join('\n');
         }
 
-        // 0. What is Mucker
+        // 12. What is Mucker
         if (text.includes('什麼是 mucker') || text.includes('什麼是mucker') || text.includes('mucker 是什麼') || text.includes('what is mucker') || text === 'mucker') {
           return [
             `**Mucker** 是一個針對 Android OkHttp 與 Dart/Flutter 網路連線的零憑證（Zero-cert）流量監控與 Mock 工具：`,
@@ -5507,14 +5705,19 @@ ws.on('message', (raw) => {
           ].join('\n');
         }
 
-        const currentHost = state.targetHost || (window.location && window.location.host) || 'localhost:8080';
-        // Default greeting / help
+        // Default greeting / help with live context
         return [
-          `I am ready to help with your network testing on **${currentHost}**:`,
-          `- Ask me to **mock an API** (e.g. \`mock /api/v1/user with 500\`)`,
-          `- Ask me to **pause network traffic** or toggle breakpoints`,
-          `- Ask about **ai-proxy MCP integration**`,
-          `- Ask to inspect recent **traffic errors**`
+          `我是 **Mucker AI Copilot**，目前畫面檢視狀態：`,
+          `- **目標端點**：**${currentHost}** (${snap.connectionStatus})`,
+          `- **目前頁籤**：\`${snap.activeTab}\``,
+          `- **畫面控制項**：Grouped=\`${snap.uiControls.groupByConsecutive}\`, BodySearch=\`${snap.uiControls.searchInBody}\`, Filter=\`${snap.uiControls.methodFilter}\``,
+          ``,
+          `您可以問我：`,
+          `- 🧭 **"導覽目前的畫面與主要功能"**`,
+          `- ⊞ **"解釋一下 grouped"**（相鄰連續請求分組）`,
+          `- 🔍 **"解釋一下 body 搜尋"**（深入搜尋 JSON Body）`,
+          `- ⚡ **"mock /api/v1/user with 500"**（快速建立模擬規則）`,
+          `- ⏸ **"開啟斷點攔截"**（暫停並修改在途請求）`
         ].join('\n');
       }
 
@@ -5554,7 +5757,6 @@ ws.on('message', (raw) => {
         }
 
         let reply = null;
-        const currentHost = state.targetHost || (window.location && window.location.host) || 'localhost:8080';
         let customEndpoint = '';
         try {
           if (window.localStorage) customEndpoint = window.localStorage.getItem('ai_proxy_endpoint') || '';
@@ -5562,7 +5764,10 @@ ws.on('message', (raw) => {
         const endpoint = (customEndpoint || 'http://127.0.0.1:8788').replace(/\/+$/, '');
 
         try {
-          const systemMsg = `You are Mucker AI Copilot. The user is inspecting Android OkHttp traffic at ${currentHost}. Rules: ${state.rules.length}, Breakpoint: ${state.breakpointMode}. Provide concise answers with markdown and action buttons like [⚡ Apply Mock Rule](action:apply-mock?url=/api&status=200).`;
+          const liveSnapshot = getDashboardCurrentViewSnapshot();
+          const systemMsg = buildDashboardPromptContext(input);
+          const contextualUserPrompt = `${input}\n\n(Live Screen Context: Active Tab="${liveSnapshot.activeTab}", ⊞ Grouped=${liveSnapshot.uiControls.groupByConsecutive}, { } Body=${liveSnapshot.uiControls.searchInBody}, Target=${liveSnapshot.targetHost}, TotalReqs=${liveSnapshot.traffic.total}, Selected=${liveSnapshot.selectedRequest})`;
+
           const res = await fetch(`${endpoint}/v1/chat/completions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -5570,7 +5775,7 @@ ws.on('message', (raw) => {
               model: 'local-default',
               messages: [
                 { role: 'system', content: systemMsg },
-                { role: 'user', content: input }
+                { role: 'user', content: contextualUserPrompt }
               ]
             }),
             signal: currentAbortController.signal
@@ -5667,6 +5872,23 @@ ws.on('message', (raw) => {
           } else if (actionName === 'connect') {
             const endpoint = (localStorage.getItem('ai_proxy_endpoint') || 'http://127.0.0.1:8788').replace(/\/+$/, '');
             window.open(`${endpoint}/dashboard`, '_blank');
+          } else if (actionName === 'toggle-grouped') {
+            if (btnToggleGroup) btnToggleGroup.click();
+          } else if (actionName === 'toggle-body-search') {
+            if (btnToggleSearchBody) btnToggleSearchBody.click();
+          } else if (actionName === 'switch-tab') {
+            const tabName = params.get('tab') || 'inspector';
+            const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            if (tabBtn) tabBtn.click();
+          } else if (actionName === 'clear-filters') {
+            if (searchFilter) { searchFilter.value = ''; state.search = ''; }
+            const allChip = document.querySelector('.filter-chip[data-filter="ALL"]');
+            if (allChip) allChip.click();
+            showToast('Filters cleared', 'info');
+          } else if (actionName === 'filter-method') {
+            const method = params.get('method') || 'ALL';
+            const chip = document.querySelector(`.filter-chip[data-filter="${method}"]`);
+            if (chip) chip.click();
           }
         } catch (e) {
           console.warn('Action click handler error:', e);
