@@ -6040,11 +6040,52 @@ prismjs/prism.js:
     } catch (e) {}
     var endpoint = (customEndpoint || 'http://127.0.0.1:8788').replace(/\/+$/, '');
 
+    function buildCovpagesSystemPrompt() {
+      var d = (typeof window !== 'undefined' && window.__COVPAGES_DATA__) || (typeof data !== 'undefined' ? data : null) || {};
+      var repo = d.repoName || 'mucker';
+      var title = d.title || 'Mucker Multi-Platform Test Coverage';
+      var sum = d.summary || {};
+      var linesPct = sum.lines && typeof sum.lines.pct === 'number' ? sum.lines.pct : 0;
+      var covered = sum.lines ? sum.lines.covered : 0;
+      var total = sum.lines ? sum.lines.total : 0;
+      var filesList = Object.keys(d.files || {});
+
+      var targetLines = [];
+      if (typeof computeHighValueTargets === 'function') {
+        var res = computeHighValueTargets(d, 8);
+        if (res && res.targets) {
+          targetLines = res.targets.map(function(t, idx) {
+            return (idx + 1) + '. `' + t.path + '` (' + t.pct.toFixed(1) + '% cov, ' + t.uncovered + ' uncovered lines, +' + t.gain.toFixed(2) + '% potential gain)';
+          });
+        }
+      }
+
+      return [
+        'You are the AI Coverage Assistant for ' + title + ' (' + repo + ').',
+        'Repository metrics: Line coverage is ' + linesPct.toFixed(2) + '% (' + covered + '/' + total + ' covered lines across ' + filesList.length + ' tracked files).',
+        'Commit: ' + ((d.currentCommit && (d.currentCommit.shortSha || d.currentCommit.sha)) || 'main') + ' - ' + (d.currentCommit && d.currentCommit.message ? ('"' + d.currentCommit.message + '"') : ''),
+        '',
+        'Key High-Value Targets for Coverage Improvement in this codebase:',
+        targetLines.length > 0 ? targetLines.join('\n') : '- (Calculated on demand)',
+        '',
+        'Tracked files include: ' + filesList.slice(0, 30).join(', ') + (filesList.length > 30 ? '...' : ''),
+        '',
+        'CRITICAL LINKING & FORMATTING RULES:',
+        '1. When recommending files or referencing paths, ALWAYS format them as Covpages Jump links: `[filepath](#file=filepath)` or action buttons `[Open filepath](action:jump:#file=filepath)` so users can click them directly in the browser to view the source code coverage.',
+        '2. NEVER output `file://` URLs, `localhost` URLs, or absolute machine filesystem paths.',
+        '3. Respond helpfully in the user\'s language (Traditional Chinese or English). Use markdown tables, bold accents, and clear lists.'
+      ].join('\n');
+    }
+
     try {
+      var covDataObj = (typeof window !== 'undefined' && window.__COVPAGES_DATA__) || (typeof data !== 'undefined' ? data : null) || {};
+      var repoSlug = (covDataObj.repoName || 'mucker').replace(/[^a-zA-Z0-9_-]+/g, '_');
+      var systemPromptText = buildCovpagesSystemPrompt();
+
       var promptMessages = [
         {
           role: 'system',
-          content: 'You are the Covpages Assistant. Covpages is a git-native test coverage reporting tool for GitHub Pages with multi-commit trends, scoped badges, and zero backend required. Answer questions helpfully and concisely using markdown formatting and action buttons when relevant.'
+          content: systemPromptText
         }
       ];
 
@@ -6059,11 +6100,18 @@ prismjs/prism.js:
         }
       }
 
+      var contextualUser = text + '\n\n(Live Context: Repository="' + (covDataObj.repoName || 'mucker') + '", TotalFiles=' + Object.keys(covDataObj.files || {}).length + ', Coverage=' + ((covDataObj.summary && covDataObj.summary.lines && covDataObj.summary.lines.pct) || 0).toFixed(1) + '%)';
+      promptMessages.push({ role: 'user', content: contextualUser });
+
       var relayRes = await fetch(endpoint + '/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-session-id': 'covpages_' + repoSlug
+        },
         body: JSON.stringify({
           model: 'local-default',
+          user: 'covpages_' + repoSlug,
           messages: promptMessages
         }),
         signal: activeAbortCtrl ? activeAbortCtrl.signal : undefined
@@ -6155,7 +6203,7 @@ prismjs/prism.js:
             '<pre><code>' + escapeHtml(cliRes.quickExamples.join('\n')) + '</code></pre>';
         }
         replyHtml += '<p><button type="button" class="btn btn-sm btn-primary ask-ai-cta-btn" data-action="navigate:mcp?tool=get_cli_help">Open in WebMCP Catalog (?tool=get_cli_help)</button></p>';
-      } else if (/(?:high-value|target|roi|價值|提升|priorit|uncovered|最具價值|最有價值|最值得|目標)/i.test(lower)) {
+      } else if (/(?:high-value|target|roi|價值|提升|priorit|uncovered|最具價值|最有價值|最值得|目標|關鍵檔案|潛力)/i.test(lower)) {
         var targetRes = await callWebMcp('find_high_value_targets', { limit: 5 });
         replyHtml = '<p>🛠️ <strong>WebMCP Tool Invoked:</strong> <code>find_high_value_targets(limit: 5)</code></p>' +
           '<p>🎯 <strong>Highest Value Targets to Improve Coverage:</strong></p>' +
@@ -6249,9 +6297,10 @@ prismjs/prism.js:
           '<p>Click below to jump directly to the live coverage report:</p>' +
           '<p><button type="button" class="btn btn-sm btn-primary ask-ai-cta-btn" data-action="navigate:covpages/">Open Live Coverage Demo</button></p>';
       } else if (/(?:mcp|ai-proxy|register|註冊|連接)/i.test(lower)) {
-        var isCov = window.location.pathname.includes('/covpages/');
-        var targetPath = isCov ? 'covpages/covpages/mcp' : 'covpages/mcp';
-        var siteSlug = isCov ? 'covpages-covpages' : 'covpages';
+        var covDataObj = (typeof window !== 'undefined' && window.__COVPAGES_DATA__) || (typeof data !== 'undefined' ? data : null) || {};
+        var repoName = (covDataObj.repoName || 'yongjhih/mucker').replace(/^.*\//, '');
+        var targetPath = repoName + '/covpages/mcp';
+        var siteSlug = repoName + '-covpages';
         replyHtml = '<p>🔌 <strong>Register WebMCP Endpoint:</strong></p>' +
           '<p>Add this site to your local <code>ai-proxy</code> relay server:</p>' +
           '<pre><code>npx ai-proxy add https://yongjhih.github.io/' + targetPath + ' --name ' + siteSlug + '</code></pre>' +
@@ -6348,10 +6397,36 @@ prismjs/prism.js:
         }
       );
 
-      // 3) Normal Links / relative files: [Text](url)
+      // 3) Normal Links / relative files / sanitized file paths: [Text](url)
       out = out.replace(
         /\[([^\]]+)\]\(([^)]+)\)/g,
         function (_, label, url) {
+          // Normalize possible file:/// or localhost or repo URLs
+          var cleanUrl = url
+            .replace(/^file:\/\/\/[^#]*/, '')
+            .replace(/^https?:\/\/[^\/]+\/(?:mucker\/covpages\/)?/, '')
+            .replace(/^[./]+/, '')
+            .replace(/^#file=/, '');
+          var covFiles = (window.__COVPAGES_DATA__ && window.__COVPAGES_DATA__.files) ||
+                         (typeof data !== 'undefined' && data && data.files) || {};
+          var allPaths = Object.keys(covFiles);
+
+          // Check if cleanUrl or label matches any known tracked file
+          var matchedPath = allPaths.find(function(p) {
+            return (cleanUrl && p === cleanUrl) ||
+                   (cleanUrl && p.endsWith('/' + cleanUrl)) ||
+                   p === label ||
+                   (label && p.endsWith('/' + label));
+          });
+
+          if (matchedPath) {
+            return '<button type="button" class="btn btn-sm ask-ai-jump-btn" data-jump="#file=' + encodeURIComponent(matchedPath) + '" title="View ' + escapeHtml(matchedPath) + '">' + label + '</button>';
+          }
+
+          if (url.startsWith('file://')) {
+            return '<code>' + label + '</code>';
+          }
+
           var isExt = url.startsWith('http://') || url.startsWith('https://');
           var targetAttr = isExt ? ' target="_blank" rel="noopener"' : '';
           return '<a href="' + url + '" class="btn btn-sm ask-ai-cta-btn" style="text-decoration:none;"' + targetAttr + '>' + label + '</a>';
