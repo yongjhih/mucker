@@ -18,10 +18,10 @@
       }
 
       if (route.startsWith('covpages/')) {
-        basePath += 'covpages/';
+        if (!basePath.endsWith('covpages/')) basePath += 'covpages/';
         route = route.slice('covpages/'.length);
       } else if (route.startsWith('tree/') || route.startsWith('blob/') || route.startsWith('commits/') || route.startsWith('trends')) {
-        basePath += 'covpages/';
+        if (!basePath.endsWith('covpages/')) basePath += 'covpages/';
       }
 
       var target = basePath + '?/' + encodeURI(route) + (l.search ? '&' + l.search.slice(1) : '') + l.hash;

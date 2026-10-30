@@ -1,10 +1,19 @@
 {
   "title": "Mucker Multi-Platform Test Coverage",
-  "repoName": "mucker",
+  "repoName": "yongjhih/mucker",
+  "repoUrl": "https://github.com/yongjhih/mucker",
   "baseUrl": "/mucker/covpages/",
   "defaultBranch": "main",
-  "generatedAt": "2026-10-18T14:44:29.251Z",
+  "generatedAt": "2026-10-30T15:06:25.875Z",
   "currentCommit": {
+    "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+    "shortSha": "bc9840c",
+    "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+    "author": "Yongjhih Chen",
+    "date": "2026-10-19T10:26:55.000Z",
+    "branch": "main"
+  },
+  "previousCommit": {
     "sha": "c6e207298f0229bcb78e0f25156f35e89996ecb3",
     "shortSha": "c6e2072",
     "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
@@ -12,18 +21,10 @@
     "date": "2026-10-18T14:26:54.000Z",
     "branch": "main"
   },
-  "previousCommit": {
-    "sha": "c1cabdcc91b007ca25df272d435350d994a4d048",
-    "shortSha": "c1cabdc",
-    "message": "style: eliminate meaningless gradients and align pages with Impeccable guidelines",
-    "author": "Yongjhih Chen",
-    "date": "2026-10-18T13:41:22.000Z",
-    "branch": "main"
-  },
   "delta": {
-    "linesPct": -2.96,
-    "functionsPct": -51.72,
-    "branchesPct": -55.81
+    "linesPct": 0,
+    "functionsPct": 0,
+    "branchesPct": 0
   },
   "summary": {
     "lines": {
@@ -11203,11 +11204,1125 @@
           }
         }
       }
+    },
+    {
+      "commit": {
+        "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+        "shortSha": "bc9840c",
+        "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+        "author": "Yongjhih Chen",
+        "date": "2026-10-19T10:26:55.000Z",
+        "branch": "main"
+      },
+      "summary": {
+        "lines": {
+          "total": 2355,
+          "covered": 1248,
+          "skipped": 1107,
+          "pct": 52.99
+        },
+        "functions": {
+          "total": 29,
+          "covered": 14,
+          "skipped": 15,
+          "pct": 48.28
+        },
+        "branches": {
+          "total": 43,
+          "covered": 19,
+          "skipped": 24,
+          "pct": 44.19
+        }
+      },
+      "folderSummaries": {
+        "": {
+          "lines": {
+            "total": 2355,
+            "covered": 1248,
+            "skipped": 1107,
+            "pct": 52.99
+          },
+          "functions": {
+            "total": 29,
+            "covered": 14,
+            "skipped": 15,
+            "pct": 48.28
+          },
+          "branches": {
+            "total": 43,
+            "covered": 19,
+            "skipped": 24,
+            "pct": 44.19
+          }
+        },
+        "dart": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src": {
+          "lines": {
+            "total": 516,
+            "covered": 354,
+            "skipped": 162,
+            "pct": 68.6
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker": {
+          "lines": {
+            "total": 876,
+            "covered": 321,
+            "skipped": 555,
+            "pct": 36.64
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core": {
+          "lines": {
+            "total": 258,
+            "covered": 211,
+            "skipped": 47,
+            "pct": 81.78
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models": {
+          "lines": {
+            "total": 155,
+            "covered": 126,
+            "skipped": 29,
+            "pct": 81.29
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server": {
+          "lines": {
+            "total": 395,
+            "covered": 0,
+            "skipped": 395,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/util": {
+          "lines": {
+            "total": 31,
+            "covered": 0,
+            "skipped": 31,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp": {
+          "lines": {
+            "total": 356,
+            "covered": 303,
+            "skipped": 53,
+            "pct": 85.11
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli": {
+          "lines": {
+            "total": 607,
+            "covered": 270,
+            "skipped": 337,
+            "pct": 44.48
+          },
+          "functions": {
+            "total": 29,
+            "covered": 14,
+            "skipped": 15,
+            "pct": 48.28
+          },
+          "branches": {
+            "total": 43,
+            "covered": 19,
+            "skipped": 24,
+            "pct": 44.19
+          }
+        },
+        "cli/bin": {
+          "lines": {
+            "total": 375,
+            "covered": 147,
+            "skipped": 228,
+            "pct": 39.2
+          },
+          "functions": {
+            "total": 12,
+            "covered": 4,
+            "skipped": 8,
+            "pct": 33.33
+          },
+          "branches": {
+            "total": 19,
+            "covered": 5,
+            "skipped": 14,
+            "pct": 26.32
+          }
+        },
+        "cli/lib": {
+          "lines": {
+            "total": 232,
+            "covered": 123,
+            "skipped": 109,
+            "pct": 53.02
+          },
+          "functions": {
+            "total": 17,
+            "covered": 10,
+            "skipped": 7,
+            "pct": 58.82
+          },
+          "branches": {
+            "total": 24,
+            "covered": 14,
+            "skipped": 10,
+            "pct": 58.33
+          }
+        }
+      },
+      "fileSummaries": {
+        "dart/mucker/lib/src/mock_rule.dart": {
+          "lines": {
+            "total": 33,
+            "covered": 32,
+            "skipped": 1,
+            "pct": 96.97
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/dio_interceptor.dart": {
+          "lines": {
+            "total": 166,
+            "covered": 101,
+            "skipped": 65,
+            "pct": 60.84
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/http_client.dart": {
+          "lines": {
+            "total": 24,
+            "covered": 17,
+            "skipped": 7,
+            "pct": 70.83
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "dart/mucker/lib/src/mcp_server.dart": {
+          "lines": {
+            "total": 293,
+            "covered": 204,
+            "skipped": 89,
+            "pct": 69.62
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/CdpMessages.kt": {
+          "lines": {
+            "total": 61,
+            "covered": 58,
+            "skipped": 3,
+            "pct": 95.08
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockRule.kt": {
+          "lines": {
+            "total": 52,
+            "covered": 49,
+            "skipped": 3,
+            "pct": 94.23
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockDecision.kt": {
+          "lines": {
+            "total": 8,
+            "covered": 4,
+            "skipped": 4,
+            "pct": 50
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/models/NetworkRecord.kt": {
+          "lines": {
+            "total": 34,
+            "covered": 15,
+            "skipped": 19,
+            "pct": 44.12
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/RestHandler.kt": {
+          "lines": {
+            "total": 110,
+            "covered": 0,
+            "skipped": 110,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/WebSocketConnection.kt": {
+          "lines": {
+            "total": 79,
+            "covered": 0,
+            "skipped": 79,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/CdpHandler.kt": {
+          "lines": {
+            "total": 47,
+            "covered": 0,
+            "skipped": 47,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/server/MuckerHttpServer.kt": {
+          "lines": {
+            "total": 159,
+            "covered": 0,
+            "skipped": 159,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/MuckerInterceptor.kt": {
+          "lines": {
+            "total": 134,
+            "covered": 110,
+            "skipped": 24,
+            "pct": 82.09
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/MuckerConfig.kt": {
+          "lines": {
+            "total": 8,
+            "covered": 0,
+            "skipped": 8,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/Mucker.kt": {
+          "lines": {
+            "total": 50,
+            "covered": 0,
+            "skipped": 50,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/MockEngine.kt": {
+          "lines": {
+            "total": 66,
+            "covered": 55,
+            "skipped": 11,
+            "pct": 83.33
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/RequestHistory.kt": {
+          "lines": {
+            "total": 14,
+            "covered": 8,
+            "skipped": 6,
+            "pct": 57.14
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/core/MockRuleRegistry.kt": {
+          "lines": {
+            "total": 23,
+            "covered": 22,
+            "skipped": 1,
+            "pct": 95.65
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-interceptor/src/main/java/io/github/mucker/util/NetworkUtils.kt": {
+          "lines": {
+            "total": 31,
+            "covered": 0,
+            "skipped": 31,
+            "pct": 0
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/McpHandler.kt": {
+          "lines": {
+            "total": 229,
+            "covered": 196,
+            "skipped": 33,
+            "pct": 85.59
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt": {
+          "lines": {
+            "total": 120,
+            "covered": 104,
+            "skipped": 16,
+            "pct": 86.67
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcp.kt": {
+          "lines": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 4,
+            "pct": 42.86
+          },
+          "functions": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 0,
+            "covered": 0,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli/bin/mucker.mjs": {
+          "lines": {
+            "total": 375,
+            "covered": 147,
+            "skipped": 228,
+            "pct": 39.2
+          },
+          "functions": {
+            "total": 12,
+            "covered": 4,
+            "skipped": 8,
+            "pct": 33.33
+          },
+          "branches": {
+            "total": 19,
+            "covered": 5,
+            "skipped": 14,
+            "pct": 26.32
+          }
+        },
+        "cli/lib/adb.mjs": {
+          "lines": {
+            "total": 86,
+            "covered": 29,
+            "skipped": 57,
+            "pct": 33.72
+          },
+          "functions": {
+            "total": 3,
+            "covered": 2,
+            "skipped": 1,
+            "pct": 66.67
+          },
+          "branches": {
+            "total": 7,
+            "covered": 3,
+            "skipped": 4,
+            "pct": 42.86
+          }
+        },
+        "cli/lib/api.mjs": {
+          "lines": {
+            "total": 81,
+            "covered": 57,
+            "skipped": 24,
+            "pct": 70.37
+          },
+          "functions": {
+            "total": 11,
+            "covered": 6,
+            "skipped": 5,
+            "pct": 54.55
+          },
+          "branches": {
+            "total": 12,
+            "covered": 7,
+            "skipped": 5,
+            "pct": 58.33
+          }
+        },
+        "cli/lib/cdp.mjs": {
+          "lines": {
+            "total": 31,
+            "covered": 3,
+            "skipped": 28,
+            "pct": 9.68
+          },
+          "functions": {
+            "total": 1,
+            "covered": 0,
+            "skipped": 1,
+            "pct": 0
+          },
+          "branches": {
+            "total": 1,
+            "covered": 1,
+            "skipped": 0,
+            "pct": 100
+          }
+        },
+        "cli/lib/colors.mjs": {
+          "lines": {
+            "total": 34,
+            "covered": 34,
+            "skipped": 0,
+            "pct": 100
+          },
+          "functions": {
+            "total": 2,
+            "covered": 2,
+            "skipped": 0,
+            "pct": 100
+          },
+          "branches": {
+            "total": 4,
+            "covered": 3,
+            "skipped": 1,
+            "pct": 75
+          }
+        }
+      }
     }
   ],
   "refs": {
     "branches": {
-      "main": "c6e207298f0229bcb78e0f25156f35e89996ecb3"
+      "main": "bc9840c827c1b6c027147c82da388473ceb5e5f8"
     },
     "tags": {}
   },
@@ -11244,6 +12359,19 @@
         "shortSha": "c6e2072",
         "date": "2026-10-18T14:26:54.000Z",
         "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+        "author": "Yongjhih Chen",
+        "branch": "main",
+        "linesPct": 52.99,
+        "functionsPct": 48.28,
+        "branchesPct": 44.19,
+        "linesCovered": 1248,
+        "linesTotal": 2355
+      },
+      {
+        "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+        "shortSha": "bc9840c",
+        "date": "2026-10-19T10:26:55.000Z",
+        "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
         "author": "Yongjhih Chen",
         "branch": "main",
         "linesPct": 52.99,
@@ -11293,6 +12421,19 @@
           "branchesPct": 44.19,
           "linesCovered": 1248,
           "linesTotal": 2355
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 52.99,
+          "functionsPct": 48.28,
+          "branchesPct": 44.19,
+          "linesCovered": 1248,
+          "linesTotal": 2355
         }
       ],
       "dart": [
@@ -11327,6 +12468,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 68.6,
@@ -11375,6 +12529,19 @@
           "branchesPct": 100,
           "linesCovered": 354,
           "linesTotal": 516
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
         }
       ],
       "dart/mucker/lib": [
@@ -11409,6 +12576,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 68.6,
@@ -11457,6 +12637,19 @@
           "branchesPct": 100,
           "linesCovered": 354,
           "linesTotal": 516
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 68.6,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 354,
+          "linesTotal": 516
         }
       ],
       "mucker-interceptor": [
@@ -11478,6 +12671,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -11513,6 +12719,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main": [
@@ -11534,6 +12753,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -11569,6 +12801,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main/java/io": [
@@ -11590,6 +12835,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -11625,6 +12883,19 @@
           "branchesPct": 100,
           "linesCovered": 321,
           "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker": [
@@ -11646,6 +12917,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 36.64,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 321,
+          "linesTotal": 876
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 36.64,
@@ -11681,6 +12965,19 @@
           "branchesPct": 100,
           "linesCovered": 211,
           "linesTotal": 258
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 81.78,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 211,
+          "linesTotal": 258
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models": [
@@ -11702,6 +12999,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 81.29,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 126,
+          "linesTotal": 155
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 81.29,
@@ -11737,6 +13047,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 395
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 395
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/util": [
@@ -11758,6 +13081,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 31
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -11793,6 +13129,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src": [
@@ -11814,6 +13163,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -11849,6 +13211,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java": [
@@ -11870,6 +13245,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -11905,6 +13293,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java/io/github": [
@@ -11926,6 +13327,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 85.11,
@@ -11961,6 +13375,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "mucker-mcp/src/main/java/io/github/mucker/mcp": [
@@ -11989,6 +13416,19 @@
           "branchesPct": 100,
           "linesCovered": 303,
           "linesTotal": 356
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.11,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 303,
+          "linesTotal": 356
         }
       ],
       "cli": [
@@ -11997,6 +13437,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 44.48,
+          "functionsPct": 48.28,
+          "branchesPct": 44.19,
+          "linesCovered": 270,
+          "linesTotal": 607
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 44.48,
@@ -12019,6 +13472,19 @@
           "branchesPct": 26.32,
           "linesCovered": 147,
           "linesTotal": 375
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 39.2,
+          "functionsPct": 33.33,
+          "branchesPct": 26.32,
+          "linesCovered": 147,
+          "linesTotal": 375
         }
       ],
       "cli/lib": [
@@ -12027,6 +13493,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 53.02,
+          "functionsPct": 58.82,
+          "branchesPct": 58.33,
+          "linesCovered": 123,
+          "linesTotal": 232
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 53.02,
@@ -12077,6 +13556,19 @@
           "branchesPct": 100,
           "linesCovered": 32,
           "linesTotal": 33
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 96.97,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 32,
+          "linesTotal": 33
         }
       ],
       "dart/mucker/lib/src/dio_interceptor.dart": [
@@ -12111,6 +13603,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 60.84,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 101,
+          "linesTotal": 166
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 60.84,
@@ -12159,6 +13664,19 @@
           "branchesPct": 100,
           "linesCovered": 17,
           "linesTotal": 24
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 70.83,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 17,
+          "linesTotal": 24
         }
       ],
       "dart/mucker/lib/src/mcp_server.dart": [
@@ -12200,6 +13718,19 @@
           "branchesPct": 100,
           "linesCovered": 204,
           "linesTotal": 293
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 69.62,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 204,
+          "linesTotal": 293
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models/CdpMessages.kt": [
@@ -12221,6 +13752,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 95.08,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 58,
+          "linesTotal": 61
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 95.08,
@@ -12256,6 +13800,19 @@
           "branchesPct": 100,
           "linesCovered": 49,
           "linesTotal": 52
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 94.23,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 49,
+          "linesTotal": 52
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/models/MockDecision.kt": [
@@ -12277,6 +13834,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 50,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 4,
+          "linesTotal": 8
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 50,
@@ -12312,6 +13882,19 @@
           "branchesPct": 100,
           "linesCovered": 15,
           "linesTotal": 34
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 44.12,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 15,
+          "linesTotal": 34
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/server/RestHandler.kt": [
@@ -12333,6 +13916,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 110
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -12368,6 +13964,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 79
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 79
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/server/CdpHandler.kt": [
@@ -12389,6 +13998,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 47
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -12424,6 +14046,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 159
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 159
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/MuckerInterceptor.kt": [
@@ -12445,6 +14080,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 82.09,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 110,
+          "linesTotal": 134
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 82.09,
@@ -12480,6 +14128,19 @@
           "branchesPct": 100,
           "linesCovered": 0,
           "linesTotal": 8
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 8
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/Mucker.kt": [
@@ -12501,6 +14162,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 50
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -12536,6 +14210,19 @@
           "branchesPct": 100,
           "linesCovered": 55,
           "linesTotal": 66
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 83.33,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 55,
+          "linesTotal": 66
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/core/RequestHistory.kt": [
@@ -12557,6 +14244,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 57.14,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 8,
+          "linesTotal": 14
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 57.14,
@@ -12592,6 +14292,19 @@
           "branchesPct": 100,
           "linesCovered": 22,
           "linesTotal": 23
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 95.65,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 22,
+          "linesTotal": 23
         }
       ],
       "mucker-interceptor/src/main/java/io/github/mucker/util/NetworkUtils.kt": [
@@ -12613,6 +14326,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 0,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 0,
+          "linesTotal": 31
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 0,
@@ -12648,6 +14374,19 @@
           "branchesPct": 100,
           "linesCovered": 196,
           "linesTotal": 229
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 85.59,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 196,
+          "linesTotal": 229
         }
       ],
       "mucker-mcp/src/main/java/io/github/mucker/mcp/MuckerMcpPlugin.kt": [
@@ -12669,6 +14408,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 86.67,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 104,
+          "linesTotal": 120
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 86.67,
@@ -12704,6 +14456,19 @@
           "branchesPct": 100,
           "linesCovered": 3,
           "linesTotal": 7
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 42.86,
+          "functionsPct": 100,
+          "branchesPct": 100,
+          "linesCovered": 3,
+          "linesTotal": 7
         }
       ],
       "cli/bin/mucker.mjs": [
@@ -12712,6 +14477,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 39.2,
+          "functionsPct": 33.33,
+          "branchesPct": 26.32,
+          "linesCovered": 147,
+          "linesTotal": 375
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 39.2,
@@ -12734,6 +14512,19 @@
           "branchesPct": 42.86,
           "linesCovered": 29,
           "linesTotal": 86
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 33.72,
+          "functionsPct": 66.67,
+          "branchesPct": 42.86,
+          "linesCovered": 29,
+          "linesTotal": 86
         }
       ],
       "cli/lib/api.mjs": [
@@ -12742,6 +14533,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 70.37,
+          "functionsPct": 54.55,
+          "branchesPct": 58.33,
+          "linesCovered": 57,
+          "linesTotal": 81
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 70.37,
@@ -12764,6 +14568,19 @@
           "branchesPct": 100,
           "linesCovered": 3,
           "linesTotal": 31
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 9.68,
+          "functionsPct": 0,
+          "branchesPct": 100,
+          "linesCovered": 3,
+          "linesTotal": 31
         }
       ],
       "cli/lib/colors.mjs": [
@@ -12772,6 +14589,19 @@
           "shortSha": "c6e2072",
           "date": "2026-10-18T14:26:54.000Z",
           "message": "feat(dashboard): add stop thinking button, escape hotkey, and animated thinking indicator to AI Chat",
+          "author": "Yongjhih Chen",
+          "branch": "main",
+          "linesPct": 100,
+          "functionsPct": 100,
+          "branchesPct": 75,
+          "linesCovered": 34,
+          "linesTotal": 34
+        },
+        {
+          "sha": "bc9840c827c1b6c027147c82da388473ceb5e5f8",
+          "shortSha": "bc9840c",
+          "date": "2026-10-19T10:26:55.000Z",
+          "message": "feat(dashboard): equip AI copilot with live screen vision, guided tour, and dashboard control knowledge",
           "author": "Yongjhih Chen",
           "branch": "main",
           "linesPct": 100,
